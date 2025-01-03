@@ -6,14 +6,14 @@ from ninja import Schema
 class SuitSchema(Schema):
     id: int
     name: str
+    arcana: str
     description: str | None = None
     color: str
 
 
-class CardSchema(Schema):
+class CardSchemaShort(Schema):
     id: int
     name: str
-    suit: SuitSchema
     number: int | None
     image: str | None
     upright_meaning: str
@@ -21,10 +21,13 @@ class CardSchema(Schema):
     keywords: str
     description: str
 
+class CardSchema(CardSchemaShort):
+    suit: SuitSchema
+
 
 class ReadingCardSchema(Schema):
     id: int
-    card: CardSchema
+    card: CardSchemaShort
     position: int
     orientation: str
     interpretation: str | None = None

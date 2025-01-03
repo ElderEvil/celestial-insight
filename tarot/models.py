@@ -1,10 +1,16 @@
 from django.db import models
 from django.utils.html import format_html
 from django.conf import settings
+from pydantic import ValidationError
 
+ARCANA_CHOICES = [
+    ('major', 'Major'),
+    ('minor', 'Minor'),
+]
 
 class Suit(models.Model):
     name = models.CharField(max_length=50)
+    arcana = models.CharField(max_length=10, choices=ARCANA_CHOICES, default='minor')
     description = models.TextField(blank=True)
     color = models.CharField(max_length=7, default="#000000", help_text="Color code (e.g. #FF0000)")
 
@@ -14,6 +20,10 @@ class Suit(models.Model):
             self.color,
             self.name
         )
+
+    def clean(self):
+        if self.arcana == 'major' and Suit.objects.filter(arcana='major').exclude(id=self.id).exists():
+            raise ValidationError("There can only be one Major Arcana suit.")
 
     colored_name.short_description = 'Suit Name'
 

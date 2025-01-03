@@ -4,6 +4,7 @@
     "pk": 1,
     "fields": {
       "name": "Wands",
+      "arcana": "minor",
       "description": "The suit of Wands represents creativity and action.",
       "color": "#FFA500"
     }
@@ -13,8 +14,39 @@
     "pk": 2,
     "fields": {
       "name": "Cups",
+      "arcana": "minor",
       "description": "The suit of Cups represents emotions and relationships.",
       "color": "#0000FF"
+    }
+  },
+  {
+    "model": "tarot.suit",
+    "pk": 3,
+    "fields": {
+      "name": "Swords",
+      "arcana": "minor",
+      "description": "The suit of Swords represents intellect and conflict.",
+      "color": "#C0C0C0"
+    }
+  },
+  {
+    "model": "tarot.suit",
+    "pk": 4,
+    "fields": {
+      "name": "Pentacles",
+      "arcana": "minor",
+      "description": "The suit of Pentacles represents material aspects and prosperity.",
+      "color": "#8B4513"
+    }
+  },
+  {
+    "model": "tarot.suit",
+    "pk": 5,
+    "fields": {
+      "name": "Major Arcana",
+      "arcana": "major",
+      "description": "The Major Arcana represents life's major themes and archetypes.",
+      "color": "#FFD700"
     }
   },
   {
@@ -35,13 +67,13 @@
     "model": "tarot.card",
     "pk": 2,
     "fields": {
-      "name": "Two of Wands",
-      "suit": 1,
-      "number": 2,
-      "upright_meaning": "Planning, decisions, and discovery.",
-      "reversed_meaning": "Fear of change, indecisiveness, or lack of planning.",
-      "keywords": "planning, decisions, discovery",
-      "description": "The Two of Wands symbolizes planning and taking the first steps.",
+      "name": "The Fool",
+      "suit": 5,
+      "number": 0,
+      "upright_meaning": "New beginnings, spontaneity, and innocence.",
+      "reversed_meaning": "Recklessness, foolishness, or hesitation.",
+      "keywords": "beginnings, spontaneity, innocence",
+      "description": "The Fool represents the start of a new journey, filled with endless possibilities.",
       "image": ""
     }
   },
@@ -49,33 +81,19 @@
     "model": "tarot.card",
     "pk": 3,
     "fields": {
-      "name": "Three of Wands",
-      "suit": 1,
-      "number": 3,
-      "upright_meaning": "Progress, expansion, and foresight.",
-      "reversed_meaning": "Delays, obstacles, or lack of progress.",
-      "keywords": "progress, expansion, foresight",
-      "description": "The Three of Wands represents progress and looking ahead.",
+      "name": "The Magician",
+      "suit": 5,
+      "number": 1,
+      "upright_meaning": "Power, skill, and manifestation.",
+      "reversed_meaning": "Manipulation, poor planning, or latent talents.",
+      "keywords": "power, skill, manifestation",
+      "description": "The Magician symbolizes resourcefulness and the ability to turn visions into reality.",
       "image": ""
     }
   },
   {
     "model": "tarot.card",
     "pk": 4,
-    "fields": {
-      "name": "Ace of Cups",
-      "suit": 2,
-      "number": 1,
-      "upright_meaning": "Love, new relationships, and compassion.",
-      "reversed_meaning": "Blocked emotions, emptiness, or self-love.",
-      "keywords": "love, new relationships, compassion",
-      "description": "The Ace of Cups symbolizes love and emotional fulfillment.",
-      "image": ""
-    }
-  },
-  {
-    "model": "tarot.card",
-    "pk": 5,
     "fields": {
       "name": "Two of Cups",
       "suit": 2,
@@ -89,15 +107,29 @@
   },
   {
     "model": "tarot.card",
+    "pk": 5,
+    "fields": {
+      "name": "Ace of Swords",
+      "suit": 3,
+      "number": 1,
+      "upright_meaning": "Clarity, breakthroughs, and truth.",
+      "reversed_meaning": "Confusion, miscommunication, or dishonesty.",
+      "keywords": "clarity, breakthroughs, truth",
+      "description": "The Ace of Swords represents intellectual clarity and decisive actions.",
+      "image": ""
+    }
+  },
+  {
+    "model": "tarot.card",
     "pk": 6,
     "fields": {
-      "name": "Three of Cups",
-      "suit": 2,
-      "number": 3,
-      "upright_meaning": "Celebration, friendship, and community.",
-      "reversed_meaning": "Overindulgence, gossip, or isolation.",
-      "keywords": "celebration, friendship, community",
-      "description": "The Three of Cups represents joy and social connections.",
+      "name": "Ace of Pentacles",
+      "suit": 4,
+      "number": 1,
+      "upright_meaning": "Abundance, prosperity, and new opportunities.",
+      "reversed_meaning": "Financial loss, missed opportunities, or instability.",
+      "keywords": "abundance, prosperity, opportunities",
+      "description": "The Ace of Pentacles represents material and financial blessings.",
       "image": ""
     }
   }

@@ -17,7 +17,7 @@ class CardInline(admin.TabularInline):
 class SuitAdmin(admin.ModelAdmin):
     list_display = ('colored_name', 'description')
     search_fields = ('name',)
-    list_filter = ('color',)
+    list_filter = ('arcana',)
     ordering = ('name',)
 
     inlines = [CardInline]

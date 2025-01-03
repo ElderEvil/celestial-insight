@@ -9,7 +9,7 @@ from pydantic_ai import RunContext
 from celestial_insight.agents import mystical_agent, ReadingDependencies
 from .filters import CardFilterSchema, ReadingFilterSchema
 from .models import Suit, Card, Reading, ReadingCard
-from .schemas import SuitSchema, CardSchema, ReadingSchema, ReadingCardSchema
+from .schemas import SuitSchema, CardSchema, ReadingSchema, ReadingCardSchema, CelestialInsightResponseSchema
 from .validators import QuestionValidator
 
 api = NinjaExtraAPI()
@@ -110,12 +110,16 @@ class TarotController:
         return reading.cards.all()
 
     # CELESTIAL (aka AI)
-    @http_get("/readings/{reading_id}/celestial", response=dict)
+    @http_get("/readings/{reading_id}/celestial", response=CelestialInsightResponseSchema)
     def get_celestial_reading(self, request, reading_id: int):
         """
         Generate a celestial insight for a specific reading using AI.
         """
         reading = get_object_or_404(Reading.objects.prefetch_related('cards__card'), id=reading_id, user=request.user)
+
+        insight_stub = "Unable to generate celestial insight at this time."
+        if reading.celestial_insight and reading.celestial_insight == insight_stub:
+            return reading
 
         # Prepare cards data for the AI
         cards_data = [
@@ -140,27 +144,12 @@ class TarotController:
             celestial_insight = result.data.mystical_response
         except Exception as e:
             logger.error(f"Error generating celestial insight: {e}")
-            celestial_insight = "Unable to generate celestial insight at this time."
+            celestial_insight = insight_stub
 
         reading.celestial_insight = celestial_insight
         reading.save()
         # Return the celestial insight with reading details
-        return {
-            "reading_id": reading.id,
-            "date": reading.date,
-            "question": reading.question,
-            "notes": reading.notes,
-            "cards": [
-                {
-                    "name": card.card.name,
-                    "position": card.position,
-                    "orientation": card.orientation,
-                    "interpretation": card.interpretation
-                }
-                for card in reading.cards.all()
-            ],
-            "celestial_insight": celestial_insight
-        }
+        return reading
 
     @http_post("/celestial", response=str)
     def celestial(self, question: str) -> str:
