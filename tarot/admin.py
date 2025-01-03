@@ -2,6 +2,7 @@ import csv
 
 from django.contrib import admin
 from django.http import HttpResponse
+from django.urls import reverse
 from django.utils.html import format_html
 
 from .models import Suit, Card, Reading, ReadingCard
@@ -29,7 +30,7 @@ class SuitAdmin(admin.ModelAdmin):
 
 @admin.register(Card)
 class CardAdmin(admin.ModelAdmin):
-    list_display = ('name', 'suit', 'number', 'preview_image', 'keywords')
+    list_display = ('name', 'suit', 'number', 'keyword_links')
     search_fields = ('name', 'keywords', 'description')
     list_filter = ('suit',)
     ordering = ('suit', 'number')
@@ -41,6 +42,21 @@ class CardAdmin(admin.ModelAdmin):
         return "No image"
 
     preview_image.short_description = 'Image Preview'
+
+    def keyword_links(self, obj):
+        if obj.keywords:
+            keywords = obj.keywords.split(',')  # Assuming keywords are comma-separated
+            links = [
+                format_html(
+                    '<a href="{}" style="text-decoration: underline;">{}</a>',
+                    reverse(
+                        f'admin:{obj._meta.app_label}_{obj._meta.model_name}_changelist') + f'?keywords__icontains={keyword.strip()}',
+                    keyword.strip()
+                )
+                for keyword in keywords
+            ]
+            return format_html(', '.join(links))
+        return "No keywords"
 
 
 @admin.action(description='Export selected readings to CSV')
