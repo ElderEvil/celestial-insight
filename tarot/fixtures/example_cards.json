@@ -1,0 +1,104 @@
+[
+  {
+    "model": "tarot.suit",
+    "pk": 1,
+    "fields": {
+      "name": "Wands",
+      "description": "The suit of Wands represents creativity and action.",
+      "color": "#FFA500"
+    }
+  },
+  {
+    "model": "tarot.suit",
+    "pk": 2,
+    "fields": {
+      "name": "Cups",
+      "description": "The suit of Cups represents emotions and relationships.",
+      "color": "#0000FF"
+    }
+  },
+  {
+    "model": "tarot.card",
+    "pk": 1,
+    "fields": {
+      "name": "Ace of Wands",
+      "suit": 1,
+      "number": 1,
+      "upright_meaning": "New beginnings, inspiration, and potential.",
+      "reversed_meaning": "Delays, lack of motivation, or missed opportunities.",
+      "keywords": "inspiration, new beginnings, potential",
+      "description": "The Ace of Wands represents a spark of inspiration and creative potential.",
+      "image": ""
+    }
+  },
+  {
+    "model": "tarot.card",
+    "pk": 2,
+    "fields": {
+      "name": "Two of Wands",
+      "suit": 1,
+      "number": 2,
+      "upright_meaning": "Planning, decisions, and discovery.",
+      "reversed_meaning": "Fear of change, indecisiveness, or lack of planning.",
+      "keywords": "planning, decisions, discovery",
+      "description": "The Two of Wands symbolizes planning and taking the first steps.",
+      "image": ""
+    }
+  },
+  {
+    "model": "tarot.card",
+    "pk": 3,
+    "fields": {
+      "name": "Three of Wands",
+      "suit": 1,
+      "number": 3,
+      "upright_meaning": "Progress, expansion, and foresight.",
+      "reversed_meaning": "Delays, obstacles, or lack of progress.",
+      "keywords": "progress, expansion, foresight",
+      "description": "The Three of Wands represents progress and looking ahead.",
+      "image": ""
+    }
+  },
+  {
+    "model": "tarot.card",
+    "pk": 4,
+    "fields": {
+      "name": "Ace of Cups",
+      "suit": 2,
+      "number": 1,
+      "upright_meaning": "Love, new relationships, and compassion.",
+      "reversed_meaning": "Blocked emotions, emptiness, or self-love.",
+      "keywords": "love, new relationships, compassion",
+      "description": "The Ace of Cups symbolizes love and emotional fulfillment.",
+      "image": ""
+    }
+  },
+  {
+    "model": "tarot.card",
+    "pk": 5,
+    "fields": {
+      "name": "Two of Cups",
+      "suit": 2,
+      "number": 2,
+      "upright_meaning": "Partnership, harmony, and mutual respect.",
+      "reversed_meaning": "Imbalance, broken communication, or tension.",
+      "keywords": "partnership, harmony, mutual respect",
+      "description": "The Two of Cups signifies partnerships and emotional connections.",
+      "image": ""
+    }
+  },
+  {
+    "model": "tarot.card",
+    "pk": 6,
+    "fields": {
+      "name": "Three of Cups",
+      "suit": 2,
+      "number": 3,
+      "upright_meaning": "Celebration, friendship, and community.",
+      "reversed_meaning": "Overindulgence, gossip, or isolation.",
+      "keywords": "celebration, friendship, community",
+      "description": "The Three of Cups represents joy and social connections.",
+      "image": ""
+    }
+  }
+]
