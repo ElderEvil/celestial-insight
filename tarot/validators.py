@@ -1,7 +1,4 @@
 import re
-from dataclasses import dataclass
-
-from pydantic import BaseModel, Field
 
 
 class QuestionValidator:
@@ -18,7 +15,7 @@ class QuestionValidator:
             r"love|relationship|partner": "love and relationships",
             r"job|career|work|business": "career and life purpose",
             r"health|wellness|energy": "health and wellness",
-            r"money|finance|wealth": "abundance and prosperity"
+            r"money|finance|wealth": "abundance and prosperity",
         }
 
         for pattern, theme in themes.items():

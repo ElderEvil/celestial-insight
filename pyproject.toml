@@ -1,0 +1,83 @@
+[project]
+name = "celestial-insight"
+version = "0.1.0"
+description = "Tarot AI"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django-admin-interface>=0.29.2",
+    "django-allauth>=65.3.1",
+    "django-ninja>=1.3.0",
+    "django-ninja-extra>=0.22.0",
+    "pydantic-ai>=0.0.17",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.4",
+    "ruff>=0.8.5",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+exclude = [".git", "__pycache__", ".pytest_cache", "staticfiles"]
+lint.select = [
+    "F", # pyflakes
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "C90", # mccabe
+    "I", # isort
+    "N", # pep8-naming
+    "UP", # pyupgrade
+    "YTT", # flake8-2020
+    "ASYNC", # flake8-async
+#    "BLE", # flake8-blind-except
+    "FBT", # flake8-boolean-trap
+    "B", # flake8-bugbear
+    "A", # flake8-builtins
+    "COM", # flake8-commas
+    "C4", # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "EM", # flake8-errmsg
+    "ISC", # flake8-implicit-str-concat
+    "ICN", # flake8-import-conventions
+    "LOG", # flake8-logging
+    "G", # flake8-logging-format
+    "INP", # flake8-no-pep420
+    "PIE", # flake8-pie
+    "PYI", # flake8-pyi
+    "PT", # flake8-pytest-style
+    "Q", # flake8-quotes
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "SIM", # flake8-simplify
+    "TID", # flake8-tidy-imports
+    "TCH", # flake8-type-checking
+    "INT", # flake8-gettext
+#    "ARG", # flake8-arguments
+    "PTH", # flake8-pathlib
+    "PGH", # pygrep-hooks
+    "PL", # Pylint
+#    "TRY", # tryceratops
+    "RUF", # Ruff
+    "DJ",  # flake8-django
+]
+
+lint.mccabe.max-complexity = 12
+
+lint.ignore = [
+    "COM812",
+    "ISC001",
+    "B008", # do not perform function calls in argument defaults
+    "PTH123", # builtin-open
+    "S311", # pseudo-random
+    "PLR2004",
+    "PT023", # pytest-style
+    "RUF012",
+    "N805", # self
+    "E712", # Avoid equality comparison
+]
+
+[tool.ruff.lint.flake8-builtins]
+builtins-ignorelist = ["id"]

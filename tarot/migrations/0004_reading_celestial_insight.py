@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tarot', '0003_remove_readingcard_user_reading_user'),
+        ("tarot", "0003_remove_readingcard_user_reading_user"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='reading',
-            name='celestial_insight',
+            model_name="reading",
+            name="celestial_insight",
             field=models.TextField(blank=True, null=True),
         ),
     ]

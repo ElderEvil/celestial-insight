@@ -6,20 +6,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tarot', '0002_readingcard_user'),
+        ("tarot", "0002_readingcard_user"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='readingcard',
-            name='user',
+            model_name="readingcard",
+            name="user",
         ),
         migrations.AddField(
-            model_name='reading',
-            name='user',
-            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='readings', to=settings.AUTH_USER_MODEL),
+            model_name="reading",
+            name="user",
+            field=models.ForeignKey(
+                default=None,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="readings",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

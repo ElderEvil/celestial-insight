@@ -21,6 +21,7 @@ class CardSchemaShort(Schema):
     keywords: str
     description: str
 
+
 class CardSchema(CardSchemaShort):
     suit: SuitSchema
 

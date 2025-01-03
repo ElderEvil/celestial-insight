@@ -5,61 +5,72 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Reading',
+            name="Reading",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateTimeField(auto_now_add=True)),
-                ('question', models.TextField(blank=True)),
-                ('notes', models.TextField(blank=True)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("date", models.DateTimeField(auto_now_add=True)),
+                ("question", models.TextField(blank=True)),
+                ("notes", models.TextField(blank=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Suit',
+            name="Suit",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('description', models.TextField(blank=True)),
-                ('color', models.CharField(default='#000000', help_text='Color code (e.g. #FF0000)', max_length=7)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=50)),
+                ("description", models.TextField(blank=True)),
+                ("color", models.CharField(default="#000000", help_text="Color code (e.g. #FF0000)", max_length=7)),
             ],
         ),
         migrations.CreateModel(
-            name='Card',
+            name="Card",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('number', models.IntegerField(blank=True, null=True)),
-                ('image', models.ImageField(blank=True, upload_to='tarot_cards/')),
-                ('upright_meaning', models.TextField()),
-                ('reversed_meaning', models.TextField()),
-                ('keywords', models.CharField(help_text='Comma-separated keywords', max_length=255)),
-                ('description', models.TextField()),
-                ('suit', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='cards', to='tarot.suit')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=100)),
+                ("number", models.IntegerField(blank=True, null=True)),
+                ("image", models.ImageField(blank=True, upload_to="tarot_cards/")),
+                ("upright_meaning", models.TextField()),
+                ("reversed_meaning", models.TextField()),
+                ("keywords", models.CharField(help_text="Comma-separated keywords", max_length=255)),
+                ("description", models.TextField()),
+                (
+                    "suit",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="cards", to="tarot.suit"
+                    ),
+                ),
             ],
             options={
-                'ordering': ['suit', 'number'],
+                "ordering": ["suit", "number"],
             },
         ),
         migrations.CreateModel(
-            name='ReadingCard',
+            name="ReadingCard",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('position', models.IntegerField()),
-                ('orientation', models.CharField(choices=[('upright', 'Upright'), ('reversed', 'Reversed')], max_length=10)),
-                ('interpretation', models.TextField(blank=True)),
-                ('card', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tarot.card')),
-                ('reading', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='cards', to='tarot.reading')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("position", models.IntegerField()),
+                (
+                    "orientation",
+                    models.CharField(choices=[("upright", "Upright"), ("reversed", "Reversed")], max_length=10),
+                ),
+                ("interpretation", models.TextField(blank=True)),
+                ("card", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="tarot.card")),
+                (
+                    "reading",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="cards", to="tarot.reading"
+                    ),
+                ),
             ],
             options={
-                'ordering': ['position'],
-                'unique_together': {('reading', 'position')},
+                "ordering": ["position"],
+                "unique_together": {("reading", "position")},
             },
         ),
     ]
