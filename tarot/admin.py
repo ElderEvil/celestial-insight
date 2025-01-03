@@ -72,6 +72,21 @@ def export_readings_to_csv(modeladmin, request, queryset):
     return response
 
 
+class ReadingCardInline(admin.TabularInline):
+    model = ReadingCard
+    fields = ('card', 'position', 'orientation', 'interpretation')
+    ordering = ['position']
+
+    def get_extra(self, request, obj=None, **kwargs):
+        """
+        Dynamically calculate the number of empty rows to display.
+        """
+        if obj:
+            existing_cards_count = obj.cards.count()
+            return max(3 - existing_cards_count, 0)
+        return 3
+
+
 @admin.register(Reading)
 class ReadingAdmin(admin.ModelAdmin):
     list_display = ('id', 'date', 'question', 'notes')
@@ -79,11 +94,4 @@ class ReadingAdmin(admin.ModelAdmin):
     list_filter = ('date',)
     ordering = ('-date',)
     actions = [export_readings_to_csv]
-
-
-@admin.register(ReadingCard)
-class ReadingCardAdmin(admin.ModelAdmin):
-    list_display = ('reading', 'card', 'position', 'orientation', 'interpretation')
-    search_fields = ('interpretation',)
-    list_filter = ('orientation', 'reading')
-    ordering = ('reading', 'position')
+    inlines = [ReadingCardInline]

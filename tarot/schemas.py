@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from ninja import Schema
 
 
@@ -30,7 +32,11 @@ class ReadingCardSchema(Schema):
 
 class ReadingSchema(Schema):
     id: int
-    date: str
+    date: datetime
     question: str | None = None
     notes: str | None = None
     cards: list[ReadingCardSchema] = []
+
+
+class CelestialInsightResponseSchema(ReadingSchema):
+    celestial_insight: str

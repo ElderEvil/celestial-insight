@@ -56,18 +56,21 @@ class Reading(models.Model):
     question = models.TextField(blank=True)
     notes = models.TextField(blank=True)
 
-    def __str__(self):
-        return f"Reading on {self.date}"
-
-
-class ReadingCard(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,  # Refers to the User model
-        on_delete=models.CASCADE,  # Delete readings if the user is deleted
-        related_name="readings",    # Allows reverse lookups: user.readings.all()
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="readings",
         default=None,
         null=True,
     )
+
+    celestial_insight = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Reading for {self.user} on {self.date}"
+
+
+class ReadingCard(models.Model):
     reading = models.ForeignKey(Reading, on_delete=models.CASCADE, related_name='cards')
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
     position = models.IntegerField()
