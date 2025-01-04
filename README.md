@@ -8,7 +8,10 @@
     <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json" alt="Ruff">
   </a>
 </div>
-A mystical tarot reading application powered by Django Ninja and PydanticAI. This project allows users to explore tarot cards, create readings, and generate AI-powered celestial insights for guidance.
+
+#### A mystical tarot reading application powered by Django Ninja and PydanticAI. This project allows users to explore tarot cards, create readings, and generate AI-powered celestial insights for guidance.
+
+---
 
 <p align="center">
   <!-- Django Ninja Logo -->
@@ -21,6 +24,8 @@ A mystical tarot reading application powered by Django Ninja and PydanticAI. Thi
     <em>Fast to learn, fast to code, fast to run</em>
 </p>
 
+---
+
 <div align="center">
   <!-- Pydantic AI Logo -->
   <a href="https://ai.pydantic.dev/">
@@ -30,6 +35,8 @@ A mystical tarot reading application powered by Django Ninja and PydanticAI. Thi
     </picture>
   </a>
 </div>
+
+---
 
 ## Features
 
