@@ -22,10 +22,9 @@ class SuitAdmin(admin.ModelAdmin):
 
     inlines = [CardInline]
 
+    @admin.display(description="Name (Colored)")
     def colored_name(self, obj):
         return format_html('<span style="color: {};">{}</span>', obj.color, obj.name)
-
-    colored_name.short_description = "Name (Colored)"
 
 
 @admin.register(Card)
@@ -36,12 +35,14 @@ class CardAdmin(admin.ModelAdmin):
     ordering = ("suit", "number")
     readonly_fields = ("preview_image",)
 
+    @admin.display(description="Image Preview")
     def preview_image(self, obj):
         if obj.image:
-            return format_html('<img src="{}" style="max-height: 150px;"/>', obj.image.url)
+            return format_html(
+                '<img src="{}" style="max-height: 150px;"/>',
+                obj.image.url,
+            )
         return "No image"
-
-    preview_image.short_description = "Image Preview"
 
     def keyword_links(self, obj):
         if obj.keywords:
@@ -49,7 +50,9 @@ class CardAdmin(admin.ModelAdmin):
             links = [
                 format_html(
                     '<a href="{}" style="text-decoration: underline;">{}</a>',
-                    reverse(f"admin:{obj._meta.app_label}_{obj._meta.model_name}_changelist")
+                    reverse(
+                        f"admin:{obj._meta.app_label}_{obj._meta.model_name}_changelist",  # noqa: SLF001
+                    )
                     + f"?keywords__icontains={keyword.strip()}",
                     keyword.strip(),
                 )

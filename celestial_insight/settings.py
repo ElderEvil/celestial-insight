@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-dc^g83f*j$exqn2!gx$39t$*gozcqqx=%hh6c33pb-v2y#d81i"
+SECRET_KEY = "django-insecure-dc^g83f*j$exqn2!gx$39t$*gozcqqx=%hh6c33pb-v2y#d81i"  # noqa: S105
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -57,7 +57,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-    # account middleware
     "allauth.account.middleware.AccountMiddleware",
 ]
 
@@ -96,7 +95,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-    }
+    },
 }
 
 # Password validation

@@ -60,7 +60,12 @@ class TarotController:
 
     # READINGS
     @http_post("/readings", response=ReadingSchema)
-    def create_reading(self, request, question: str | None = None, notes: str | None = None):
+    def create_reading(
+        self,
+        request,
+        question: str | None = None,
+        notes: str | None = None,
+    ):
         """Create a new reading for the authenticated user."""
         return Reading.objects.create(
             user=request.user,
@@ -77,10 +82,19 @@ class TarotController:
     @http_get("/readings/{reading_id}", response=ReadingSchema)
     def get_reading(self, request, reading_id: int):
         """Get details of a specific reading."""
-        return get_object_or_404(Reading.objects.prefetch_related("cards__card"), id=reading_id, user=request.user)
+        return get_object_or_404(
+            Reading.objects.prefetch_related("cards__card"),
+            id=reading_id,
+            user=request.user,
+        )
 
     @http_post("/readings/{reading_id}/cards", response=list[ReadingCardSchema])
-    def add_cards_to_reading(self, request, reading_id: int, cards: list[ReadingCardSchema]):
+    def add_cards_to_reading(
+        self,
+        request,
+        reading_id: int,
+        cards: list[ReadingCardSchema],
+    ):
         """
         Add cards to a specific reading.
         - `cards` is a list of card details with position, orientation, and interpretation.
@@ -102,16 +116,27 @@ class TarotController:
     @http_get("/readings/{reading_id}/cards", response=list[ReadingCardSchema])
     def list_cards_in_reading(self, request, reading_id: int):
         """List all cards in a specific reading."""
-        reading = get_object_or_404(Reading.objects.prefetch_related("cards__card"), id=reading_id, user=request.user)
+        reading = get_object_or_404(
+            Reading.objects.prefetch_related("cards__card"),
+            id=reading_id,
+            user=request.user,
+        )
         return reading.cards.all()
 
     # CELESTIAL (aka AI)
-    @http_get("/readings/{reading_id}/celestial", response=CelestialInsightResponseSchema)
+    @http_get(
+        "/readings/{reading_id}/celestial",
+        response=CelestialInsightResponseSchema,
+    )
     def get_celestial_reading(self, request, reading_id: int):
         """
         Generate a celestial insight for a specific reading using AI.
         """
-        reading = get_object_or_404(Reading.objects.prefetch_related("cards__card"), id=reading_id, user=request.user)
+        reading = get_object_or_404(
+            Reading.objects.prefetch_related("cards__card"),
+            id=reading_id,
+            user=request.user,
+        )
 
         insight_stub = "Unable to generate celestial insight at this time."
         if reading.celestial_insight and reading.celestial_insight == insight_stub:
@@ -133,7 +158,8 @@ class TarotController:
         # Generate celestial insight using the mystical agent
         try:
             deps = ReadingDependencies(
-                question=reading.question or "No specific question", validator=QuestionValidator()
+                question=reading.question or "No specific question",
+                validator=QuestionValidator(),
             )
             result = mystical_agent.run_sync(prompt, deps=deps)
             celestial_insight = result.data.mystical_response
@@ -153,9 +179,14 @@ class TarotController:
         """
         try:
             deps = ReadingDependencies(question=question, validator=QuestionValidator())
-            result = mystical_agent.run_sync("Provide guidance for: " + question, deps=deps)
-            return result.data.mystical_response
+            result = mystical_agent.run_sync(
+                "Provide guidance for: " + question,
+                deps=deps,
+            )
 
         except ValueError as e:
             logger.error(msg=f"Error: {e}")
             return str(e)
+
+        else:
+            return result.data.mystical_response
