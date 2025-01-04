@@ -1,15 +1,13 @@
 # Tarot Reading API
-<div align="left">
-  <!-- Badges -->
-  <a href="https://github.com/astral-sh/uv">
+<!-- Badges -->
+<a href="https://github.com/astral-sh/uv">
     <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json" alt="uv">
-  </a>
-  <a href="https://github.com/charliermarsh/ruff">
+</a>
+<a href="https://github.com/charliermarsh/ruff">
     <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json" alt="Ruff">
-  </a>
-</div>
+</a>
 
-#### A mystical tarot reading application powered by Django Ninja and PydanticAI. This project allows users to explore tarot cards, create readings, and generate AI-powered celestial insights for guidance.
+## A mystical tarot reading application powered by Django Ninja and PydanticAI. This project allows users to explore tarot cards, create readings, and generate AI-powered celestial insights for guidance.
 
 ---
 
@@ -38,7 +36,7 @@
 
 ---
 
-## Features
+## Features ✨
 
 - Manage tarot suits and cards (Major and Minor Arcana).
 - Create readings and add cards with positions, orientations, and interpretations.
@@ -46,7 +44,7 @@
 
 ---
 
-## Installation Instructions
+## Installation Instructions 🔌
 
 ### Prerequisites
 
@@ -71,3 +69,45 @@ cd celestial-insight
 uv virtualenv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
+
+### 3. Install Dependencies
+```bash
+uv sync
+```
+
+### 4. Run Database Migrations
+```bash
+uv run python manage.py migrate
+```
+
+### 5. Start the Development Server
+```bash
+uv run python manage.py runserver
+```
+
+---
+
+## Roadmap 🚀
+
+#### Current Features
+- Manage tarot suits and cards.
+- AI-powered celestial insights for readings.
+- Localization for multi-language support.
+- Filter cards and readings via API.
+
+#### Planned Features
+
+**Enhanced Spread Logic:**
+- [x] Support for more tarot spreads.
+- [ ] Visual representation of card layouts.
+
+**User Personalization:**
+- [ ] Save favorite readings.
+- [ ] Insights tailored to user history.
+
+**Advanced AI Integrations:**
+- [ ] Deeper GPT-4 interpretative insights.
+- [ ] Generate custom spreads based on user input.
+
+**Deck Customization:**
+- [ ] Users can create and manage custom tarot decks.
