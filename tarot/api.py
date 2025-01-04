@@ -1,7 +1,8 @@
+import random
+
 from django.db.models.query_utils import logger
 from django.shortcuts import get_object_or_404
 from ninja import Query
-from ninja.pagination import paginate
 from ninja_extra import NinjaExtraAPI, api_controller, http_get, http_post, permissions
 from ninja_extra.throttling import DynamicRateThrottle
 from pydantic_ai import RunContext
@@ -47,7 +48,6 @@ class TarotController:
 
     # CARDS
     @http_get("/cards", response=list[CardSchema])
-    @paginate()
     def list_cards(self, filters: CardFilterSchema = Query(...)):
         """List all cards."""
         cards = Card.objects.select_related("suit").all()
@@ -93,24 +93,55 @@ class TarotController:
         self,
         request,
         reading_id: int,
-        cards: list[ReadingCardSchema],
     ):
         """
-        Add cards to a specific reading.
-        - `cards` is a list of card details with position, orientation, and interpretation.
+        Add random cards to a specific reading based on the reading type.
         """
+        # Define expected card counts for each reading type
+        expected_card_counts = {
+            "single_card": 1,
+            "three_card_spread": 3,
+            "celtic_cross_spread": 10,
+            "love_spread": 5,
+            "career_path_spread": 5,
+            "relationship_spread": 7,
+            "horseshoe_spread": 7,
+        }
+
+        # Fetch the reading and validate the reading type
         reading = get_object_or_404(Reading, id=reading_id, user=request.user)
+        reading_type = reading.reading_type
+        if reading_type not in expected_card_counts:
+            msg = f"Unknown reading type: {reading_type}"
+            raise ValueError(msg)
+
+        # Determine the number of cards to add
+        cards_number = expected_card_counts[reading_type]
+
+        # Get all cards that are not already in the reading
+        existing_card_ids = reading.cards.values_list("card_id", flat=True)
+        available_cards = Card.objects.exclude(id__in=existing_card_ids)
+
+        # Ensure there are enough cards to draw from
+        if available_cards.count() < cards_number:
+            msg = "Not enough cards available to add to the reading."
+            raise ValueError(msg)
+
+        # Randomly select the required number of cards
+        random_cards = random.sample(list(available_cards), cards_number)
+
+        # Add the selected cards to the reading
         reading_cards = []
-        for card_data in cards:
-            card = get_object_or_404(Card, id=card_data.card.id)
+        for index, card in enumerate(random_cards, start=len(existing_card_ids) + 1):
             reading_card = ReadingCard.objects.create(
                 reading=reading,
                 card=card,
-                position=card_data.position,
-                orientation=card_data.orientation,
-                interpretation=card_data.interpretation or "",
+                position=index,
+                orientation=random.choice(["upright", "reversed"]),  # noqa: S311
+                interpretation="",  # Optional: Generate an AI-based interpretation here
             )
             reading_cards.append(reading_card)
+
         return reading_cards
 
     @http_get("/readings/{reading_id}/cards", response=list[ReadingCardSchema])
@@ -139,7 +170,7 @@ class TarotController:
         )
 
         insight_stub = "Unable to generate celestial insight at this time."
-        if reading.celestial_insight and reading.celestial_insight == insight_stub:
+        if reading.celestial_insight and reading.celestial_insight != insight_stub:
             return reading
 
         # Prepare cards data for the AI

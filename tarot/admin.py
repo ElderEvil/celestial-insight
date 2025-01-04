@@ -92,8 +92,8 @@ class ReadingCardInline(admin.TabularInline):
 
 @admin.register(Reading)
 class ReadingAdmin(admin.ModelAdmin):
-    list_display = ("id", "date", "question", "notes")
-    search_fields = ("question", "notes")
+    list_display = ("id", "date", "question", "notes", "reading_type")
+    search_fields = ("question", "notes", "reading_type")
     list_filter = ("date",)
     ordering = ("-date",)
     actions = [export_readings_to_csv]

@@ -15,7 +15,11 @@ class ReadingDependencies:
 class ReadingResult(BaseModel):
     mystical_response: str = Field(description="The mystical guidance for the seeker")
     theme: str = Field(description="The theme of the question")
-    intensity: int = Field(description="The intensity/importance of the question", ge=1, le=10)
+    intensity: int = Field(
+        description="The intensity/importance of the question",
+        ge=1,
+        le=10,
+    )
 
 
 mystical_agent = Agent(
