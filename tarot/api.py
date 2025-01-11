@@ -1,36 +1,22 @@
 import random
+from logging import getLogger
 
 from django.db.models.query_utils import logger
 from django.shortcuts import get_object_or_404
 from ninja import Query
 from ninja_extra import NinjaExtraAPI, api_controller, http_get, http_post, permissions
 from ninja_extra.throttling import DynamicRateThrottle
-from pydantic_ai import RunContext
 
-from celestial_insight.agents import ReadingDependencies, mystical_agent
+from celestial_insight.agents import CardResponse, ReadingDependencies, celestial_agent, tarot_support_agent
 
+from .enums import ReadingTypeEnum
 from .filters import CardFilterSchema, ReadingFilterSchema
 from .models import Card, Reading, ReadingCard
 from .schemas import CardSchema, CelestialInsightResponseSchema, ReadingCardSchema, ReadingSchema
-from .validators import QuestionValidator
 
 api = NinjaExtraAPI()
 
-
-@mystical_agent.system_prompt
-async def add_question_theme(ctx: RunContext[ReadingDependencies]) -> str:
-    theme = await ctx.deps.validator.get_question_theme(question=ctx.deps.question)
-    return f"The seeker asks about {theme}."
-
-
-@mystical_agent.tool
-async def validate_question(ctx: RunContext[ReadingDependencies]) -> str:
-    """Validates if the question is appropriate for mystical guidance."""
-    is_valid = await ctx.deps.validator.validate_question(question=ctx.deps.question)
-    if not is_valid:
-        msg = "Please ask a personal question about your path or future"
-        raise ValueError(msg)
-    return "Question is valid for mystical guidance."
+logger = getLogger(__name__)  # noqa: F811
 
 
 @api_controller(
@@ -54,19 +40,44 @@ class TarotController:
 
     # READINGS
     @http_post("/readings", response=ReadingSchema)
-    def create_reading(
-        self,
-        request,
-        question: str | None = None,
-        reading_type: str | None = None,
-    ):
-        """Create a new reading for the authenticated user."""
-        return Reading.objects.create(
+    def create_reading(self, request, question: str):
+        """
+        Phase 1: Create a reading by analyzing the user's question.
+        - Validate the question using `tarot_support_agent`.
+        - Match the question to a spread type.
+        - Save the reading to the database.
+        """
+        # Step 1: Validate question and determine spread
+        try:
+            deps = ReadingDependencies(question=question)
+            validation_result = tarot_support_agent.run_sync(
+                "Validate the question and determine the spread type.", deps=deps
+            )
+            logger.info(f"Validation result: {validation_result.data}")  # noqa: G004
+
+            if not validation_result:
+                raise ValueError("Failed to validate question or determine spread type.")  # noqa: EM101, TRY003, TRY301
+
+            if not validation_result.data.is_valid:
+                return "Invalid question. Please refine your input."
+
+            # Extract results
+            theme = validation_result.data.theme
+            spread_type = validation_result.data.spread_type or ReadingTypeEnum.SINGLE_CARD.value
+
+        except Exception as e:
+            logger.error(f"Error validating question: {e}")  # noqa: G004, TRY400
+            raise ValueError("Invalid question. Please refine your input.")  # noqa: B904, EM101, TRY003
+
+        # Step 2: Create and save reading
+        reading = Reading.objects.create(
             user=request.user,
             question=question,
-            notes="Some notes",
-            reading_type=reading_type or "single_card",
+            notes=f"Theme: {theme}",
+            reading_type=spread_type,
         )
+
+        return reading  # noqa: RET504
 
     @http_get("/readings", response=list[ReadingSchema])
     def list_readings(self, request, filters: ReadingFilterSchema = Query(...)):
@@ -149,70 +160,83 @@ class TarotController:
         )
         return reading.cards.all()
 
-    # CELESTIAL (aka AI)
-    @http_get(
-        "/readings/{reading_id}/celestial",
-        response=CelestialInsightResponseSchema,
-    )
-    def get_celestial_reading(self, request, reading_id: int):
+    @http_post("/readings/{reading_id}/insight", response=CelestialInsightResponseSchema)
+    def generate_insight(self, request, reading_id: int):
         """
-        Generate a celestial insight for a specific reading using AI.
+        Phase 2: Generate celestial insight based on a created reading.
+        - Use `celestial_agent` to generate the insight text and cards.
+        - Validate and map cards to database entries.
+        - Update the reading with insight text and associated cards.
         """
-        reading = get_object_or_404(
-            Reading.objects.prefetch_related("cards__card"),
-            id=reading_id,
-            user=request.user,
-        )
+        # Step 1: Fetch the reading
+        reading = get_object_or_404(Reading, id=reading_id, user=request.user)
 
-        insight_stub = "Unable to generate celestial insight at this time."
-        if reading.celestial_insight and reading.celestial_insight != insight_stub:
-            return reading
-
-        # Prepare cards data for the AI
-        cards_data = [
-            (
-                f"Card: {card.card.name}, "
-                f"Position: {card.position}, "
-                f"Orientation: {card.orientation}, "
-                f"Interpretation: {card.interpretation or 'None'}"
-            )
-            for card in reading.cards.all()
-        ]
-        cards_summary = "; ".join(cards_data)
-        prompt = f"Summarize and provide mystical guidance for this tarot reading: {cards_summary}"
-
-        # Generate celestial insight using the mystical agent
+        # Step 2: Generate insight
         try:
-            deps = ReadingDependencies(
-                question=reading.question or "No specific question",
-                validator=QuestionValidator(),
+            prompt = (
+                f"Provide mystical guidance for the question: '{reading.question}' "
+                f"and create a card spread of type '{reading.reading_type}'."
             )
-            result = mystical_agent.run_sync(prompt, deps=deps)
-            celestial_insight = result.data.mystical_response
+            deps = ReadingDependencies(question=reading.question)
+            insight_result = celestial_agent.run_sync(prompt, deps=deps)
+
+            if not insight_result:
+                logger.info(f"Failed to generate celestial insight: {insight_result.error}")  # noqa: G004
+                raise ValueError("Failed to generate celestial insight.")  # noqa: EM101, TRY003, TRY301
+
+            # Validate the response structure
+            celestial_response = insight_result.data  # Pydantic model validation
+            cards_data = celestial_response.cards  # List of card names
+            logger.info(f"Card names: {cards_data}")  # noqa: G004
+            insight_text = celestial_response.text
+            logger.info(f"Insight text: {insight_text}")  # noqa: G004
+
         except Exception as e:
-            logger.error(f"Error generating celestial insight: {e}")
-            celestial_insight = insight_stub
+            logger.error(f"Error generating celestial insight: {e}")  # noqa: G004, TRY400
+            raise ValueError("Failed to generate celestial insight.")  # noqa: B904, EM101, TRY003
 
-        reading.celestial_insight = celestial_insight
-        reading.save()
-        # Return the celestial insight with reading details
-        return reading
-
-    @http_post("/celestial", response=str)
-    def celestial(self, question: str) -> str:
-        """
-        Provide an AI-generated answer to a user question.
-        """
+        # Step 3: Map cards to database
         try:
-            deps = ReadingDependencies(question=question, validator=QuestionValidator())
-            result = mystical_agent.run_sync(
-                "Provide guidance for: " + question,
-                deps=deps,
+            card_objects: list[tuple[Card, CardResponse]] = []
+            for card_data in cards_data:
+                card_name = card_data.name.removeprefix("The ")
+                card = Card.objects.filter(name__iexact=card_name).first()
+                if not card:
+                    logger.info(f"Card '{card_name}' not found in the database.")  # noqa: G004
+                    # raise ValueError(f"Card '{card_name}' not found in the database.")  # noqa: ERA001
+                card_objects.append((card, card_data))
+
+            # Check if the card count matches the spread type
+            expected_card_count = {  # noqa: F841
+                ReadingTypeEnum.SINGLE_CARD.value: 1,
+                ReadingTypeEnum.THREE_CARD_SPREAD.value: 3,
+                ReadingTypeEnum.CELTIC_CROSS_SPREAD.value: 10,
+                ReadingTypeEnum.LOVE_SPREAD.value: 5,
+                ReadingTypeEnum.CAREER_PATH_SPREAD.value: 5,
+                ReadingTypeEnum.RELATIONSHIP_SPREAD.value: 7,
+                ReadingTypeEnum.HORSESHOE_SPREAD.value: 7,
+            }.get(reading.reading_type, 1)
+
+            # if len(card_objects) != expected_card_count:
+            #     raise ValueError("Mismatch between card count and spread type.")  # noqa: ERA001
+
+        except Exception as e:
+            logger.error(f"Error mapping cards to database: {e}")  # noqa: G004, TRY400
+            raise ValueError("Failed to map cards to the database.")  # noqa: B904, EM101, TRY003
+
+        # Step 4: Update reading with insight
+        reading.celestial_insight = insight_text
+        reading.save()
+
+        # Step 5: Save associated cards
+        ReadingCard.objects.filter(reading=reading).delete()  # Clear existing cards
+        for position, (card, card_data) in enumerate(card_objects, start=1):
+            ReadingCard.objects.create(
+                reading=reading,
+                card=card,
+                position=position,
+                orientation=card_data.orientation,  # This can be included in the agent's response
+                interpretation=card_data.interpretation,  # Optionally generate interpretations
             )
 
-        except ValueError as e:
-            logger.error(msg=f"Error: {e}")
-            return str(e)
-
-        else:
-            return result.data.mystical_response
+        return reading
