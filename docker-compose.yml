@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    ports:
+      - "9090:9090"
+    volumes:
+      - .:/app
+    environment:
+      - PORT=9090

@@ -10,8 +10,8 @@ from pydantic_ai import RunContext
 from celestial_insight.agents import ReadingDependencies, mystical_agent
 
 from .filters import CardFilterSchema, ReadingFilterSchema
-from .models import Card, Reading, ReadingCard, Suit
-from .schemas import CardSchema, CelestialInsightResponseSchema, ReadingCardSchema, ReadingSchema, SuitSchema
+from .models import Card, Reading, ReadingCard
+from .schemas import CardSchema, CelestialInsightResponseSchema, ReadingCardSchema, ReadingSchema
 from .validators import QuestionValidator
 
 api = NinjaExtraAPI()
@@ -40,12 +40,6 @@ async def validate_question(ctx: RunContext[ReadingDependencies]) -> str:
     throttle=DynamicRateThrottle(scope="burst"),
 )
 class TarotController:
-    # SUITS
-    @http_get("/suits", response=list[SuitSchema])
-    def list_suits(self):
-        """List all suits."""
-        return Suit.objects.all()
-
     # CARDS
     @http_get("/cards", response=list[CardSchema])
     def list_cards(self, filters: CardFilterSchema = Query(...)):
@@ -64,13 +58,14 @@ class TarotController:
         self,
         request,
         question: str | None = None,
-        notes: str | None = None,
+        reading_type: str | None = None,
     ):
         """Create a new reading for the authenticated user."""
         return Reading.objects.create(
             user=request.user,
             question=question,
-            notes=notes,
+            notes="Some notes",
+            reading_type=reading_type or "single_card",
         )
 
     @http_get("/readings", response=list[ReadingSchema])
