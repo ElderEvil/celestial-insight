@@ -20,7 +20,7 @@ class QuestionValidationResult(BaseModel):
     is_valid: bool = Field(description="Indicates whether the question is valid for a tarot reading.")
     reason: str | None = Field(description="The reason for the negative validation result.")
     theme: str = Field(description="The theme of the question (e.g., love, career).")
-    spread_type: ReadingTypeEnum = Field(description="The determined or suggested spread type for the reading.")
+    spread_type: ReadingTypeEnum | None = Field(description="The determined or suggested spread type for the reading.")
 
 
 # Card details in the celestial insight response
@@ -38,7 +38,7 @@ class CelestialInsightResponse(BaseModel):
 
 # Agent for validating questions and determining spread type
 tarot_support_agent = Agent(
-    "openai:gpt-4-turbo",
+    "openai:gpt-3.5-turbo",
     deps_type=ReadingDependencies,
     result_type=QuestionValidationResult,
     system_prompt=(
@@ -48,7 +48,8 @@ tarot_support_agent = Agent(
         "Select spreads from the provided list: single_card, three_card_spread, celtic_cross_spread, "
         "love_spread, career_path_spread, relationship_spread, horseshoe_spread. "
         "Ensure your theme and spread suggestions align with the question and are appropriate for the seeker. "
-        "Additionally, return a boolean field 'is_valid' to indicate if the question is valid for a tarot reading."
+        "Additionally, return a boolean field 'is_valid' to indicate if the question is appropriate for a tarot reading."  # noqa: E501
+        "If the question is not valid, return a reason for the negative validation result."
     ),
 )
 
