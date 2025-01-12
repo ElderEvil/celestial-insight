@@ -34,13 +34,21 @@ class ReadingCardSchema(Schema):
     interpretation: str | None = None
 
 
+class ReadingSchemaShort(Schema):
+    id: int
+    reading_type: str
+    date: datetime
+    question: str | None = None
+    notes: str | None = None
+
+
 class ReadingSchema(Schema):
     id: int
     reading_type: str
     date: datetime
     question: str | None = None
     notes: str | None = None
-    cards: list[ReadingCardSchema] = []
+    cards: list[ReadingCardSchema]
 
 
 class CelestialInsightResponseSchema(ReadingSchema):

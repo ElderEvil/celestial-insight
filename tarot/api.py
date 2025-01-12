@@ -1,7 +1,6 @@
-import random
-from logging import getLogger
+import logging
 
-from django.db.models.query_utils import logger
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from ninja import Query
 from ninja_extra import NinjaExtraAPI, api_controller, http_get, http_post, permissions
@@ -12,11 +11,11 @@ from celestial_insight.agents import CardResponse, ReadingDependencies, celestia
 from .enums import ReadingTypeEnum
 from .filters import CardFilterSchema, ReadingFilterSchema
 from .models import Card, Reading, ReadingCard
-from .schemas import CardSchema, CelestialInsightResponseSchema, ReadingCardSchema, ReadingSchema
+from .schemas import CardSchema, CelestialInsightResponseSchema, ReadingCardSchema, ReadingSchema, ReadingSchemaShort
 
 api = NinjaExtraAPI()
 
-logger = getLogger(__name__)  # noqa: F811
+logger = logging.getLogger(__name__)
 
 
 @api_controller(
@@ -42,7 +41,7 @@ class TarotController:
     @http_post("/readings", response=ReadingSchema)
     def create_reading(self, request, question: str):
         """
-        Phase 1: Create a reading by analyzing the user's question.
+        Create a reading by analyzing the user's question.
         - Validate the question using `tarot_support_agent`.
         - Match the question to a spread type.
         - Save the reading to the database.
@@ -53,36 +52,33 @@ class TarotController:
             validation_result = tarot_support_agent.run_sync(
                 "Validate the question and determine the spread type.", deps=deps
             )
-            logger.info(f"Validation result: {validation_result.data}")  # noqa: G004
+            print(f"Validation result: {validation_result.data}")  # noqa: T201
 
             if not validation_result:
                 raise ValueError("Failed to validate question or determine spread type.")  # noqa: EM101, TRY003, TRY301
-
-            if not validation_result.data.is_valid:
-                return "Invalid question. Please refine your input."
 
             # Extract results
             theme = validation_result.data.theme
             spread_type = validation_result.data.spread_type or ReadingTypeEnum.SINGLE_CARD.value
 
         except Exception as e:
-            logger.error(f"Error validating question: {e}")  # noqa: G004, TRY400
-            raise ValueError("Invalid question. Please refine your input.")  # noqa: B904, EM101, TRY003
+            err_msg = f"Error validating question: {e}"
+            logger.exception(err_msg)
+            return err_msg
 
         # Step 2: Create and save reading
-        reading = Reading.objects.create(
+
+        return Reading.objects.create(
             user=request.user,
             question=question,
             notes=f"Theme: {theme}",
             reading_type=spread_type,
         )
 
-        return reading  # noqa: RET504
-
-    @http_get("/readings", response=list[ReadingSchema])
+    @http_get("/readings/my", response=list[ReadingSchemaShort])
     def list_readings(self, request, filters: ReadingFilterSchema = Query(...)):
         """List all readings for the authenticated user."""
-        readings = Reading.objects.filter(user=request.user)
+        readings = Reading.objects.filter(user=request.user).order_by("-date")
         return filters.filter(readings)
 
     @http_get("/readings/{reading_id}", response=ReadingSchema)
@@ -94,62 +90,6 @@ class TarotController:
             user=request.user,
         )
 
-    @http_post("/readings/{reading_id}/cards", response=list[ReadingCardSchema])
-    def add_cards_to_reading(
-        self,
-        request,
-        reading_id: int,
-    ):
-        """
-        Add random cards to a specific reading based on the reading type.
-        """
-        # Define expected card counts for each reading type
-        expected_card_counts = {
-            "single_card": 1,
-            "three_card_spread": 3,
-            "celtic_cross_spread": 10,
-            "love_spread": 5,
-            "career_path_spread": 5,
-            "relationship_spread": 7,
-            "horseshoe_spread": 7,
-        }
-
-        # Fetch the reading and validate the reading type
-        reading = get_object_or_404(Reading, id=reading_id, user=request.user)
-        reading_type = reading.reading_type
-        if reading_type not in expected_card_counts:
-            msg = f"Unknown reading type: {reading_type}"
-            raise ValueError(msg)
-
-        # Determine the number of cards to add
-        cards_number = expected_card_counts[reading_type]
-
-        # Get all cards that are not already in the reading
-        existing_card_ids = reading.cards.values_list("card_id", flat=True)
-        available_cards = Card.objects.exclude(id__in=existing_card_ids)
-
-        # Ensure there are enough cards to draw from
-        if available_cards.count() < cards_number:
-            msg = "Not enough cards available to add to the reading."
-            raise ValueError(msg)
-
-        # Randomly select the required number of cards
-        random_cards = random.sample(list(available_cards), cards_number)
-
-        # Add the selected cards to the reading
-        reading_cards = []
-        for index, card in enumerate(random_cards, start=len(existing_card_ids) + 1):
-            reading_card = ReadingCard.objects.create(
-                reading=reading,
-                card=card,
-                position=index,
-                orientation=random.choice(["upright", "reversed"]),  # noqa: S311
-                interpretation="",  # Optional: Generate an AI-based interpretation here
-            )
-            reading_cards.append(reading_card)
-
-        return reading_cards
-
     @http_get("/readings/{reading_id}/cards", response=list[ReadingCardSchema])
     def list_cards_in_reading(self, request, reading_id: int):
         """List all cards in a specific reading."""
@@ -160,10 +100,10 @@ class TarotController:
         )
         return reading.cards.all()
 
-    @http_post("/readings/{reading_id}/insight", response=CelestialInsightResponseSchema)
+    @http_post("/readings/{reading_id}/insight", response=CelestialInsightResponseSchema | str)
     def generate_insight(self, request, reading_id: int):
         """
-        Phase 2: Generate celestial insight based on a created reading.
+        Generate celestial insight based on a created reading.
         - Use `celestial_agent` to generate the insight text and cards.
         - Validate and map cards to database entries.
         - Update the reading with insight text and associated cards.
@@ -181,50 +121,47 @@ class TarotController:
             insight_result = celestial_agent.run_sync(prompt, deps=deps)
 
             if not insight_result:
-                logger.info(f"Failed to generate celestial insight: {insight_result.error}")  # noqa: G004
-                raise ValueError("Failed to generate celestial insight.")  # noqa: EM101, TRY003, TRY301
+                err_msg = f"Failed to generate celestial insight: {insight_result.error}"
+                print(err_msg)  # noqa: T201
+                raise ValueError(err_msg)  # noqa: TRY301
 
             # Validate the response structure
             celestial_response = insight_result.data  # Pydantic model validation
             cards_data = celestial_response.cards  # List of card names
-            logger.info(f"Card names: {cards_data}")  # noqa: G004
+            print(f"Card names: {cards_data}")  # noqa: T201
             insight_text = celestial_response.text
-            logger.info(f"Insight text: {insight_text}")  # noqa: G004
+            print(f"Insight text: {insight_text}")  # noqa: T201
 
         except Exception as e:
-            logger.error(f"Error generating celestial insight: {e}")  # noqa: G004, TRY400
-            raise ValueError("Failed to generate celestial insight.")  # noqa: B904, EM101, TRY003
+            err_msg = f"Error generating celestial insight: {e}"
+            logger.exception(err_msg)
+            return err_msg
 
         # Step 3: Map cards to database
         try:
             card_objects: list[tuple[Card, CardResponse]] = []
             for card_data in cards_data:
-                card_name = card_data.name.removeprefix("The ")
-                card = Card.objects.filter(name__iexact=card_name).first()
+                card_name = card_data.name
+
+                # Normalize card names to handle "The " prefix
+                normalized_card_name = card_name.lower().removeprefix("the ").strip()
+
+                # Use Q object to find the card by exact match or ignoring "The "
+                card = Card.objects.filter(Q(name__iexact=card_name) | Q(name__iexact=normalized_card_name)).first()
+
                 if not card:
-                    logger.info(f"Card '{card_name}' not found in the database.")  # noqa: G004
-                    # raise ValueError(f"Card '{card_name}' not found in the database.")  # noqa: ERA001
+                    err_msg = f"Card '{card_name}' not found in the database."
+                    print(err_msg)  # noqa: T201
+                    return err_msg
                 card_objects.append((card, card_data))
 
-            # Check if the card count matches the spread type
-            expected_card_count = {  # noqa: F841
-                ReadingTypeEnum.SINGLE_CARD.value: 1,
-                ReadingTypeEnum.THREE_CARD_SPREAD.value: 3,
-                ReadingTypeEnum.CELTIC_CROSS_SPREAD.value: 10,
-                ReadingTypeEnum.LOVE_SPREAD.value: 5,
-                ReadingTypeEnum.CAREER_PATH_SPREAD.value: 5,
-                ReadingTypeEnum.RELATIONSHIP_SPREAD.value: 7,
-                ReadingTypeEnum.HORSESHOE_SPREAD.value: 7,
-            }.get(reading.reading_type, 1)
-
-            # if len(card_objects) != expected_card_count:
-            #     raise ValueError("Mismatch between card count and spread type.")  # noqa: ERA001
-
         except Exception as e:
-            logger.error(f"Error mapping cards to database: {e}")  # noqa: G004, TRY400
-            raise ValueError("Failed to map cards to the database.")  # noqa: B904, EM101, TRY003
+            err_msg = f"Error mapping cards to database: {e}"
+            logger.exception(err_msg)
+            return err_msg
 
         # Step 4: Update reading with insight
+        print(f"Insight: {insight_text}")  # noqa: T201
         reading.celestial_insight = insight_text
         reading.save()
 
@@ -235,8 +172,8 @@ class TarotController:
                 reading=reading,
                 card=card,
                 position=position,
-                orientation=card_data.orientation,  # This can be included in the agent's response
-                interpretation=card_data.interpretation,  # Optionally generate interpretations
+                orientation=card_data.orientation,
+                interpretation=card_data.interpretation,
             )
 
         return reading
