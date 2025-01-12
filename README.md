@@ -107,7 +107,7 @@ uv run python manage.py runserver
 
 **Advanced AI Integrations:**
 - [ ] Deeper GPT-4 interpretative insights.
-- [ ] Generate custom spreads based on user input.
+- [x] Generate custom spreads based on user input.
 
 **Deck Customization:**
 - [ ] Users can create and manage custom tarot decks.
