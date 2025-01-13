@@ -1,0 +1,1144 @@
+[
+    {
+        "model": "tarot.suit",
+        "pk": 1,
+        "fields": {
+            "name": "Wands",
+            "arcana": "minor",
+            "description": "The suit of Wands represents creativity and action.",
+            "color": "#FFA500"
+        }
+    },
+    {
+        "model": "tarot.suit",
+        "pk": 2,
+        "fields": {
+            "name": "Cups",
+            "arcana": "minor",
+            "description": "The suit of Cups represents emotions and relationships.",
+            "color": "#0000FF"
+        }
+    },
+    {
+        "model": "tarot.suit",
+        "pk": 3,
+        "fields": {
+            "name": "Swords",
+            "arcana": "minor",
+            "description": "The suit of Swords represents intellect and conflict.",
+            "color": "#C0C0C0"
+        }
+    },
+    {
+        "model": "tarot.suit",
+        "pk": 4,
+        "fields": {
+            "name": "Pentacles",
+            "arcana": "minor",
+            "description": "The suit of Pentacles represents material aspects and prosperity.",
+            "color": "#8B4513"
+        }
+    },
+    {
+        "model": "tarot.suit",
+        "pk": 5,
+        "fields": {
+            "name": "Major Arcana",
+            "arcana": "major",
+            "description": "The Major Arcana represents life's major themes and archetypes.",
+            "color": "#FFD700"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 1,
+        "fields": {
+            "name": "Ace of Wands",
+            "suit": 1,
+            "number": 1,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Ace of Wands represents...",
+            "image": "tarot/w01.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 2,
+        "fields": {
+            "name": "Two of Wands",
+            "suit": 1,
+            "number": 2,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Two of Wands represents...",
+            "image": "tarot/w02.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 3,
+        "fields": {
+            "name": "Three of Wands",
+            "suit": 1,
+            "number": 3,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Three of Wands represents...",
+            "image": "tarot/w03.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 4,
+        "fields": {
+            "name": "Four of Wands",
+            "suit": 1,
+            "number": 4,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Four of Wands represents...",
+            "image": "tarot/w04.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 5,
+        "fields": {
+            "name": "Five of Wands",
+            "suit": 1,
+            "number": 5,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Five of Wands represents...",
+            "image": "tarot/w05.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 6,
+        "fields": {
+            "name": "Six of Wands",
+            "suit": 1,
+            "number": 6,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Six of Wands represents...",
+            "image": "tarot/w06.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 7,
+        "fields": {
+            "name": "Seven of Wands",
+            "suit": 1,
+            "number": 7,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Seven of Wands represents...",
+            "image": "tarot/w07.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 8,
+        "fields": {
+            "name": "Eight of Wands",
+            "suit": 1,
+            "number": 8,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Eight of Wands represents...",
+            "image": "tarot/w08.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 9,
+        "fields": {
+            "name": "Nine of Wands",
+            "suit": 1,
+            "number": 9,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Nine of Wands represents...",
+            "image": "tarot/w09.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 10,
+        "fields": {
+            "name": "Ten of Wands",
+            "suit": 1,
+            "number": 10,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Ten of Wands represents...",
+            "image": "tarot/w10.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 11,
+        "fields": {
+            "name": "Page of Wands",
+            "suit": 1,
+            "number": 11,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Page of Wands represents...",
+            "image": "tarot/w11.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 12,
+        "fields": {
+            "name": "Knight of Wands",
+            "suit": 1,
+            "number": 12,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Knight of Wands represents...",
+            "image": "tarot/w12.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 13,
+        "fields": {
+            "name": "Queen of Wands",
+            "suit": 1,
+            "number": 13,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Queen of Wands represents...",
+            "image": "tarot/w13.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 14,
+        "fields": {
+            "name": "King of Wands",
+            "suit": 1,
+            "number": 14,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The King of Wands represents...",
+            "image": "tarot/w14.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 15,
+        "fields": {
+            "name": "Ace of Cups",
+            "suit": 2,
+            "number": 1,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Ace of Cups represents...",
+            "image": "tarot/c01.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 16,
+        "fields": {
+            "name": "Two of Cups",
+            "suit": 2,
+            "number": 2,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Two of Cups represents...",
+            "image": "tarot/c02.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 17,
+        "fields": {
+            "name": "Three of Cups",
+            "suit": 2,
+            "number": 3,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Three of Cups represents...",
+            "image": "tarot/c03.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 18,
+        "fields": {
+            "name": "Four of Cups",
+            "suit": 2,
+            "number": 4,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Four of Cups represents...",
+            "image": "tarot/c04.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 19,
+        "fields": {
+            "name": "Five of Cups",
+            "suit": 2,
+            "number": 5,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Five of Cups represents...",
+            "image": "tarot/c05.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 20,
+        "fields": {
+            "name": "Six of Cups",
+            "suit": 2,
+            "number": 6,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Six of Cups represents...",
+            "image": "tarot/c06.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 21,
+        "fields": {
+            "name": "Seven of Cups",
+            "suit": 2,
+            "number": 7,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Seven of Cups represents...",
+            "image": "tarot/c07.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 22,
+        "fields": {
+            "name": "Eight of Cups",
+            "suit": 2,
+            "number": 8,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Eight of Cups represents...",
+            "image": "tarot/c08.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 23,
+        "fields": {
+            "name": "Nine of Cups",
+            "suit": 2,
+            "number": 9,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Nine of Cups represents...",
+            "image": "tarot/c09.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 24,
+        "fields": {
+            "name": "Ten of Cups",
+            "suit": 2,
+            "number": 10,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Ten of Cups represents...",
+            "image": "tarot/c10.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 25,
+        "fields": {
+            "name": "Page of Cups",
+            "suit": 2,
+            "number": 11,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Page of Cups represents...",
+            "image": "tarot/c11.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 26,
+        "fields": {
+            "name": "Knight of Cups",
+            "suit": 2,
+            "number": 12,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Knight of Cups represents...",
+            "image": "tarot/c12.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 27,
+        "fields": {
+            "name": "Queen of Cups",
+            "suit": 2,
+            "number": 13,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Queen of Cups represents...",
+            "image": "tarot/c13.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 28,
+        "fields": {
+            "name": "King of Cups",
+            "suit": 2,
+            "number": 14,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The King of Cups represents...",
+            "image": "tarot/c14.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 29,
+        "fields": {
+            "name": "Ace of Swords",
+            "suit": 3,
+            "number": 1,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Ace of Swords represents...",
+            "image": "tarot/s01.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 30,
+        "fields": {
+            "name": "Two of Swords",
+            "suit": 3,
+            "number": 2,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Two of Swords represents...",
+            "image": "tarot/s02.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 31,
+        "fields": {
+            "name": "Three of Swords",
+            "suit": 3,
+            "number": 3,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Three of Swords represents...",
+            "image": "tarot/s03.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 32,
+        "fields": {
+            "name": "Four of Swords",
+            "suit": 3,
+            "number": 4,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Four of Swords represents...",
+            "image": "tarot/s04.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 33,
+        "fields": {
+            "name": "Five of Swords",
+            "suit": 3,
+            "number": 5,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Five of Swords represents...",
+            "image": "tarot/s05.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 34,
+        "fields": {
+            "name": "Six of Swords",
+            "suit": 3,
+            "number": 6,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Six of Swords represents...",
+            "image": "tarot/s06.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 35,
+        "fields": {
+            "name": "Seven of Swords",
+            "suit": 3,
+            "number": 7,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Seven of Swords represents...",
+            "image": "tarot/s07.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 36,
+        "fields": {
+            "name": "Eight of Swords",
+            "suit": 3,
+            "number": 8,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Eight of Swords represents...",
+            "image": "tarot/s08.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 37,
+        "fields": {
+            "name": "Nine of Swords",
+            "suit": 3,
+            "number": 9,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Nine of Swords represents...",
+            "image": "tarot/s09.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 38,
+        "fields": {
+            "name": "Ten of Swords",
+            "suit": 3,
+            "number": 10,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Ten of Swords represents...",
+            "image": "tarot/s10.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 39,
+        "fields": {
+            "name": "Page of Swords",
+            "suit": 3,
+            "number": 11,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Page of Swords represents...",
+            "image": "tarot/s11.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 40,
+        "fields": {
+            "name": "Knight of Swords",
+            "suit": 3,
+            "number": 12,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Knight of Swords represents...",
+            "image": "tarot/s12.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 41,
+        "fields": {
+            "name": "Queen of Swords",
+            "suit": 3,
+            "number": 13,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Queen of Swords represents...",
+            "image": "tarot/s13.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 42,
+        "fields": {
+            "name": "King of Swords",
+            "suit": 3,
+            "number": 14,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The King of Swords represents...",
+            "image": "tarot/s14.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 43,
+        "fields": {
+            "name": "Ace of Pentacles",
+            "suit": 4,
+            "number": 1,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Ace of Pentacles represents...",
+            "image": "tarot/p01.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 44,
+        "fields": {
+            "name": "Two of Pentacles",
+            "suit": 4,
+            "number": 2,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Two of Pentacles represents...",
+            "image": "tarot/p02.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 45,
+        "fields": {
+            "name": "Three of Pentacles",
+            "suit": 4,
+            "number": 3,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Three of Pentacles represents...",
+            "image": "tarot/p03.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 46,
+        "fields": {
+            "name": "Four of Pentacles",
+            "suit": 4,
+            "number": 4,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Four of Pentacles represents...",
+            "image": "tarot/p04.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 47,
+        "fields": {
+            "name": "Five of Pentacles",
+            "suit": 4,
+            "number": 5,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Five of Pentacles represents...",
+            "image": "tarot/p05.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 48,
+        "fields": {
+            "name": "Six of Pentacles",
+            "suit": 4,
+            "number": 6,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Six of Pentacles represents...",
+            "image": "tarot/p06.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 49,
+        "fields": {
+            "name": "Seven of Pentacles",
+            "suit": 4,
+            "number": 7,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Seven of Pentacles represents...",
+            "image": "tarot/p07.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 50,
+        "fields": {
+            "name": "Eight of Pentacles",
+            "suit": 4,
+            "number": 8,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Eight of Pentacles represents...",
+            "image": "tarot/p08.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 51,
+        "fields": {
+            "name": "Nine of Pentacles",
+            "suit": 4,
+            "number": 9,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Nine of Pentacles represents...",
+            "image": "tarot/p09.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 52,
+        "fields": {
+            "name": "Ten of Pentacles",
+            "suit": 4,
+            "number": 10,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Ten of Pentacles represents...",
+            "image": "tarot/p10.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 53,
+        "fields": {
+            "name": "Page of Pentacles",
+            "suit": 4,
+            "number": 11,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Page of Pentacles represents...",
+            "image": "tarot/p11.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 54,
+        "fields": {
+            "name": "Knight of Pentacles",
+            "suit": 4,
+            "number": 12,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Knight of Pentacles represents...",
+            "image": "tarot/p12.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 55,
+        "fields": {
+            "name": "Queen of Pentacles",
+            "suit": 4,
+            "number": 13,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Queen of Pentacles represents...",
+            "image": "tarot/p13.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 56,
+        "fields": {
+            "name": "King of Pentacles",
+            "suit": 4,
+            "number": 14,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The King of Pentacles represents...",
+            "image": "tarot/p14.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 57,
+        "fields": {
+            "name": "The Fool",
+            "suit": 5,
+            "number": 0,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Fool represents...",
+            "image": "tarot/m00.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 58,
+        "fields": {
+            "name": "The Magician",
+            "suit": 5,
+            "number": 1,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Magician represents...",
+            "image": "tarot/m01.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 59,
+        "fields": {
+            "name": "The High Priestess",
+            "suit": 5,
+            "number": 2,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The High Priestess represents...",
+            "image": "tarot/m02.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 60,
+        "fields": {
+            "name": "The Empress",
+            "suit": 5,
+            "number": 3,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Empress represents...",
+            "image": "tarot/m03.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 61,
+        "fields": {
+            "name": "The Emperor",
+            "suit": 5,
+            "number": 4,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Emperor represents...",
+            "image": "tarot/m04.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 62,
+        "fields": {
+            "name": "The Hierophant",
+            "suit": 5,
+            "number": 5,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Hierophant represents...",
+            "image": "tarot/m05.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 63,
+        "fields": {
+            "name": "The Lovers",
+            "suit": 5,
+            "number": 6,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Lovers represents...",
+            "image": "tarot/m06.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 64,
+        "fields": {
+            "name": "The Chariot",
+            "suit": 5,
+            "number": 7,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Chariot represents...",
+            "image": "tarot/m07.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 65,
+        "fields": {
+            "name": "Strength",
+            "suit": 5,
+            "number": 8,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Strength represents...",
+            "image": "tarot/m08.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 66,
+        "fields": {
+            "name": "The Hermit",
+            "suit": 5,
+            "number": 9,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Hermit represents...",
+            "image": "tarot/m09.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 67,
+        "fields": {
+            "name": "Wheel of Fortune",
+            "suit": 5,
+            "number": 10,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Wheel of Fortune represents...",
+            "image": "tarot/m10.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 68,
+        "fields": {
+            "name": "Justice",
+            "suit": 5,
+            "number": 11,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Justice represents...",
+            "image": "tarot/m11.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 69,
+        "fields": {
+            "name": "The Hanged Man",
+            "suit": 5,
+            "number": 12,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Hanged Man represents...",
+            "image": "tarot/m12.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 70,
+        "fields": {
+            "name": "Death",
+            "suit": 5,
+            "number": 13,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Death represents...",
+            "image": "tarot/m13.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 71,
+        "fields": {
+            "name": "Temperance",
+            "suit": 5,
+            "number": 14,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Temperance represents...",
+            "image": "tarot/m14.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 72,
+        "fields": {
+            "name": "The Devil",
+            "suit": 5,
+            "number": 15,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Devil represents...",
+            "image": "tarot/m15.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 73,
+        "fields": {
+            "name": "The Tower",
+            "suit": 5,
+            "number": 16,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Tower represents...",
+            "image": "tarot/m16.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 74,
+        "fields": {
+            "name": "The Star",
+            "suit": 5,
+            "number": 17,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Star represents...",
+            "image": "tarot/m17.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 75,
+        "fields": {
+            "name": "The Moon",
+            "suit": 5,
+            "number": 18,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Moon represents...",
+            "image": "tarot/m18.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 76,
+        "fields": {
+            "name": "The Sun",
+            "suit": 5,
+            "number": 19,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The Sun represents...",
+            "image": "tarot/m19.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 77,
+        "fields": {
+            "name": "Judgement",
+            "suit": 5,
+            "number": 20,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The Judgement represents...",
+            "image": "tarot/m20.jpg"
+        }
+    },
+    {
+        "model": "tarot.card",
+        "pk": 78,
+        "fields": {
+            "name": "The World",
+            "suit": 5,
+            "number": 21,
+            "upright_meaning": "",
+            "reversed_meaning": "",
+            "keywords": "",
+            "description": "The The World represents...",
+            "image": "tarot/m21.jpg"
+        }
+    }
+]

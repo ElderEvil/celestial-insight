@@ -11,7 +11,14 @@ from celestial_insight.agents import CardResponse, ReadingDependencies, celestia
 from .enums import ReadingTypeEnum
 from .filters import CardFilterSchema, ReadingFilterSchema
 from .models import Card, Reading, ReadingCard
-from .schemas import CardSchema, CelestialInsightResponseSchema, ReadingCardSchema, ReadingSchema, ReadingSchemaShort
+from .schemas import (
+    CardSchema,
+    CardSchemaShort,
+    CelestialInsightResponseSchema,
+    ReadingCardSchema,
+    ReadingSchema,
+    ReadingSchemaShort,
+)
 
 api = NinjaExtraAPI()
 
@@ -26,7 +33,7 @@ logger = logging.getLogger(__name__)
 )
 class TarotController:
     # CARDS
-    @http_get("/cards", response=list[CardSchema])
+    @http_get("/cards", response=list[CardSchemaShort])
     def list_cards(self, filters: CardFilterSchema = Query(...)):
         """List all cards."""
         cards = Card.objects.select_related("suit").all()
@@ -38,8 +45,8 @@ class TarotController:
         return get_object_or_404(Card, id=card_id)
 
     # READINGS
-    @http_post("/readings", response=ReadingSchema)
-    def create_reading(self, request, question: str):
+    @http_post("/readings", response=ReadingSchema | str)
+    def create_reading(self, request, question: str, reading_type: str = ReadingTypeEnum.SINGLE_CARD.value):
         """
         Create a reading by analyzing the user's question.
         - Validate the question using `tarot_support_agent`.
@@ -56,6 +63,9 @@ class TarotController:
 
             if not validation_result:
                 raise ValueError("Failed to validate question or determine spread type.")  # noqa: EM101, TRY003, TRY301
+
+            if not validation_result.data.is_valid:
+                return f"Invalid question: {validation_result.data.reason}"
 
             # Extract results
             theme = validation_result.data.theme
