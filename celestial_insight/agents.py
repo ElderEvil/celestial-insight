@@ -38,7 +38,7 @@ class CelestialInsightResponse(BaseModel):
 
 # Agent for validating questions and determining spread type
 tarot_support_agent = Agent(
-    "openai:gpt-3.5-turbo",
+    "openai:gpt-4-turbo",
     deps_type=ReadingDependencies,
     result_type=QuestionValidationResult,
     system_prompt=(
