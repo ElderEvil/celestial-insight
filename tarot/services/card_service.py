@@ -5,7 +5,7 @@ from tarot.models import Card, Reading
 
 
 async def list_cards(filters: CardFilterSchema):
-    cards = Card.objects.select_related("suit").all()
+    cards = Card.objects.all()
     return filters.filter(cards)
 
 
