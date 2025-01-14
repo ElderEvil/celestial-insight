@@ -22,33 +22,33 @@ logger = logging.getLogger(__name__)
 
 
 @api_controller("/tarot", tags=["Tarot"], permissions=[permissions.IsAuthenticatedOrReadOnly])
-class TarotController:
+class AsyncTarotController:
     # CARDS
     @http_get("/cards", response=list[CardSchemaShort])
-    def list_tarot_cards(self, filters: CardFilterSchema = Query(...)):
-        return list_cards(filters)
+    async def list_tarot_cards(self, filters: CardFilterSchema = Query(...)):
+        return await list_cards(filters)
 
     @http_get("/cards/{card_id}", response=CardSchema)
-    def get_tarot_card(self, card_id: int):
-        return get_card(card_id)
+    async def get_tarot_card(self, card_id: int):
+        return await get_card(card_id)
 
     # READINGS
     @http_post("/readings", response=ReadingSchema | str)
-    def create_tarot_reading(self, request, question: str, reading_type: ReadingTypeEnum | None = None):
-        return create_reading(request, question, reading_type)
+    async def create_tarot_reading(self, request, question: str, reading_type: ReadingTypeEnum | None = None):
+        return await create_reading(request, question, reading_type)
 
     @http_get("/readings/my", response=list[ReadingSchemaShort])
-    def list_tarot_readings(self, request, filters: ReadingFilterSchema = Query(...)):
-        return list_readings(request, filters)
+    async def list_tarot_readings(self, request, filters: ReadingFilterSchema = Query(...)):
+        return await list_readings(request, filters)
 
     @http_get("/readings/{reading_id}", response=ReadingSchema)
-    def get_tarot_reading(self, request, reading_id: int):
-        return get_reading(request, reading_id)
+    async def get_tarot_reading(self, request, reading_id: int):
+        return await get_reading(request, reading_id)
 
     @http_get("/readings/{reading_id}/cards", response=list[ReadingCardSchema])
-    def list_tarot_cards_in_reading(self, request, reading_id: int):
-        return list_cards_in_reading(reading_id)
+    async def list_tarot_cards_in_reading(self, request, reading_id: int):
+        return await list_cards_in_reading(reading_id)
 
     @http_post("/readings/{reading_id}/insight", response=CelestialInsightResponseSchema | str)
-    def generate_tarot_insight(self, request, reading_id: int):
-        return generate_insight(request, reading_id)
+    async def generate_tarot_insight(self, request, reading_id: int):
+        return await generate_insight(request, reading_id)
