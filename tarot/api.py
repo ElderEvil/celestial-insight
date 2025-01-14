@@ -1,16 +1,10 @@
 import logging
 
-from django.db.models import Q
-from django.shortcuts import get_object_or_404
 from ninja import Query
 from ninja_extra import NinjaExtraAPI, api_controller, http_get, http_post, permissions
-from ninja_extra.throttling import DynamicRateThrottle
-
-from celestial_insight.agents import CardResponse, ReadingDependencies, celestial_agent, tarot_support_agent
 
 from .enums import ReadingTypeEnum
 from .filters import CardFilterSchema, ReadingFilterSchema
-from .models import Card, Reading, ReadingCard
 from .schemas import (
     CardSchema,
     CardSchemaShort,
@@ -19,171 +13,42 @@ from .schemas import (
     ReadingSchema,
     ReadingSchemaShort,
 )
+from .services.card_service import get_card, list_cards, list_cards_in_reading
+from .services.reading_service import create_reading, generate_insight, get_reading, list_readings
 
 api = NinjaExtraAPI()
 
 logger = logging.getLogger(__name__)
 
 
-@api_controller(
-    "/tarot",
-    tags=["Tarot"],
-    permissions=[permissions.IsAuthenticatedOrReadOnly],
-    throttle=DynamicRateThrottle(scope="burst"),
-)
+@api_controller("/tarot", tags=["Tarot"], permissions=[permissions.IsAuthenticatedOrReadOnly])
 class TarotController:
     # CARDS
     @http_get("/cards", response=list[CardSchemaShort])
-    def list_cards(self, filters: CardFilterSchema = Query(...)):
-        """List all cards."""
-        cards = Card.objects.select_related("suit").all()
-        return filters.filter(cards)
+    def list_tarot_cards(self, filters: CardFilterSchema = Query(...)):
+        return list_cards(filters)
 
     @http_get("/cards/{card_id}", response=CardSchema)
-    def get_card(self, card_id: int):
-        """Get details of a specific card."""
-        return get_object_or_404(Card, id=card_id)
+    def get_tarot_card(self, card_id: int):
+        return get_card(card_id)
 
     # READINGS
     @http_post("/readings", response=ReadingSchema | str)
-    def create_reading(self, request, question: str, reading_type: str = ReadingTypeEnum.SINGLE_CARD.value):
-        """
-        Create a reading by analyzing the user's question.
-        - Validate the question using `tarot_support_agent`.
-        - Match the question to a spread type.
-        - Save the reading to the database.
-        """
-        # Step 1: Validate question and determine spread
-        try:
-            deps = ReadingDependencies(question=question)
-            validation_result = tarot_support_agent.run_sync(
-                "Validate the question and determine the spread type.", deps=deps
-            )
-            print(f"Validation result: {validation_result.data}")  # noqa: T201
-
-            if not validation_result:
-                raise ValueError("Failed to validate question or determine spread type.")  # noqa: EM101, TRY003, TRY301
-
-            if not validation_result.data.is_valid:
-                return f"Invalid question: {validation_result.data.reason}"
-
-            # Extract results
-            theme = validation_result.data.theme
-            spread_type = validation_result.data.spread_type or ReadingTypeEnum.SINGLE_CARD.value
-
-        except Exception as e:
-            err_msg = f"Error validating question: {e}"
-            logger.exception(err_msg)
-            return err_msg
-
-        # Step 2: Create and save reading
-
-        return Reading.objects.create(
-            user=request.user,
-            question=question,
-            notes=f"Theme: {theme}",
-            reading_type=spread_type,
-        )
+    def create_tarot_reading(self, request, question: str, reading_type: ReadingTypeEnum | None = None):
+        return create_reading(request, question, reading_type)
 
     @http_get("/readings/my", response=list[ReadingSchemaShort])
-    def list_readings(self, request, filters: ReadingFilterSchema = Query(...)):
-        """List all readings for the authenticated user."""
-        readings = Reading.objects.filter(user=request.user).order_by("-date")
-        return filters.filter(readings)
+    def list_tarot_readings(self, request, filters: ReadingFilterSchema = Query(...)):
+        return list_readings(request, filters)
 
     @http_get("/readings/{reading_id}", response=ReadingSchema)
-    def get_reading(self, request, reading_id: int):
-        """Get details of a specific reading."""
-        return get_object_or_404(
-            Reading.objects.prefetch_related("cards__card"),
-            id=reading_id,
-            user=request.user,
-        )
+    def get_tarot_reading(self, request, reading_id: int):
+        return get_reading(request, reading_id)
 
     @http_get("/readings/{reading_id}/cards", response=list[ReadingCardSchema])
-    def list_cards_in_reading(self, request, reading_id: int):
-        """List all cards in a specific reading."""
-        reading = get_object_or_404(
-            Reading.objects.prefetch_related("cards__card"),
-            id=reading_id,
-            user=request.user,
-        )
-        return reading.cards.all()
+    def list_tarot_cards_in_reading(self, request, reading_id: int):
+        return list_cards_in_reading(reading_id)
 
     @http_post("/readings/{reading_id}/insight", response=CelestialInsightResponseSchema | str)
-    def generate_insight(self, request, reading_id: int):
-        """
-        Generate celestial insight based on a created reading.
-        - Use `celestial_agent` to generate the insight text and cards.
-        - Validate and map cards to database entries.
-        - Update the reading with insight text and associated cards.
-        """
-        # Step 1: Fetch the reading
-        reading = get_object_or_404(Reading, id=reading_id, user=request.user)
-
-        # Step 2: Generate insight
-        try:
-            prompt = (
-                f"Provide mystical guidance for the question: '{reading.question}' "
-                f"and create a card spread of type '{reading.reading_type}'."
-            )
-            deps = ReadingDependencies(question=reading.question)
-            insight_result = celestial_agent.run_sync(prompt, deps=deps)
-
-            if not insight_result:
-                err_msg = f"Failed to generate celestial insight: {insight_result.error}"
-                print(err_msg)  # noqa: T201
-                raise ValueError(err_msg)  # noqa: TRY301
-
-            # Validate the response structure
-            celestial_response = insight_result.data  # Pydantic model validation
-            cards_data = celestial_response.cards  # List of card names
-            print(f"Card names: {cards_data}")  # noqa: T201
-            insight_text = celestial_response.text
-            print(f"Insight text: {insight_text}")  # noqa: T201
-
-        except Exception as e:
-            err_msg = f"Error generating celestial insight: {e}"
-            logger.exception(err_msg)
-            return err_msg
-
-        # Step 3: Map cards to database
-        try:
-            card_objects: list[tuple[Card, CardResponse]] = []
-            for card_data in cards_data:
-                card_name = card_data.name
-
-                # Normalize card names to handle "The " prefix
-                normalized_card_name = card_name.lower().removeprefix("the ").strip()
-
-                # Use Q object to find the card by exact match or ignoring "The "
-                card = Card.objects.filter(Q(name__iexact=card_name) | Q(name__iexact=normalized_card_name)).first()
-
-                if not card:
-                    err_msg = f"Card '{card_name}' not found in the database."
-                    print(err_msg)  # noqa: T201
-                    return err_msg
-                card_objects.append((card, card_data))
-
-        except Exception as e:
-            err_msg = f"Error mapping cards to database: {e}"
-            logger.exception(err_msg)
-            return err_msg
-
-        # Step 4: Update reading with insight
-        print(f"Insight: {insight_text}")  # noqa: T201
-        reading.celestial_insight = insight_text
-        reading.save()
-
-        # Step 5: Save associated cards
-        ReadingCard.objects.filter(reading=reading).delete()  # Clear existing cards
-        for position, (card, card_data) in enumerate(card_objects, start=1):
-            ReadingCard.objects.create(
-                reading=reading,
-                card=card,
-                position=position,
-                orientation=card_data.orientation,
-                interpretation=card_data.interpretation,
-            )
-
-        return reading
+    def generate_tarot_insight(self, request, reading_id: int):
+        return generate_insight(request, reading_id)
