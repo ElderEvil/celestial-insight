@@ -29,4 +29,4 @@ ENV PATH="/app/.venv/bin:$PATH"
 ENTRYPOINT []
 
 # CMD ["uv", "run", "gunicorn", "celestial_insight.wsgi", "--bind", "0.0.0.0:9090"]
-CMD ["sh", "-c", "uv run manage.py collectstatic --noinput --clear && uv run manage.py migrate --noinput && uv run gunicorn celestial_insight.wsgi --bind 0.0.0.0:9090"]
+CMD ["sh", "-c", "uv run manage.py collectstatic --noinput --clear && uv run manage.py migrate --noinput && uv run uvicorn celestial_insight.asgi:application --host 0.0.0.0 --port 9090"]
