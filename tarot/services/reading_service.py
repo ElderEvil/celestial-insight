@@ -1,8 +1,9 @@
 from asgiref.sync import sync_to_async
-from django.db import transaction
+from django.db import DatabaseError, transaction
 from django.shortcuts import aget_object_or_404
+from pydantic import ValidationError
 
-from tarot.agents.celestial_agent import celestial_agent
+from tarot.agents.celestial_agent import CardResponse, celestial_agent
 from tarot.agents.common import ReadingDependencies
 from tarot.agents.tarot_support_agent import tarot_support_agent
 from tarot.enums import ReadingTypeEnum
@@ -12,7 +13,7 @@ from tarot.models import Card, Reading, ReadingCard
 async def create_reading(request, question: str, reading_type: ReadingTypeEnum | None = None):
     try:
         deps = ReadingDependencies(question=question)
-        validation_result = await tarot_support_agent.run("Validate the question", deps=deps)
+        validation_result = await tarot_support_agent.run(question, deps=deps)
 
         if not validation_result or not validation_result.data.is_valid:
             return f"Invalid question: {validation_result.data.reason}"
@@ -20,8 +21,10 @@ async def create_reading(request, question: str, reading_type: ReadingTypeEnum |
         theme = validation_result.data.theme
         spread_type = reading_type or validation_result.data.spread_type
 
-    except Exception as e:
-        return f"Error validating question: {e}"
+    except AttributeError as e:
+        return f"Data validation error: Missing attribute - {e}"
+    except ValidationError as e:
+        return f"Validation error: {e}"
 
     return await Reading.objects.acreate(
         user=request.user,
@@ -40,7 +43,7 @@ async def get_reading(request, reading_id: int):
     return await aget_object_or_404(Reading, id=reading_id, user=request.user)
 
 
-async def _update_reading_cards_async(reading, card_objects):
+async def _update_reading_cards_async(reading: Reading, card_objects: list[tuple[Card, CardResponse]]):
     """
     Update the cards associated with a reading in an async-safe way.
     """
@@ -99,11 +102,11 @@ async def generate_insight(request, reading_id: int):
                 return f"Card '{card_name}' not found in the database."
             card_objects.append((card, card_data))
 
-    except Exception as e:
+    except DatabaseError as e:
         return f"Error mapping cards to database: {e}"
 
     reading.celestial_insight = celestial_response.text
-    await sync_to_async(reading.save)()
+    await reading.asave(update_fields=["celestial_insight"])
 
     await _update_reading_cards_async(reading, card_objects)
 
