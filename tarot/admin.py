@@ -5,26 +5,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.utils.html import format_html
 
-from .models import Card, Reading, ReadingCard, Suit
-
-
-class CardInline(admin.TabularInline):
-    model = Card
-    extra = 1
-
-
-@admin.register(Suit)
-class SuitAdmin(admin.ModelAdmin):
-    list_display = ("colored_name", "description")
-    search_fields = ("name",)
-    list_filter = ("arcana",)
-    ordering = ("name",)
-
-    inlines = [CardInline]
-
-    @admin.display(description="Name (Colored)")
-    def colored_name(self, obj):
-        return format_html('<span style="color: {};">{}</span>', obj.color, obj.name)
+from .models import Card, Reading, ReadingCard
 
 
 @admin.register(Card)
