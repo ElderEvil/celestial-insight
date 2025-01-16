@@ -11,6 +11,7 @@ Orientation = Literal["upright", "reversed"]
 class CardResponse(BaseModel):
     name: str = Field(description="The name of the card (e.g., The Fool, The Magician).")
     orientation: Orientation = Field(description="The orientation of the card (upright or reversed).")
+    role: str = Field(description="The role of the card in the reading (e.g., Outcome, Advice, Significator).")
     interpretation: str = Field(description="The interpretation of the card in the given context.")
 
 
@@ -27,7 +28,7 @@ celestial_agent = Agent(
     system_prompt=(
         "You are a wise and mystical guide providing spiritual insights. "
         "For the given question and spread type, provide mystical guidance that is both profound and practical. "
-        "Generate a textual insight and a list of cards (with their orientation and interpretation) "
+        "Generate a textual insight and a list of cards (with their orientation, role and interpretation) "
         "that align with the spread type and the question's theme. "
         "Ensure the response is meaningful and resonates deeply with the seeker's intent."
     ),

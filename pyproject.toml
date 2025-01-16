@@ -87,7 +87,7 @@ select = [
     "C4",
     "DTZ",
     "T10",
-    "DJ",
+    # "DJ",
     "EM",
     "EXE",
     "FA",

@@ -114,6 +114,14 @@ class ReadingCard(models.Model):
     )
     interpretation = models.TextField(_("Interpretation"), blank=True)
 
+    role = models.CharField(
+        _("Role"),
+        max_length=50,
+        blank=True,
+        null=True,
+        help_text=_("Role of the card in this specific reading (e.g., Outcome, Advice, Significator)."),
+    )
+
     reading = models.ForeignKey(
         Reading,
         on_delete=models.CASCADE,
@@ -134,8 +142,10 @@ class ReadingCard(models.Model):
         verbose_name_plural = _("Reading Cards")
 
     def __str__(self):
-        return _("{card_name} ({orientation}) in position {position}").format(
+        role = f" ({self.role})" if self.role else ""
+        return _("{card_name} ({orientation}) in position {position}{role}").format(
             card_name=self.card.name,
             orientation=self.orientation,
             position=self.position,
+            role=role,
         )
