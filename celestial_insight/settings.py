@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "ninja_extra",
     "users",
     "tarot",
+    "mentors",
 ]
 
 MIDDLEWARE = [

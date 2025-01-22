@@ -1,0 +1,67 @@
+[
+    {
+        "model": "mentors.mentor",
+        "pk": 1,
+        "fields": {
+            "name": "Skeptical Sage",
+            "mystical_level": 2,
+            "specialization": "Rational advice and critical thinking",
+            "avatar_url": "https://example.com/avatars/skeptical_sage.png",
+            "is_active": true,
+            "created_at": "2025-01-01T10:00:00Z",
+            "updated_at": "2025-01-10T10:00:00Z"
+        }
+    },
+    {
+        "model": "mentors.mentor",
+        "pk": 2,
+        "fields": {
+            "name": "Intuitive Oracle",
+            "mystical_level": 8,
+            "specialization": "Emotional guidance and spiritual insight",
+            "avatar_url": "https://example.com/avatars/intuitive_oracle.png",
+            "is_active": true,
+            "created_at": "2025-01-02T11:00:00Z",
+            "updated_at": "2025-01-11T11:00:00Z"
+        }
+    },
+    {
+        "model": "mentors.mentor",
+        "pk": 3,
+        "fields": {
+            "name": "Neutral Navigator",
+            "mystical_level": 5,
+            "specialization": "Balanced perspectives for complex situations",
+            "avatar_url": "https://example.com/avatars/neutral_navigator.png",
+            "is_active": false,
+            "created_at": "2025-01-03T12:00:00Z",
+            "updated_at": "2025-01-12T12:00:00Z"
+        }
+    },
+    {
+        "model": "mentors.mentor",
+        "pk": 4,
+        "fields": {
+            "name": "Mystic Dreamer",
+            "mystical_level": 10,
+            "specialization": "Deep spiritual and dream interpretations",
+            "avatar_url": "https://example.com/avatars/mystic_dreamer.png",
+            "is_active": true,
+            "created_at": "2025-01-04T13:00:00Z",
+            "updated_at": "2025-01-13T13:00:00Z"
+        }
+    },
+    {
+        "model": "mentors.mentor",
+        "pk": 5,
+        "fields": {
+            "name": "Pragmatic Realist",
+            "mystical_level": 1,
+            "specialization": "Practical advice and grounded solutions",
+            "avatar_url": "https://example.com/avatars/pragmatic_realist.png",
+            "is_active": true,
+            "created_at": "2025-01-05T14:00:00Z",
+            "updated_at": "2025-01-14T14:00:00Z"
+        }
+    }
+]
