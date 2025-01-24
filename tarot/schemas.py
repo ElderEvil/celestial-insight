@@ -14,6 +14,7 @@ class SuitSchema(Schema):
 class CardSchemaShort(Schema):
     id: int
     name: str
+    slug: str
     number: int | None
     image: str | None
     upright_meaning: str

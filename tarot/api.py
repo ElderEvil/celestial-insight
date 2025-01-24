@@ -28,14 +28,16 @@ class AsyncTarotController:
     async def list_tarot_cards(self, filters: CardFilterSchema = Query(...)):
         return await list_cards(filters)
 
-    @http_get("/cards/{card_id}", response=CardSchema)
-    async def get_tarot_card(self, card_id: int):
-        return await get_card(card_id)
+    @http_get("/cards/{card_slug}", response=CardSchema)
+    async def get_tarot_card(self, card_slug: str):
+        return await get_card(card_slug)
 
     # READINGS
     @http_post("/readings", response=ReadingSchema | str)
-    async def create_tarot_reading(self, request, question: str, reading_type: ReadingTypeEnum | None = None):
-        return await create_reading(request, question, reading_type)
+    async def create_tarot_reading(
+        self, request, question: str, mentor_id: int, reading_type: ReadingTypeEnum | None = None
+    ):
+        return await create_reading(request, question, mentor_id, reading_type)
 
     @http_get("/readings/my", response=list[ReadingSchemaShort])
     async def list_tarot_readings(self, request, filters: ReadingFilterSchema = Query(...)):

@@ -5,6 +5,7 @@ from django.db import DatabaseError, transaction
 from django.shortcuts import aget_object_or_404
 from pydantic import ValidationError
 
+from mentors.models import Mentor
 from tarot.agents.celestial_agent import CardResponse, celestial_agent
 from tarot.agents.common import ReadingDependencies
 from tarot.agents.tarot_support_agent import tarot_support_agent
@@ -17,10 +18,14 @@ MIN_TOKEN_COST = 250  # Minimum upfront tokens required
 logger = logging.getLogger(__name__)
 
 
-async def create_reading(request, question: str, reading_type: ReadingTypeEnum | None = None):
+async def create_reading(request, question: str, mentor_id: int, reading_type: ReadingTypeEnum | None = None):
     has_tokens = await deduct_tokens(request.user, MIN_TOKEN_COST)
     if not has_tokens:
         return "Insufficient tokens to create a reading."
+
+    mentor = await aget_object_or_404(Mentor, id=mentor_id)
+
+    await deduct_tokens(request.user, MIN_TOKEN_COST)
 
     try:
         deps = ReadingDependencies(question=question)
@@ -48,6 +53,7 @@ async def create_reading(request, question: str, reading_type: ReadingTypeEnum |
 
     return await Reading.objects.acreate(
         user=request.user,
+        mentor=mentor,
         question=question,
         notes=f"Theme: {theme}",
         reading_type=spread_type,
