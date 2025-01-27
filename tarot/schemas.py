@@ -8,7 +8,6 @@ class SuitSchema(Schema):
     name: str
     arcana: str
     description: str | None = None
-    color: str
 
 
 class CardSchemaShort(Schema):

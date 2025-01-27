@@ -127,7 +127,7 @@ class ReadingAdmin(admin.ModelAdmin):
         (
             "Reading Details",
             {
-                "fields": ("question", "notes", "theme_in_notes"),
+                "fields": ("question", "notes", "theme_in_notes", "celestial_insight"),
             },
         ),
     )

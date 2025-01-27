@@ -7,7 +7,6 @@ from pydantic.networks import HttpUrl
 class MentorSchema(Schema):
     id: int
     name: str
-    slug: str
     mystical_level: int
     specialization: str | None
     avatar_url: HttpUrl | None
