@@ -30,7 +30,7 @@ class CardAdmin(admin.ModelAdmin):
     )
     fieldsets = (
         ("Basic Information", {"fields": ("name", "suit", "number")}),
-        ("Details", {"fields": ("slug", "keywords", "description")}),
+        ("Details", {"fields": ("slug", "keywords", "description", "upright_meaning", "reversed_meaning")}),
         ("Image", {"fields": ("preview_image", "image")}),
     )
     actions = ["populate_empty_slugs"]
