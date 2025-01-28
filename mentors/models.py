@@ -1,10 +1,12 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django_extensions.db.fields import AutoSlugField
 
 
 class Mentor(models.Model):
     name = models.CharField(max_length=100, verbose_name=_("Name"))
+    slug = AutoSlugField(populate_from="name", verbose_name=_("Slug"))
     mystical_level = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(10)],
         verbose_name=_("Mystical Level"),

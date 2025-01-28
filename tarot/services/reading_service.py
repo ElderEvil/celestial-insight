@@ -55,7 +55,7 @@ async def create_reading(request, question: str, mentor_id: int, reading_type: R
         user=request.user,
         mentor=mentor,
         question=question,
-        notes=f"Theme: {theme}",
+        notes=f"Theme: {theme}, Tokens spent: {actual_usage}",
         reading_type=spread_type,
     )
 
