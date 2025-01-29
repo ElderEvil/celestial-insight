@@ -30,8 +30,8 @@ ENTRYPOINT []
 
 CMD ["sh", "-c", "uv run manage.py migrate && \
     uv run manage.py collectstatic --noinput --clear && \
-    uv run manage.py loaddata admin_interface_theme_bootstrap.json &&  \
-    uv run manage.py loaddata tarot_data && \
-    uv run manage.py loaddata mentor_data && \
     uv run manage.py createsuperuser --noinput && \
+    uv run manage.py loaddata admin_interface_theme_bootstrap.json &&  \
+    uv run manage.py loaddata mentor_data && \
+    uv run manage.py loaddata tarot_data && \
     uv run uvicorn celestial_insight.asgi:application --host 0.0.0.0 --port 9090"]

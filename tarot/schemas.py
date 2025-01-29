@@ -8,12 +8,12 @@ class SuitSchema(Schema):
     name: str
     arcana: str
     description: str | None = None
-    color: str
 
 
 class CardSchemaShort(Schema):
     id: int
     name: str
+    slug: str
     number: int | None
     image: str | None
     upright_meaning: str

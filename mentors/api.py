@@ -21,19 +21,19 @@ class AsyncMentorController:
 
         return mentors
 
-    @http_get("/{mentor_id}", response=MentorDetailSchema)
-    async def get_mentor(self, mentor_id: int):
+    @http_get("/{mentor_slug}", response=MentorDetailSchema)
+    async def get_mentor(self, mentor_slug: str):
         """
-        Retrieve details of a single mentor by ID.
+        Retrieve details of a single mentor by slug field.
         """
-        return await aget_object_or_404(Mentor, id=mentor_id)
+        return await aget_object_or_404(Mentor, slug=mentor_slug)
 
-    @http_post("/{mentor_id}", response=MentorDetailSchema)
-    async def pick_mentor(self, request, mentor_id: int):
+    @http_post("/{mentor_slug}", response=MentorDetailSchema)
+    async def pick_mentor(self, request, mentor_slug: str):
         """
-        Pick preferred mentor by ID.
+        Pick preferred mentor by slug field.
         """
-        mentor = await aget_object_or_404(Mentor, id=mentor_id)
+        mentor = await aget_object_or_404(Mentor, slug=mentor_slug)
         user_profile = await aget_object_or_404(UserProfile, user=request.user)
         user_profile.preferred_mentor = mentor
         await user_profile.asave()

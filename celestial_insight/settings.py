@@ -32,8 +32,22 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3002",
+]
+
 CSRF_TRUSTED_ORIGINS = [
     "https://elderevil.net",
+    "http://localhost:3002",
+]
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
 ]
 
 # Application definition
@@ -41,6 +55,7 @@ CSRF_TRUSTED_ORIGINS = [
 INSTALLED_APPS = [
     "admin_interface",
     "colorfield",
+    "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -49,9 +64,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "allauth",
     "allauth.account",
+    "allauth.headless",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.github",
+    "django_extensions",
     "ninja_extra",
     "users",
     "tarot",
@@ -59,6 +76,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -181,3 +199,5 @@ SILENCED_SYSTEM_CHECKS = ["security.W019"]
 NINJA_EXTRA = {"THROTTLE_RATES": {"burst": "6/min", "sustained": "100/day"}}
 
 AUTH_USER_MODEL = "auth.User"
+
+HEADLESS_ONLY = True

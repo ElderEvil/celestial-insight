@@ -9,8 +9,8 @@ async def list_cards(filters: CardFilterSchema):
     return filters.filter(cards)
 
 
-async def get_card(card_id: int):
-    return await aget_object_or_404(Card, id=card_id)
+async def get_card(card_slug: str):
+    return await aget_object_or_404(Card, slug=card_slug)
 
 
 async def list_cards_in_reading(reading_id: int):

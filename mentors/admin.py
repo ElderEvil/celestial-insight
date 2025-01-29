@@ -1,6 +1,7 @@
 from django.contrib import admin
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.utils.html import mark_safe
+from django.utils.text import slugify
 
 from .models import Mentor
 
@@ -19,13 +20,23 @@ class MentorAdmin(admin.ModelAdmin):
     search_fields = ("name", "specialization")
     ordering = ("name",)
     list_per_page = 25
-    readonly_fields = ("avatar_preview", "preferred_by_count", "created_at", "updated_at")
+    readonly_fields = ("slug", "avatar_preview", "preferred_by_count", "created_at", "updated_at")
+
+    actions = ["populate_empty_slugs"]
 
     fieldsets = (
         (
             None,
             {
-                "fields": ("name", "mystical_level", "specialization", "avatar_url", "avatar_preview", "is_active"),
+                "fields": (
+                    "name",
+                    "slug",
+                    "mystical_level",
+                    "specialization",
+                    "avatar_url",
+                    "avatar_preview",
+                    "is_active",
+                ),
             },
         ),
         (
@@ -36,6 +47,19 @@ class MentorAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+    @admin.action(description="Populate empty slugs for selected mentors")
+    def populate_empty_slugs(self, request, queryset):
+        # Filter only mentors with empty slug
+        mentors_to_update = queryset.filter(Q(slug__isnull=False) | Q(slug__exact=""))
+        updated_count = 0
+        for mentor in mentors_to_update:
+            mentor.slug = slugify(mentor.name)
+            mentor.save()
+            updated_count += 1
+        self.message_user(
+            request, f"Successfully populated {updated_count} slugs)", level="success" if updated_count else "warning"
+        )
 
     def get_queryset(self, request):
         """Annotate the queryset with the count of preferred users."""

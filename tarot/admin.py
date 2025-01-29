@@ -1,11 +1,17 @@
 import csv
+import random
 
 from django.contrib import admin
 from django.db import models
+from django.db.models import Q
 from django.forms import Textarea, TextInput
 from django.http import HttpResponse
 from django.urls import reverse
 from django.utils.html import format_html
+from django.utils.text import slugify
+from django.utils.translation import gettext as _
+
+from mentors.models import Mentor
 
 from .models import Card, Reading, ReadingCard
 
@@ -18,12 +24,16 @@ class CardAdmin(admin.ModelAdmin):
     search_fields = ("name", "keywords", "description")
     list_filter = ("suit",)
     ordering = ("suit", "number")
-    readonly_fields = ("preview_image",)
+    readonly_fields = (
+        "slug",
+        "preview_image",
+    )
     fieldsets = (
         ("Basic Information", {"fields": ("name", "suit", "number")}),
-        ("Details", {"fields": ("keywords", "description")}),
+        ("Details", {"fields": ("slug", "keywords", "description", "upright_meaning", "reversed_meaning")}),
         ("Image", {"fields": ("preview_image", "image")}),
     )
+    actions = ["populate_empty_slugs"]
 
     @admin.display(description="Image Preview")
     def preview_image(self, obj):
@@ -51,6 +61,23 @@ class CardAdmin(admin.ModelAdmin):
             ]
             return format_html(", ".join(links))
         return "No keywords"
+
+    @admin.action(description="Populate empty slugs for selected cards")
+    def populate_empty_slugs(self, request, queryset):
+        # Filter only cards with empty slug
+        cards_to_update = queryset.filter(Q(slug__isnull=False) | Q(slug__exact=""))
+        updated_count = 0
+
+        for card in cards_to_update:
+            card.slug = slugify(card.name)
+            card.save()
+            updated_count += 1
+
+        self.message_user(
+            request,
+            _(f"Successfully updated slugs for {updated_count} cards."),  # noqa: INT001
+            level="success" if updated_count else "warning",
+        )
 
 
 @admin.action(description="Export selected readings to CSV")
@@ -88,26 +115,42 @@ class ReadingCardInline(admin.TabularInline):
 
 @admin.register(Reading)
 class ReadingAdmin(admin.ModelAdmin):
-    list_display = ("id", "date", "question_summary", "theme_in_notes", "reading_type", "progress_status")
+    list_display = ("id", "date", "mentor", "theme_in_notes", "reading_type", "progress_status")
     search_fields = ("question", "notes", "reading_type")
-    list_filter = ("date", "reading_type")
+    list_filter = ("date", "mentor", "reading_type")
     ordering = ("-date",)
-    actions = [export_readings_to_csv]
+    actions = ["assign_random_mentor", export_readings_to_csv]
     inlines = [ReadingCardInline]
     readonly_fields = ("date", "theme_in_notes")
     fieldsets = (
-        ("Basic Information", {"fields": ("date", "reading_type")}),
+        ("Basic Information", {"fields": ("date", "mentor", "reading_type")}),
         (
             "Reading Details",
             {
-                "fields": ("question", "notes", "theme_in_notes"),
+                "fields": ("question", "notes", "theme_in_notes", "celestial_insight"),
             },
         ),
     )
 
-    @admin.display(description="Question Summary")
-    def question_summary(self, obj):
-        return f"{obj.question[:MAX_QUESTION_LENGTH]}..." if len(obj.question) > MAX_QUESTION_LENGTH else obj.question
+    @admin.action(description=_("Assign random mentor to selected readings"))
+    def assign_random_mentor(self, request, queryset):
+        # Get all active mentors
+        mentors = list(Mentor.objects.filter(active=True))
+        if not mentors:
+            self.message_user(request, _("No mentors available to assign."), level="error")
+            return
+
+        updated_count = 0
+        for reading in queryset:
+            if reading.mentor is None:  # Only assign if no mentor is set
+                reading.mentor = random.choice(mentors)  # noqa: S311
+                reading.save()
+                updated_count += 1
+
+        if updated_count:
+            self.message_user(request, _(f"Random mentors assigned to {updated_count} readings."), level="success")  # noqa: INT001
+        else:
+            self.message_user(request, _("No readings needed a mentor."), level="info")
 
     @admin.display(description="Theme in Notes")
     def theme_in_notes(self, obj):
