@@ -55,7 +55,7 @@ async def create_reading(request, question: str, mentor_id: int, reading_type: R
         user=request.user,
         mentor=mentor,
         question=question,
-        notes=f"Theme: {theme}, Tokens spent: {actual_usage}",
+        notes=f"Theme: {theme}, Tokens spent for validation: {validation_result.usage()}",
         reading_type=spread_type,
     )
 
@@ -144,7 +144,8 @@ async def generate_insight(request, reading_id: int):
         return f"Error mapping cards to database: {e}"
 
     reading.celestial_insight = celestial_response.text
-    await reading.asave(update_fields=["celestial_insight"])
+    reading.notes += f"\n\nTokens spent for celestial insight: {insight_result.usage()}"
+    await reading.asave(update_fields=["celestial_insight", "notes"])
 
     await _update_reading_cards_async(reading, card_objects)
 
