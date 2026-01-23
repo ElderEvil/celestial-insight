@@ -17,11 +17,10 @@ dependencies = [
     "whitenoise>=6.8.2",
     "uvicorn>=0.34.0",
     "beautifulsoup4>=4.12.3",
-    "django-ninja-jwt>=5.3.5",
 ]
 
 [dependency-groups]
-dev = ["pre-commit>=4.0.1", "pytest>=8.3.4", "ruff>=0.8.5"]
+dev = ["prek>=0.3.0", "pytest>=8.3.4", "ruff>=0.14.13"]
 
 # ==== djLint ====
 [tool.djlint]

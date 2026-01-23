@@ -42,6 +42,14 @@ class ReadingSchemaShort(Schema):
     notes: str | None = None
 
 
-class ReadingSchema(ReadingSchemaShort):
+class ReadingSchema(Schema):
+    id: int
+    reading_type: str
+    date: datetime
+    question: str | None = None
+    notes: str | None = None
     cards: list[ReadingCardSchema]
+
+
+class CelestialInsightResponseSchema(ReadingSchema):
     celestial_insight: str
