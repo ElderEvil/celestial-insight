@@ -18,3 +18,10 @@ class UserSchema(Schema):
     first_name: str | None = None
     last_name: str | None = None
     profile: UserProfileSchema | None = None
+
+
+class TokenResponseSchema(Schema):
+    access: str
+    refresh: str
+    username: str
+    email: str | None = None

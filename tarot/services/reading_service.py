@@ -26,8 +26,6 @@ async def create_reading(user, question: str, mentor_id: int, reading_type: Read
 
     mentor = await aget_object_or_404(Mentor, id=mentor_id)
 
-    await deduct_tokens(user, MIN_TOKEN_COST)
-
     try:
         deps = ReadingDependencies(question=question)
         validation_result = await tarot_support_agent.run(question, deps=deps)
