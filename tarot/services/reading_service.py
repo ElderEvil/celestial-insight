@@ -1,6 +1,7 @@
 import logging
 
 from asgiref.sync import sync_to_async
+from django.contrib.auth.models import User
 from django.db import DatabaseError, transaction
 from django.shortcuts import aget_object_or_404
 from pydantic import ValidationError
@@ -18,14 +19,14 @@ MIN_TOKEN_COST = 250  # Minimum upfront tokens required
 logger = logging.getLogger(__name__)
 
 
-async def create_reading(request, question: str, mentor_id: int, reading_type: ReadingTypeEnum | None = None):
-    has_tokens = await deduct_tokens(request.user, MIN_TOKEN_COST)
+async def create_reading(user, question: str, mentor_id: int, reading_type: ReadingTypeEnum | None = None):
+    has_tokens = await deduct_tokens(user, MIN_TOKEN_COST)
     if not has_tokens:
         return "Insufficient tokens to create a reading."
 
     mentor = await aget_object_or_404(Mentor, id=mentor_id)
 
-    await deduct_tokens(request.user, MIN_TOKEN_COST)
+    await deduct_tokens(user, MIN_TOKEN_COST)
 
     try:
         deps = ReadingDependencies(question=question)
@@ -41,7 +42,7 @@ async def create_reading(request, question: str, mentor_id: int, reading_type: R
         # Deduct the difference between actual usage and upfront tokens
         if actual_usage and actual_usage > MIN_TOKEN_COST:
             extra_cost = actual_usage - MIN_TOKEN_COST
-            await deduct_tokens(request.user, extra_cost)
+            await deduct_tokens(user, extra_cost)
 
         theme = validation_result.data.theme
         spread_type = reading_type or validation_result.data.spread_type
@@ -52,7 +53,7 @@ async def create_reading(request, question: str, mentor_id: int, reading_type: R
         return f"Validation error: {e}"
 
     return await Reading.objects.acreate(
-        user=request.user,
+        user=user,
         mentor=mentor,
         question=question,
         notes=f"Theme: {theme}, Tokens spent for validation: {validation_result.usage()}",
@@ -60,13 +61,13 @@ async def create_reading(request, question: str, mentor_id: int, reading_type: R
     )
 
 
-async def list_readings(request, filters):
-    readings = Reading.objects.filter(user=request.user).order_by("-date")
+async def list_readings(user, filters):
+    readings = Reading.objects.filter(user=user).order_by("-date")
     return filters.filter(readings)
 
 
-async def get_reading(request, reading_id: int):
-    return await aget_object_or_404(Reading, id=reading_id, user=request.user)
+async def get_reading(user, reading_id: int):
+    return await aget_object_or_404(Reading, id=reading_id, user=user)
 
 
 async def _update_reading_cards_async(reading: Reading, card_objects: list[tuple[Card, CardResponse]]):
@@ -100,12 +101,12 @@ async def _update_reading_cards_async(reading: Reading, card_objects: list[tuple
     return reading
 
 
-async def generate_insight(request, reading_id: int):
-    has_tokens = await deduct_tokens(request.user, MIN_TOKEN_COST)
+async def generate_insight(user: User, reading_id: int):
+    has_tokens = await deduct_tokens(user, MIN_TOKEN_COST)
     if not has_tokens:
         return "Insufficient tokens to generate celestial insight."
 
-    reading = await aget_object_or_404(Reading, id=reading_id, user=request.user)
+    reading = await aget_object_or_404(Reading, id=reading_id, user=user)
 
     try:
         prompt = (
@@ -123,7 +124,7 @@ async def generate_insight(request, reading_id: int):
 
         if actual_usage and actual_usage > MIN_TOKEN_COST:
             extra_cost = actual_usage - MIN_TOKEN_COST
-            await deduct_tokens(request.user, extra_cost)
+            await deduct_tokens(user, extra_cost)
 
         celestial_response = insight_result.data
         cards_data = celestial_response.cards
