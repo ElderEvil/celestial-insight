@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.12"
 
 [[package]]
@@ -84,6 +85,7 @@ dependencies = [
     { name = "django-extensions" },
     { name = "django-ninja" },
     { name = "django-ninja-extra" },
+    { name = "django-ninja-jwt" },
     { name = "jwt" },
     { name = "pydantic-ai" },
     { name = "python-dotenv" },
@@ -107,6 +109,7 @@ requires-dist = [
     { name = "django-extensions", specifier = ">=3.2.3" },
     { name = "django-ninja", specifier = ">=1.3.0" },
     { name = "django-ninja-extra", specifier = ">=0.22.0" },
+    { name = "django-ninja-jwt", specifier = ">=5.3.5" },
     { name = "jwt", specifier = ">=1.3.1" },
     { name = "pydantic-ai", specifier = ">=0.0.17" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
@@ -387,6 +390,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f3/97/9ffdd863dacddda3017b5270bfa8623a99559ad66940c3966784e835fda1/django_ninja_extra-0.22.2.tar.gz", hash = "sha256:d0af10b50fba419eb9a5603b2c806f810a06bf219e92d1f37012bddc2063e602", size = 50542 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a9/b6/2087c7b3289f4245ff340b91943988a28134523dabf94e3bb6dde4e0aae0/django_ninja_extra-0.22.2-py3-none-any.whl", hash = "sha256:813a81435f69ef73a75e056c3bf0e3d4ad524bea8a14203ec791aa8b9bfc2a99", size = 67650 },
+]
+
+[[package]]
+name = "django-ninja-jwt"
+version = "5.3.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "django-ninja-extra" },
+    { name = "pyjwt", extra = ["crypto"] },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ea/2d/628cf2bd7b99fa16a84a89255e83e92a4b695b5b96820416eaa3eae92739/django_ninja_jwt-5.3.5.tar.gz", hash = "sha256:3bc5f7dec64d690c194a8a32b25afe53f5c51514a4027c4c716701d466107f3d", size = 39190 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/58/bd/95e3de2bf44b3f3bfb90810c0a44b1ad6635eebbebe07795f3cd1e889d1b/django_ninja_jwt-5.3.5-py3-none-any.whl", hash = "sha256:bf3a577e6a75c3afb8ca49eef38f24f087a39f86761bfc4120f02a3bfce7a902", size = 87711 },
 ]
 
 [[package]]
@@ -866,6 +883,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/48/6b/130c3d2c395839b040a252302d1683c07ad43f23d90061bdf1a44880320b/pydantic_graph-0.0.19.tar.gz", hash = "sha256:e5dc3cba7f08859f96704db9ecbe68e0b2c084d0112dba77c66f135c587812dd", size = 13105 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c0/66/65cd869e3e5eac4228526a555dc5601664810ab127f064c2709ba267f381/pydantic_graph-0.0.19-py3-none-any.whl", hash = "sha256:8d9fd21584af2b700e710c933d8ffb50fe15e3489ff2626392d6197d7c76d696", size = 16293 },
+]
+
+[[package]]
+name = "pyjwt"
+version = "2.10.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e7/46/bd74733ff231675599650d3e47f361794b22ef3e3770998dda30d3b63726/pyjwt-2.10.1.tar.gz", hash = "sha256:3cc5772eb20009233caf06e9d8a0577824723b44e6648ee0a2aedb6cf9381953", size = 87785 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/61/ad/689f02752eeec26aed679477e80e632ef1b682313be70793d798c1d5fc8f/PyJWT-2.10.1-py3-none-any.whl", hash = "sha256:dcdd193e30abefd5debf142f9adfcdd2b58004e644f25406ffaebd50bd98dacb", size = 22997 },
+]
+
+[package.optional-dependencies]
+crypto = [
+    { name = "cryptography" },
 ]
 
 [[package]]

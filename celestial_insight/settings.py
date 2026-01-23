@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.github",
     "django_extensions",
     "ninja_extra",
+    "ninja_jwt",
     "users",
     "tarot",
     "mentors",
@@ -159,6 +160,13 @@ SOCIALACCOUNT_PROVIDERS = {
             "secret": os.getenv("GOOGLE_CLIENT_SECRET"),
             "key": "",
         },
+    },
+    "telegram": {
+        "APP": {
+            "client_id": os.getenv("TELEGRAM_BOT_ID"),
+            "secret": os.getenv("TELEGRAM_BOT_SECRET"),
+        },
+        "AUTH_PARAMS": {"auth_date_validity": 100},  # Default is 30s
     },
 }
 
