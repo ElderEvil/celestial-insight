@@ -101,3 +101,13 @@ class TestCreateReading:
         assert 'name="mentor_id"' in content
         assert 'name="question"' in content
         assert "csrfmiddlewaretoken" in content
+
+    def test_create_reading_has_htmx_attributes(self, user, user_profile, client):
+        """Create reading form has HTMX attributes for dynamic updates."""
+        client.force_login(user)
+        response = client.get("/read/")
+        assert response.status_code == 200
+        content = response.content.decode()
+        assert 'hx-post="/read/"' in content
+        assert 'hx-target="#reading-result"' in content
+        assert 'hx-swap="innerHTML"' in content
