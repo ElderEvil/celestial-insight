@@ -44,3 +44,50 @@
 - `celestial_insight/settings.py`: Added ACCOUNT_ADAPTER setting
 - `users/api.py`: Existing patterns for SocialAccount creation
 - `users/models.py`: UserProfile structure (tokens preserved)
+
+## Task 5: Integration Tests for Account Unification
+
+### Test Coverage Implemented
+Created comprehensive integration tests in `users/tests/test_account_unification.py`:
+
+**Test Classes:**
+1. `TestTelegramToWebUnification` - Telegram user → Web signup flow
+2. `TestWebToTelegramUnification` - Web user → Telegram auth flow
+3. `TestSocialLoginToTelegramUnification` - Social login → Telegram flow
+4. `TestNoDuplicateCreation` - Ensures no duplicate users created
+5. `TestTokenBalancePreservation` - Token balance preserved across all flows
+6. `TestEdgeCases` - Edge cases and error scenarios
+
+**Total Tests:** 15 integration tests
+- All tests pass ✅
+- Linting passes ✅
+- No duplicate users created ✅
+- Token balance preserved ✅
+
+### Key Test Scenarios Verified
+1. **Telegram → Web:** User sets email via Telegram, then signs up on web
+2. **Web → Telegram:** Web user exists, then authenticates via Telegram
+3. **Social → Telegram:** Google/GitHub login, then Telegram auth
+4. **No Duplicates:** Same email across different methods creates single user
+5. **Token Preservation:** Custom token balances preserved during unification
+6. **Edge Cases:** @tg.me emails, unique constraints, cascade deletes
+
+### Testing Patterns Used
+- BDD-style documentation (Scenario/Step/Verify comments)
+- Django test framework with pytest
+- Signal-based profile creation verification
+- Database integrity constraint testing
+- Cascade delete verification
+
+### Test Results
+```
+29 tests total (15 new + 14 existing)
+All tests pass in 1.30s
+```
+
+### Verification Complete
+✅ All unification paths tested
+✅ No duplicate users created
+✅ Token balance preserved
+✅ Edge cases covered
+✅ Database integrity verified
