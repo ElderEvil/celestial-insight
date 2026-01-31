@@ -97,6 +97,56 @@ class BotHandlers:
                 return None
         return None
 
+    async def fetch_data_with_auth(self, endpoint: str, access_token: str) -> dict[str, Any] | None:
+        """Fetch data from Django-Ninja API with JWT authentication."""
+        import httpx
+
+        if not access_token:
+            logger.warning("No access token provided for authenticated request to %s", endpoint)
+            return None
+
+        for attempt in range(MAX_RETRIES):
+            try:
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    headers = {"Authorization": f"Bearer {access_token}"}
+                    response = await client.get(f"{self.api_url}{endpoint}", headers=headers)
+                    if response.status_code == HTTP_OK:
+                        return response.json()
+                    elif response.status_code == 401:
+                        logger.warning("Unauthorized access to %s - token may be expired", endpoint)
+                        return None
+                    elif response.status_code == 404:
+                        logger.warning("Endpoint not found: %s", endpoint)
+                        return None
+                    elif response.status_code == 422:
+                        logger.error("Validation error for %s: %s", endpoint, response.text)
+                        return None
+                    elif response.status_code >= 500:
+                        logger.error("Server error %s for %s", response.status_code, endpoint)
+                        if attempt < MAX_RETRIES - 1:
+                            await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                            continue
+                        return None
+                    else:
+                        logger.error("API error %s for %s", response.status_code, endpoint)
+                        return None
+            except httpx.TimeoutException:
+                logger.error("Timeout fetching %s (attempt %d/%d)", endpoint, attempt + 1, MAX_RETRIES)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                return None
+            except httpx.ConnectError as e:
+                logger.error("Connection error fetching %s (attempt %d/%d): %s", endpoint, attempt + 1, MAX_RETRIES, e)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                return None
+            except Exception as e:
+                logger.error("Unexpected error fetching %s: %s", endpoint, e)
+                return None
+        return None
+
     async def post_request(self, endpoint: str, data: dict) -> dict[str, Any] | None:
         """Send POST request to API with error handling and retries."""
         import httpx
@@ -485,8 +535,13 @@ class BotHandlers:
     async def list_reading_history(self, update, context):
         """Fetch and display the user's tarot reading history."""
         user = update.message.from_user
+        access_token = context.user_data.get("access_token")
 
-        readings = await self.fetch_data(f"/api/tg/tarot/readings/my?telegram_id={user.id}")
+        if not access_token:
+            await update.message.reply_text("⚠️ Session expired. Please use /reading again.")
+            return
+
+        readings = await self.fetch_data_with_auth(f"/api/tg/tarot/readings/my?telegram_id={user.id}", access_token)
 
         if not readings or not readings.get("results"):
             await update.message.reply_text("⚠️ No past readings found.")
