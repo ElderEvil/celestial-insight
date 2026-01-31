@@ -161,7 +161,7 @@ class BotHandlers:
         # Attempt login first
         user_data = await self.post_request("/api/tg/users/auth", {"telegram_id": user.id, "username": username})
 
-        if user_data and user_data.get("ok"):
+        if user_data and user_data.get("access"):
             await update.message.reply_text(f"🔑 Welcome back, {username}!")
         else:
             await update.message.reply_text(f"👋 Welcome, {username}! Use /help to see commands.")
@@ -209,9 +209,10 @@ class BotHandlers:
 
         user_data = await self.fetch_data(f"/api/tg/users/me?telegram_id={user.id}")
 
-        if user_data and user_data.get("ok"):
-            profile = user_data.get("result", {})
-            username = user.username or "N/A"
+        # API returns flat JSON directly, not wrapped in {"ok": true, "result": {...}}
+        if user_data and user_data.get("is_authenticated"):
+            profile = user_data.get("profile", {})
+            username = user.username or user_data.get("username", "N/A")
             tokens = profile.get("available_tokens", 0)
             text = f"👤 *Your Profile*\n🔹 Username: {username}\n🔢 Tokens: {tokens}"
             await update.message.reply_text(text, parse_mode="Markdown")
