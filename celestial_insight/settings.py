@@ -165,8 +165,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Disable social login buttons on login page (MVP - deferred social auth)
-SOCIALACCOUNT_LOGIN_ON = False
+# Enable social login buttons on login page
+SOCIALACCOUNT_LOGIN_ON = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_AUTO_SIGNUP = False
 
