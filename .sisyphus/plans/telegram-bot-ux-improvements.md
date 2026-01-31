@@ -56,11 +56,11 @@ Improve Telegram bot UX by implementing mentor selection flow and fixing respons
 - Fallback handlers for conversation navigation
 
 ### Definition of Done
-- [ ] `/start` command removed from keyboard menu
-- [ ] `/reading` shows mentor selection as first step
-- [ ] Reading responses show actual celestial insights
-- [ ] Bot conversation includes cancel/back options
-- [ ] All mentor selections work without crashes
+- [x] `/start` command removed from keyboard menu
+- [x] `/reading` shows mentor selection as first step
+- [x] Reading responses show actual celestial insights
+- [x] Bot conversation includes cancel/back options
+- [x] All mentor selections work without crashes
 
 ### Must Have
 - Clean menu layout without /start
@@ -154,7 +154,7 @@ Parallel Speedup: ~25% faster than sequential
 
 ## TODOs
 
-- [ ] 1. Update Main Menu Layout
+- [x] 1. Update Main Menu Layout
 
   **What to do**:
   - Remove `/start` button from ReplyKeyboardMarkup in `bot.py:150-157`
@@ -231,7 +231,7 @@ Parallel Speedup: ~25% faster than sequential
   - Files: `bot.py`
   - Pre-commit: `python -c "from bot import BotHandlers; print('imports ok')"`
 
-- [ ] 2. Implement Mentor Selection Keyboard
+- [x] 2. Implement Mentor Selection Keyboard
 
   **What to do**:
   - Extend mentor selection display in WAITING_FOR_MENTOR state
@@ -317,7 +317,7 @@ Parallel Speedup: ~25% faster than sequential
   - Files: `bot.py`
   - Pre-commit: `curl localhost:8000/api/mentors/?is_active=true | jq length`
 
-- [ ] 3. Fix Reading Response Parsing
+- [x] 3. Fix Reading Response Parsing
 
   **What to do**:
   - Update response parsing in `handle_reading_question` to show actual `celestial_insight`
@@ -397,7 +397,7 @@ Parallel Speedup: ~25% faster than sequential
   - Files: `bot.py`
   - Pre-commit: `python -c "from bot import BotHandlers; print('imports ok')"`
 
-- [ ] 4. Add Mentor Selection Conversation State
+- [x] 4. Add Mentor Selection Conversation State
 
   **What to do**:
   - Add WAITING_FOR_MENTOR as first state in /reading ConversationHandler
@@ -471,7 +471,7 @@ Parallel Speedup: ~25% faster than sequential
   - Files: `bot.py`
   - Pre-commit: `python -c "from bot import WAITING_FOR_MENTOR; print('state ok')"`
 
-- [ ] 5. Add Fallback Handlers for Navigation
+- [x] 5. Add Fallback Handlers for Navigation
 
   **What to do**:
   - Add `/cancel` command to ConversationHandler fallbacks
