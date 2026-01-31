@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.sites",
     "django.contrib.staticfiles",
     "allauth",
     "allauth.account",
@@ -193,6 +194,8 @@ SOCIALACCOUNT_PROVIDERS = {
         "AUTH_PARAMS": {"auth_date_validity": 100},  # Default is 30s
     },
 }
+
+SITE_ID = 1
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
