@@ -121,9 +121,10 @@ async def _handle_create_reading(request):
     if isinstance(result, str):
         # Error occurred - show user-friendly message
         error_html = f'<article class="pico-background-red-100"><p>{result}</p></article>'
+        # Return 200 for HTMX so it swaps properly
         return HttpResponse(
             error_html.encode(),
-            status=400,
+            status=200,
             content_type="text/html",
         )
 
