@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.github",
+    "allauth.socialaccount.providers.telegram",
     "django_extensions",
     "django_htmx",
     "ninja_extra",
