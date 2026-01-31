@@ -1,8 +1,12 @@
+#!/usr/bin/env python
 """
-Django management command to run the Telegram bot with long polling.
+Standalone Telegram bot script for Celestial Insight.
+
+This script runs the Telegram bot as an independent service, communicating
+with the Django application via HTTP API calls.
 
 Usage:
-    python manage.py run_bot
+    python bot.py
 
 Commands supported:
     /start - Register user and show help
@@ -12,93 +16,49 @@ Commands supported:
     /cards - Browse tarot cards by suit
     /reading - Create a tarot reading
     /history - Show reading history
+
+Environment variables:
+    TELEGRAM_BOT_SECRET - Telegram bot token (required)
+    API_URL - Django API URL (default: http://localhost:8000)
 """
 
-import asyncio
 import logging
 import os
+from pathlib import Path
 from typing import Any
 
-import httpx
-from django.core.management.base import BaseCommand
+from dotenv import load_dotenv
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler
+
+# Load environment variables from .env file
+load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 
 logger = logging.getLogger(__name__)
 
 HTTP_OK = 200
 
 
-class Command(BaseCommand):
-    """Management command to run the Telegram bot with long polling."""
+class BotHandlers:
+    """Handler mixin for Telegram bot commands."""
 
-    help = "Run Telegram bot with long polling"
+    def __init__(self, api_url: str):
+        self.api_url = api_url
 
-    def add_arguments(self, parser):
-        """Add command-line arguments."""
-        parser.add_argument(
-            "--token",
-            type=str,
-            default=None,
-            help="Telegram bot token (default: read from TELEGRAM_BOT_SECRET env)",
-        )
-        parser.add_argument(
-            "--api-url",
-            type=str,
-            default=None,
-            help="Base URL for the API (default: read from API_URL env or use localhost:8000)",
-        )
-
-    def handle(self, *args, **options):
-        """Run the bot."""
-        self.stdout.write(self.style.SUCCESS("Starting Telegram bot..."))
-
-        token = options["token"] or os.getenv("TELEGRAM_BOT_SECRET")
-        api_url = options["api_url"] or os.getenv("API_URL", "http://localhost:8000")
-
-        if not token:
-            self.stderr.write(self.style.ERROR("TELEGRAM_BOT_SECRET not set"))
-            return
-
-        asyncio.run(self._run_bot(token, api_url))
-
-    async def _run_bot(self, token: str, api_url: str):
-        """Main bot loop."""
-        app = Application.builder().token(token).build()
-
-        # Store API URL in context for handlers
-        app.bot_data["api_url"] = api_url
-
-        # Register command handlers
-        app.add_handler(CommandHandler("start", self.start))
-        app.add_handler(CommandHandler("help", self.show_help))
-        app.add_handler(CommandHandler("mentors", self.list_mentors))
-        app.add_handler(CommandHandler("me", self.get_user_info))
-        app.add_handler(CommandHandler("cards", self.list_tarot_suits))
-        app.add_handler(CommandHandler("reading", self.create_reading))
-        app.add_handler(CommandHandler("history", self.list_reading_history))
-
-        # Callback query handlers
-        app.add_handler(CallbackQueryHandler(self.list_suit_cards, pattern=r"suit_.*"))
-        app.add_handler(CallbackQueryHandler(self.show_card_details, pattern=r"card_.*"))
-        app.add_handler(CallbackQueryHandler(self.back_to_suits, pattern="back_to_suits"))
-
-        # Error handling
-        app.add_error_handler(self.error_handler)
-
-        self.stdout.write(self.style.SUCCESS("Bot is running. Press Ctrl+C to stop."))
-        await app.run_polling()
-
-    async def fetch_data(self, api_url: str, endpoint: str) -> dict[str, Any] | None:
+    async def fetch_data(self, endpoint: str) -> dict[str, Any] | None:
         """Fetch data from Django-Ninja API."""
+        import httpx
+
         async with httpx.AsyncClient() as client:
-            response = await client.get(f"{api_url}{endpoint}")
+            response = await client.get(f"{self.api_url}{endpoint}")
             return response.json() if response.status_code == HTTP_OK else None
 
-    async def post_request(self, api_url: str, endpoint: str, data: dict) -> dict[str, Any] | None:
+    async def post_request(self, endpoint: str, data: dict) -> dict[str, Any] | None:
         """Send POST request to API."""
+        import httpx
+
         async with httpx.AsyncClient() as client:
-            response = await client.post(f"{api_url}{endpoint}", json=data)
+            response = await client.post(f"{self.api_url}{endpoint}", json=data)
             return response.json() if response.status_code == HTTP_OK else None
 
     async def send_menu(self, update, keyboard=None):
@@ -118,12 +78,9 @@ class Command(BaseCommand):
         """Handles /start command."""
         user = update.message.from_user
         username = user.username or f"user_{user.id}"
-        api_url = context.bot_data["api_url"]
 
         # Attempt login first
-        user_data = await self.post_request(
-            api_url, "/api/tg/users/auth", {"telegram_id": user.id, "username": username}
-        )
+        user_data = await self.post_request("/api/tg/users/auth", {"telegram_id": user.id, "username": username})
 
         if user_data and user_data.get("ok"):
             await update.message.reply_text(f"🔑 Welcome back, {username}!")
@@ -149,8 +106,7 @@ class Command(BaseCommand):
 
     async def list_mentors(self, update, context):
         """Fetch and display mentors."""
-        api_url = context.bot_data["api_url"]
-        mentors = await self.fetch_data(api_url, "/api/mentors/")
+        mentors = await self.fetch_data("/api/mentors/")
 
         if not mentors:
             await update.message.reply_text("⚠️ No mentors found.")
@@ -170,10 +126,9 @@ class Command(BaseCommand):
 
     async def get_user_info(self, update, context):
         """Fetch and display user details."""
-        api_url = context.bot_data["api_url"]
         user = update.message.from_user
 
-        user_data = await self.fetch_data(api_url, f"/api/tg/users/me?telegram_id={user.id}")
+        user_data = await self.fetch_data(f"/api/tg/users/me?telegram_id={user.id}")
 
         if user_data and user_data.get("ok"):
             profile = user_data.get("result", {})
@@ -198,15 +153,14 @@ class Command(BaseCommand):
 
     async def list_tarot_suits(self, update, context):
         """Display tarot suits as inline buttons."""
-        api_url = context.bot_data["api_url"]
-        cards = await self.fetch_data(api_url, "/api/tarot/cards")
+        cards = await self.fetch_data("/api/tarot/cards")
 
         if not cards:
             await update.message.reply_text("⚠️ No tarot cards found.")
             return
 
         # API returns list directly, not dict with "results"
-        card_list: list[dict[str, Any]] = cards if isinstance(cards, list) else []
+        card_list = cards if isinstance(cards, list) else cards.get("results", [])
         grouped_cards = self.group_cards_by_suit(card_list)
         buttons = [
             [InlineKeyboardButton(f"📜 {suit}", callback_data=f"suit_{suit.replace(' ', '_')}")]
@@ -219,11 +173,10 @@ class Command(BaseCommand):
         """Display all tarot cards for the selected suit."""
         query = update.callback_query
         suit_name = query.data.replace("suit_", "").replace("_", " ")
-        api_url = context.bot_data["api_url"]
 
-        cards = await self.fetch_data(api_url, "/api/tarot/cards")
+        cards = await self.fetch_data("/api/tarot/cards")
         # API returns list directly, not dict with "results"
-        card_list: list[dict[str, Any]] = cards if isinstance(cards, list) else []
+        card_list = cards if isinstance(cards, list) else cards.get("results", [])
         grouped_cards = self.group_cards_by_suit(card_list)
 
         if suit_name not in grouped_cards:
@@ -242,9 +195,8 @@ class Command(BaseCommand):
         """Display detailed tarot card information."""
         query = update.callback_query
         slug = query.data.replace("card_", "")
-        api_url = context.bot_data["api_url"]
 
-        card = await self.fetch_data(api_url, f"/api/tarot/cards/{slug}")
+        card = await self.fetch_data(f"/api/tarot/cards/{slug}")
 
         if not card:
             await query.answer("Card not found!", show_alert=True)
@@ -275,10 +227,9 @@ class Command(BaseCommand):
     async def create_reading(self, update, context):
         """Create a tarot reading for the user."""
         user = update.message.from_user
-        api_url = context.bot_data["api_url"]
 
         # First authenticate
-        auth = await self.post_request(api_url, "/api/tg/users/auth", {"telegram_id": user.id})
+        auth = await self.post_request("/api/tg/users/auth", {"telegram_id": user.id})
 
         if not auth or not auth.get("ok"):
             await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
@@ -288,10 +239,12 @@ class Command(BaseCommand):
         access_token = tokens.get("access")
 
         # Create reading
+        import httpx
+
         async with httpx.AsyncClient() as client:
             headers = {"Authorization": f"Bearer {access_token}"}
             response = await client.post(
-                f"{api_url}/api/tg/tarot/readings/",
+                f"{self.api_url}/api/tg/tarot/readings/",
                 json={"question": "What guidance do you have for me?"},
                 headers=headers,
             )
@@ -310,9 +263,8 @@ class Command(BaseCommand):
     async def list_reading_history(self, update, context):
         """Fetch and display the user's tarot reading history."""
         user = update.message.from_user
-        api_url = context.bot_data["api_url"]
 
-        readings = await self.fetch_data(api_url, f"/api/tg/tarot/readings/my?telegram_id={user.id}")
+        readings = await self.fetch_data(f"/api/tg/tarot/readings/my?telegram_id={user.id}")
 
         if not readings or not readings.get("results"):
             await update.message.reply_text("⚠️ No past readings found.")
@@ -332,3 +284,54 @@ class Command(BaseCommand):
     async def error_handler(self, update, context):
         """Handle errors globally."""
         logger.error("Exception while handling update %s: %s", update, context.error)
+
+
+def main():
+    """Main entry point - synchronous for python-telegram-bot v21+."""
+    token = os.getenv("TELEGRAM_BOT_SECRET")
+    api_url = os.getenv("API_URL", "http://localhost:8000")
+
+    if not token:
+        print("ERROR: TELEGRAM_BOT_SECRET environment variable is not set")
+        print("Please set it before running the bot:")
+        print("  export TELEGRAM_BOT_SECRET='your_bot_token'")
+        return 1
+
+    print(f"Starting Telegram bot with API URL: {api_url}")
+
+    # Create application
+    app = Application.builder().token(token).build()
+
+    # Create handlers instance for method access
+    handlers = BotHandlers(api_url)
+
+    # Register command handlers
+    app.add_handler(CommandHandler("start", handlers.start))
+    app.add_handler(CommandHandler("help", handlers.show_help))
+    app.add_handler(CommandHandler("mentors", handlers.list_mentors))
+    app.add_handler(CommandHandler("me", handlers.get_user_info))
+    app.add_handler(CommandHandler("cards", handlers.list_tarot_suits))
+    app.add_handler(CommandHandler("reading", handlers.create_reading))
+    app.add_handler(CommandHandler("history", handlers.list_reading_history))
+
+    # Callback query handlers
+    app.add_handler(CallbackQueryHandler(handlers.list_suit_cards, pattern=r"suit_.*"))
+    app.add_handler(CallbackQueryHandler(handlers.show_card_details, pattern=r"card_.*"))
+    app.add_handler(CallbackQueryHandler(handlers.back_to_suits, pattern="back_to_suits"))
+
+    # Error handling
+    app.add_error_handler(handlers.error_handler)
+
+    print("Bot is running. Press Ctrl+C to stop.")
+
+    # python-telegram-bot v21+ handles event loop internally
+    app.run_polling()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nBot stopped by user.")
+    except Exception as e:
+        print(f"Error running bot: {e}")
