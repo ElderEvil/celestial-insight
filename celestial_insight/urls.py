@@ -10,6 +10,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.account.urls")),
     path("accounts/", include("allauth.socialaccount.urls")),
+    path("accounts/", include("allauth.socialaccount.providers.github.urls")),
+    path("accounts/", include("allauth.socialaccount.providers.google.urls")),
     path("api/", api.urls),
     path("dashboard/", tarot_views.dashboard, name="dashboard"),
     path("read/", tarot_views.create_reading_view, name="create_reading"),
