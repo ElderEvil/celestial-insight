@@ -30,7 +30,7 @@ from typing import Any
 
 from dotenv import load_dotenv
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup
-from telegram.ext import Application, CallbackQueryHandler, CommandHandler
+from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ConversationHandler, MessageHandler, filters
 
 # Load environment variables from .env file
 load_dotenv(dotenv_path=Path(__file__).parent / ".env")
@@ -40,6 +40,10 @@ logger = logging.getLogger(__name__)
 HTTP_OK = 200
 MAX_RETRIES = 3
 RETRY_DELAY = 1  # seconds
+
+# Conversation states for /reading command
+WAITING_FOR_QUESTION = 1
+WAITING_FOR_MENTOR = 2
 
 
 class BotHandlers:
@@ -305,9 +309,7 @@ class BotHandlers:
         await self.list_tarot_suits(update, context)
 
     async def create_reading(self, update, context):
-        """Create a tarot reading for the user."""
-        import httpx
-
+        """Start the /reading conversation - ask user for their question."""
         user = update.message.from_user
 
         auth = await self.post_request(
@@ -316,22 +318,43 @@ class BotHandlers:
 
         if not auth or not auth.get("access"):
             await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
-            return
+            return ConversationHandler.END
 
-        access_token = auth.get("access")
+        # Store access token in context for the next step
+        context.user_data["access_token"] = auth.get("access")
+
+        await update.message.reply_text(
+            "🔮 *Your Tarot Reading*\n\n"
+            "Please ask your question. What guidance do you need?\n\n"
+            "_Example: Should I change jobs this year?_",
+            parse_mode="Markdown",
+        )
+        return WAITING_FOR_QUESTION
+
+    async def handle_reading_question(self, update, context):
+        """Handle the user's question and create the reading."""
+        import httpx
+
+        user = update.message.from_user
+        question = update.message.text
+
+        access_token = context.user_data.get("access_token")
+
+        if not access_token:
+            await update.message.reply_text("⚠️ Session expired. Please use /reading again.")
+            return ConversationHandler.END
 
         for attempt in range(MAX_RETRIES):
             try:
-                async with httpx.AsyncClient(timeout=10.0) as client:
+                async with httpx.AsyncClient(timeout=30.0) as client:
                     headers = {"Authorization": f"Bearer {access_token}"}
                     response = await client.post(
-                        f"{self.api_url}/api/tg/tarot/readings?question=What guidance do you have for me?&mentor_id=1",
+                        f"{self.api_url}/api/tg/tarot/readings?question={question}&mentor_id=1",
                         headers=headers,
                     )
 
                 if response.status_code == HTTP_OK:
                     result = response.json()
-                    # API returns flat JSON: ReadingSchema or error string
                     if isinstance(result, dict):
                         insight = result.get("celestial_insight", "The cards have spoken.")
                         text = f"🔮 *Your Reading*\n\n{insight}"
@@ -339,39 +362,34 @@ class BotHandlers:
                     else:
                         await update.message.reply_text(f"⚠️ {result}")
                 elif response.status_code == 401:
-                    logger.warning("Unauthorized reading creation for user %s", user.id)
                     await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
                 elif response.status_code == 422:
-                    logger.error("Validation error creating reading: %s", response.text)
-                    await update.message.reply_text("⚠️ Invalid request. Please try again.")
+                    error_msg = response.json()
+                    await update.message.reply_text(f"⚠️ {error_msg}")
                 elif response.status_code >= 500:
-                    logger.error("Server error %s creating reading", response.status_code)
                     if attempt < MAX_RETRIES - 1:
                         await asyncio.sleep(RETRY_DELAY * (attempt + 1))
                         continue
                     await update.message.reply_text("⚠️ Server error. Please try again later.")
                 else:
-                    logger.error("API error %s creating reading", response.status_code)
                     await update.message.reply_text("⚠️ Error creating tarot reading.")
-                return
+                return ConversationHandler.END
             except httpx.TimeoutException:
-                logger.error("Timeout creating reading (attempt %d/%d)", attempt + 1, MAX_RETRIES)
                 if attempt < MAX_RETRIES - 1:
                     await asyncio.sleep(RETRY_DELAY * (attempt + 1))
                     continue
                 await update.message.reply_text("⚠️ Unable to connect to server. Please try again.")
-                return
+                return ConversationHandler.END
             except httpx.ConnectError as e:
-                logger.error("Connection error creating reading (attempt %d/%d): %s", attempt + 1, MAX_RETRIES, e)
                 if attempt < MAX_RETRIES - 1:
                     await asyncio.sleep(RETRY_DELAY * (attempt + 1))
                     continue
                 await update.message.reply_text("⚠️ Unable to connect to server. Please try again.")
-                return
+                return ConversationHandler.END
             except Exception as e:
                 logger.error("Unexpected error creating reading: %s", e)
                 await update.message.reply_text("⚠️ An unexpected error occurred. Please try again.")
-                return
+                return ConversationHandler.END
 
     async def list_reading_history(self, update, context):
         """Fetch and display the user's tarot reading history."""
@@ -424,7 +442,17 @@ def main():
     app.add_handler(CommandHandler("mentors", handlers.list_mentors))
     app.add_handler(CommandHandler("me", handlers.get_user_info))
     app.add_handler(CommandHandler("cards", handlers.list_tarot_suits))
-    app.add_handler(CommandHandler("reading", handlers.create_reading))
+
+    # Conversation handler for /reading command
+    reading_conv = ConversationHandler(
+        entry_points=[CommandHandler("reading", handlers.create_reading)],
+        states={
+            WAITING_FOR_QUESTION: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.handle_reading_question)],
+        },
+        fallbacks=[],
+    )
+    app.add_handler(reading_conv)
+
     app.add_handler(CommandHandler("history", handlers.list_reading_history))
 
     # Callback query handlers
