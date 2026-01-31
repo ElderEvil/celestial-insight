@@ -284,8 +284,7 @@ class Command(BaseCommand):
             await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
             return
 
-        tokens = auth.get("tokens", {})
-        access_token = tokens.get("access")
+        access_token = auth.get("access")
 
         # Create reading
         async with httpx.AsyncClient() as client:

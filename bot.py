@@ -22,6 +22,7 @@ Environment variables:
     API_URL - Django API URL (default: http://localhost:8000)
 """
 
+import asyncio
 import logging
 import os
 from pathlib import Path
@@ -37,6 +38,8 @@ load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 logger = logging.getLogger(__name__)
 
 HTTP_OK = 200
+MAX_RETRIES = 3
+RETRY_DELAY = 1  # seconds
 
 
 class BotHandlers:
@@ -46,20 +49,96 @@ class BotHandlers:
         self.api_url = api_url
 
     async def fetch_data(self, endpoint: str) -> dict[str, Any] | None:
-        """Fetch data from Django-Ninja API."""
+        """Fetch data from Django-Ninja API with error handling and retries."""
         import httpx
 
-        async with httpx.AsyncClient() as client:
-            response = await client.get(f"{self.api_url}{endpoint}")
-            return response.json() if response.status_code == HTTP_OK else None
+        for attempt in range(MAX_RETRIES):
+            try:
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    response = await client.get(f"{self.api_url}{endpoint}")
+                    if response.status_code == HTTP_OK:
+                        return response.json()
+                    elif response.status_code == 401:
+                        logger.warning("Unauthorized access to %s", endpoint)
+                        return None
+                    elif response.status_code == 404:
+                        logger.warning("Endpoint not found: %s", endpoint)
+                        return None
+                    elif response.status_code == 422:
+                        logger.error("Validation error for %s: %s", endpoint, response.text)
+                        return None
+                    elif response.status_code >= 500:
+                        logger.error("Server error %s for %s", response.status_code, endpoint)
+                        if attempt < MAX_RETRIES - 1:
+                            await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                            continue
+                        return None
+                    else:
+                        logger.error("API error %s for %s", response.status_code, endpoint)
+                        return None
+            except httpx.TimeoutException:
+                logger.error("Timeout fetching %s (attempt %d/%d)", endpoint, attempt + 1, MAX_RETRIES)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                return None
+            except httpx.ConnectError as e:
+                logger.error("Connection error fetching %s (attempt %d/%d): %s", endpoint, attempt + 1, MAX_RETRIES, e)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                return None
+            except Exception as e:
+                logger.error("Unexpected error fetching %s: %s", endpoint, e)
+                return None
+        return None
 
     async def post_request(self, endpoint: str, data: dict) -> dict[str, Any] | None:
-        """Send POST request to API."""
+        """Send POST request to API with error handling and retries."""
         import httpx
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(f"{self.api_url}{endpoint}", json=data)
-            return response.json() if response.status_code == HTTP_OK else None
+        for attempt in range(MAX_RETRIES):
+            try:
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    response = await client.post(f"{self.api_url}{endpoint}", json=data)
+                    if response.status_code == HTTP_OK:
+                        return response.json()
+                    elif response.status_code == 401:
+                        logger.warning("Unauthorized POST to %s", endpoint)
+                        return None
+                    elif response.status_code == 404:
+                        logger.warning("Endpoint not found: %s", endpoint)
+                        return None
+                    elif response.status_code == 422:
+                        logger.error("Validation error for %s: %s", endpoint, response.text)
+                        return None
+                    elif response.status_code >= 500:
+                        logger.error("Server error %s for %s", response.status_code, endpoint)
+                        if attempt < MAX_RETRIES - 1:
+                            await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                            continue
+                        return None
+                    else:
+                        logger.error("API error %s for %s", response.status_code, endpoint)
+                        return None
+            except httpx.TimeoutException:
+                logger.error("Timeout posting to %s (attempt %d/%d)", endpoint, attempt + 1, MAX_RETRIES)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                return None
+            except httpx.ConnectError as e:
+                logger.error(
+                    "Connection error posting to %s (attempt %d/%d): %s", endpoint, attempt + 1, MAX_RETRIES, e
+                )
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                return None
+            except Exception as e:
+                logger.error("Unexpected error posting to %s: %s", endpoint, e)
+                return None
+        return None
 
     async def send_menu(self, update, keyboard=None):
         """Send main menu with buttons."""
@@ -235,8 +314,7 @@ class BotHandlers:
             await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
             return
 
-        tokens = auth.get("tokens", {})
-        access_token = tokens.get("access")
+        access_token = auth.get("access")
 
         # Create reading
         import httpx
