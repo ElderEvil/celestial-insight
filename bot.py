@@ -150,8 +150,8 @@ class BotHandlers:
             keyboard = ReplyKeyboardMarkup(
                 [
                     [KeyboardButton("/mentors"), KeyboardButton("/me")],
-                    [KeyboardButton("/cards"), KeyboardButton("/start")],
-                    [KeyboardButton("/reading"), KeyboardButton("/history")],
+                    [KeyboardButton("/cards"), KeyboardButton("/reading")],
+                    [KeyboardButton("/history"), KeyboardButton("/help")],
                 ],
                 resize_keyboard=True,
             )
@@ -308,8 +308,68 @@ class BotHandlers:
         """Return to tarot suits selection."""
         await self.list_tarot_suits(update, context)
 
+    async def handle_back_to_menu(self, update, context):
+        """Handle back to menu callback - return to main menu."""
+        query = update.callback_query
+        await query.answer()
+        await self.send_menu(update)
+        return ConversationHandler.END
+
+    async def cancel_conversation(self, update, context):
+        """Cancel the current conversation and show cancellation message."""
+        await update.message.reply_text("❌ Conversation cancelled. Type /reading to start again.")
+        return ConversationHandler.END
+
+    async def select_mentor(self, update, context):
+        """Display mentor selection as inline buttons."""
+        mentors = await self.fetch_data("/api/mentors/?is_active=true")
+
+        if not mentors:
+            await update.message.reply_text("⚠️ No mentors available.")
+            return ConversationHandler.END
+
+        # API returns list directly
+        mentor_list = mentors if isinstance(mentors, list) else []
+        if not mentor_list:
+            await update.message.reply_text("⚠️ No mentors available.")
+            return ConversationHandler.END
+
+        buttons = [
+            [
+                InlineKeyboardButton(
+                    f"🧙 {mentor['name']} (Lvl {mentor.get('mystical_level', 1)})",
+                    callback_data=f"mentor_{mentor['slug']}",
+                )
+            ]
+            for mentor in mentor_list
+        ]
+        buttons.append([InlineKeyboardButton("⬅ Back to Menu", callback_data="back_to_menu")])
+        markup = InlineKeyboardMarkup(buttons)
+        await update.message.reply_text("🔮 Choose your mystical guide:", reply_markup=markup)
+        return None
+
+    async def handle_mentor_selection(self, update, context):
+        """Handle mentor selection callback and ask for question."""
+        query = update.callback_query
+        mentor_slug = query.data.replace("mentor_", "")
+
+        mentor = await self.fetch_data(f"/api/mentors/{mentor_slug}")
+
+        if not mentor:
+            await query.answer("Mentor not found!", show_alert=True)
+            return ConversationHandler.END
+
+        context.user_data["selected_mentor_id"] = mentor.get("id")
+        mentor_name = mentor.get("name", "Unknown")
+
+        await query.message.edit_text(
+            f"✨ You've chosen {mentor_name}! What guidance do you seek?\n\n_Example: Should I change jobs this year?_",
+            parse_mode="Markdown",
+        )
+        return WAITING_FOR_QUESTION
+
     async def create_reading(self, update, context):
-        """Start the /reading conversation - ask user for their question."""
+        """Start the /reading conversation - show mentor selection."""
         user = update.message.from_user
 
         auth = await self.post_request(
@@ -320,16 +380,10 @@ class BotHandlers:
             await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
             return ConversationHandler.END
 
-        # Store access token in context for the next step
         context.user_data["access_token"] = auth.get("access")
 
-        await update.message.reply_text(
-            "🔮 *Your Tarot Reading*\n\n"
-            "Please ask your question. What guidance do you need?\n\n"
-            "_Example: Should I change jobs this year?_",
-            parse_mode="Markdown",
-        )
-        return WAITING_FOR_QUESTION
+        await self.select_mentor(update, context)
+        return WAITING_FOR_MENTOR
 
     async def handle_reading_question(self, update, context):
         """Handle the user's question and create the reading."""
@@ -339,6 +393,7 @@ class BotHandlers:
         question = update.message.text
 
         access_token = context.user_data.get("access_token")
+        mentor_id = context.user_data.get("selected_mentor_id", 1)
 
         if not access_token:
             await update.message.reply_text("⚠️ Session expired. Please use /reading again.")
@@ -349,7 +404,7 @@ class BotHandlers:
                 async with httpx.AsyncClient(timeout=30.0) as client:
                     headers = {"Authorization": f"Bearer {access_token}"}
                     response = await client.post(
-                        f"{self.api_url}/api/tg/tarot/readings?question={question}&mentor_id=1",
+                        f"{self.api_url}/api/tg/tarot/readings?question={question}&mentor_id={mentor_id}",
                         headers=headers,
                     )
 
@@ -361,24 +416,37 @@ class BotHandlers:
                     elif isinstance(result, dict):
                         reading_id = result.get("id")
                         if reading_id:
-                            # Now generate the celestial insight
+                            await update.message.reply_text("🔮 Generating your celestial insight...")
+
                             insight_response = await client.post(
                                 f"{self.api_url}/api/tg/tarot/readings/{reading_id}/insight",
                                 headers=headers,
                             )
                             if insight_response.status_code == HTTP_OK:
                                 insight_result = insight_response.json()
+                                logger.debug(f"Insight API response: {insight_result}")
+
                                 if isinstance(insight_result, dict):
-                                    insight = insight_result.get("celestial_insight", "").strip()
+                                    insight = insight_result.get("celestial_insight")
+                                    if insight and isinstance(insight, str):
+                                        insight = insight.strip()
+                                    else:
+                                        logger.warning(f"Empty or invalid celestial_insight: {insight}")
+                                        insight = None
                                 else:
-                                    insight = str(insight_result)
+                                    logger.warning(f"Unexpected insight response type: {type(insight_result)}")
+                                    insight = None
                             else:
-                                insight = "The cards have spoken, but the celestial insight is being prepared."
+                                logger.error(f"Insight API error: {insight_response.status_code}")
+                                insight = None
+
+                            if insight:
+                                text = f"🔮 *Your Reading*\n\n{insight}"
+                            else:
+                                text = "🔮 *Your Reading*\n\nThe cards have spoken, but the celestial insight is being prepared. Please try again in a moment."
                         else:
-                            insight = "The cards have spoken."
-                        if not insight:
-                            insight = "The cards have spoken."
-                        text = f"🔮 *Your Reading*\n\n{insight}"
+                            text = "🔮 *Your Reading*\n\nThe cards have spoken."
+
                         await update.message.reply_text(text, parse_mode="Markdown")
                     else:
                         await update.message.reply_text("⚠️ Unexpected response format.")
@@ -468,9 +536,10 @@ def main():
     reading_conv = ConversationHandler(
         entry_points=[CommandHandler("reading", handlers.create_reading)],
         states={
+            WAITING_FOR_MENTOR: [CallbackQueryHandler(handlers.handle_mentor_selection, pattern=r"mentor_.*")],
             WAITING_FOR_QUESTION: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.handle_reading_question)],
         },
-        fallbacks=[],
+        fallbacks=[CommandHandler("cancel", handlers.cancel_conversation)],
     )
     app.add_handler(reading_conv)
 
@@ -480,6 +549,7 @@ def main():
     app.add_handler(CallbackQueryHandler(handlers.list_suit_cards, pattern=r"suit_.*"))
     app.add_handler(CallbackQueryHandler(handlers.show_card_details, pattern=r"card_.*"))
     app.add_handler(CallbackQueryHandler(handlers.back_to_suits, pattern="back_to_suits"))
+    app.add_handler(CallbackQueryHandler(handlers.handle_back_to_menu, pattern="back_to_menu"))
 
     # Error handling
     app.add_error_handler(handlers.error_handler)
