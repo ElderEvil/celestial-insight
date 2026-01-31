@@ -16,7 +16,7 @@ from pydantic_ai.exceptions import AgentRunError
 
 from tarot.enums import ReadingTypeEnum
 from tarot.models import Reading
-from tarot.services.reading_service import MAX_TOKENS_PER_READING, MIN_TOKEN_COST, create_reading, generate_insight
+from tarot.services.reading_service import MIN_TOKEN_COST, create_reading, generate_insight
 from tarot.utils import deduct_tokens
 
 
@@ -51,17 +51,24 @@ class TestDeductTokens:
 
     @pytest.mark.asyncio
     async def test_deduct_tokens_no_profile(self, db):
-        """Token deduction fails gracefully when user has no profile."""
+        """Token deduction handles users - signal now ensures profile exists."""
         from django.contrib.auth.models import User
+
+        from users.models import UserProfile
 
         user = await User.objects.acreate(
             username="noprofile",
             email="noprofile@example.com",
         )
 
-        result = await deduct_tokens(user, 100)
+        # With signal connected, profile should exist
+        profile = await UserProfile.objects.aget(user=user)
+        assert profile is not None
+        assert profile.available_tokens == 1000  # default tokens
 
-        assert result is False
+        # Token deduction should work
+        result = await deduct_tokens(user, 100)
+        assert result is True
 
 
 @pytest.mark.django_db(transaction=True)

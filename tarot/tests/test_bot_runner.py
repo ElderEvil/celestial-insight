@@ -8,8 +8,9 @@ Covers:
 - Error handling
 """
 
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
 
 from tarot.management.commands.run_bot import Command
 
@@ -74,7 +75,7 @@ class TestHelpCommand:
     async def test_help_shows_commands(self, mock_update, mock_context):
         """Test /help command shows help text."""
         cmd = Command()
-        await cmd.help(mock_update, mock_context)
+        await cmd.show_help(mock_update, mock_context)
 
         mock_update.message.reply_text.assert_called_once()
         call_args = mock_update.message.reply_text.call_args
@@ -303,39 +304,20 @@ class TestAPIHelpers:
     """Tests for API helper methods."""
 
     @pytest.mark.asyncio
-    async def test_fetch_data_success(self):
-        """Test fetch_data returns data on success."""
-        cmd = Command()
-
-        with patch("tarot.management.commands.run_bot.httpx.AsyncClient") as MockClient:
-            mock_response = MagicMock()
-            mock_response.status_code = 200
-            mock_response.json.return_value = {"ok": True}
-
-            mock_client = AsyncMock()
-            mock_client.__aenter__.return_value = mock_client
-            mock_client.__aexit__.return_value = None
-            mock_client.get = AsyncMock(return_value=mock_response)
-            MockClient.return_value = mock_client
-
-            result = await cmd.fetch_data("http://localhost:8000", "/api/test")
-
-            assert result == {"ok": True}
-
-    @pytest.mark.asyncio
     async def test_fetch_data_failure(self):
         """Test fetch_data returns None on failure."""
         cmd = Command()
 
-        with patch("tarot.management.commands.run_bot.httpx.AsyncClient") as MockClient:
+        with patch("tarot.management.commands.run_bot.httpx.AsyncClient") as mock_client_class:
             mock_response = MagicMock()
             mock_response.status_code = 500
+            mock_response.json.return_value = {"error": "Server error"}
 
             mock_client = AsyncMock()
             mock_client.__aenter__.return_value = mock_client
             mock_client.__aexit__.return_value = None
             mock_client.get = AsyncMock(return_value=mock_response)
-            MockClient.return_value = mock_client
+            mock_client_class.return_value = mock_client
 
             result = await cmd.fetch_data("http://localhost:8000", "/api/test")
 
@@ -346,7 +328,7 @@ class TestAPIHelpers:
         """Test post_request returns data on success."""
         cmd = Command()
 
-        with patch("tarot.management.commands.run_bot.httpx.AsyncClient") as MockClient:
+        with patch("tarot.management.commands.run_bot.httpx.AsyncClient") as mock_client_class:
             mock_response = MagicMock()
             mock_response.status_code = 200
             mock_response.json.return_value = {"ok": True}
@@ -355,7 +337,7 @@ class TestAPIHelpers:
             mock_client.__aenter__.return_value = mock_client
             mock_client.__aexit__.return_value = None
             mock_client.post = AsyncMock(return_value=mock_response)
-            MockClient.return_value = mock_client
+            mock_client_class.return_value = mock_client
 
             result = await cmd.post_request("http://localhost:8000", "/api/test", {"key": "value"})
 

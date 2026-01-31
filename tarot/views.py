@@ -6,21 +6,29 @@ Provides session-authenticated pages for:
 - Create reading form with mentor selection
 """
 
+from asgiref.sync import sync_to_async
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from mentors.models import Mentor
 from tarot.models import Reading
 from tarot.services.reading_service import MIN_TOKEN_COST, create_reading
 from users.models import UserProfile
+
+MIN_QUESTION_LENGTH = 5
 
 
 @login_required
 def dashboard(request):
     """Display user dashboard with token balance and recent readings."""
     try:
-        profile = request.user.profile
-        token_balance = profile.available_tokens
+        # Handle both AnonymousUser (no profile attribute) and authenticated users without profile
+        if hasattr(request.user, "profile"):
+            profile = request.user.profile
+            token_balance = profile.available_tokens
+        else:
+            token_balance = 0
     except UserProfile.DoesNotExist:
         token_balance = 0
 
@@ -36,15 +44,25 @@ def dashboard(request):
     return render(request, "dashboard.html", context)
 
 
-@login_required
-async def create_reading(request):
+async def create_reading_view(request):
     """Display create reading form with mentor selection."""
-    from asgiref.sync import sync_to_async
-    from mentors.models import Mentor
+
+    # Check authentication - wrap the entire sync operation
+    @sync_to_async
+    def require_auth(request):
+        if not request.user.is_authenticated:
+            from django.contrib.auth.views import redirect_to_login
+
+            return redirect_to_login(request.get_full_path())
+        return None
+
+    auth_result = await require_auth(request)
+    if auth_result:
+        return auth_result
 
     if request.method == "POST":
-        # Use sync_to_async for the sync ORM call
-        return await sync_to_async(_handle_create_reading, thread_sensitive=True)(request)
+        # _handle_create_reading is already async, call directly
+        return await _handle_create_reading(request)
 
     # GET request - show form (sync, wrapped for async context)
     mentors = await sync_to_async(list, thread_sensitive=True)(Mentor.objects.all())
@@ -58,7 +76,6 @@ async def create_reading(request):
 
 async def _handle_create_reading(request):
     """Handle POST request for creating a reading."""
-    from mentors.models import Mentor
 
     mentor_id = request.POST.get("mentor_id")
     question = request.POST.get("question")
@@ -72,7 +89,7 @@ async def _handle_create_reading(request):
         )
 
     # Validate question
-    if not question or len(question.strip()) < 5:
+    if not question or len(question.strip()) < MIN_QUESTION_LENGTH:
         return HttpResponse(
             b'<article class="pico-background-red-100"><p>Question must be at least 5 characters.</p></article>',
             status=400,
@@ -83,7 +100,7 @@ async def _handle_create_reading(request):
     result = await create_reading(request.user, question.strip(), int(mentor_id))
 
     if isinstance(result, str):
-        # Error occurred
+        # Error occurred - show user-friendly message
         error_html = f'<article class="pico-background-red-100"><p>{result}</p></article>'
         return HttpResponse(
             error_html.encode(),
