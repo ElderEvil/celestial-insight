@@ -5,7 +5,14 @@ from django.contrib.auth.models import User
 from django.db import DatabaseError, transaction
 from django.shortcuts import aget_object_or_404
 from pydantic import ValidationError
-from pydantic_ai.exceptions import AgentRunError, UnexpectedModelBehavior, UsageLimitExceeded, UserError
+from pydantic_ai import Agent
+from pydantic_ai.exceptions import (
+    AgentRunError,
+    UnexpectedModelBehavior,
+    UsageLimitExceeded,
+    UserError,
+    ModelRetry,
+)
 
 import httpx
 
@@ -72,6 +79,9 @@ async def create_reading(user, question: str, mentor_id: int, reading_type: Read
         return f"AI service error: {e.response.status_code}. Please try again."
     except httpx.RequestError as e:
         return "Unable to connect to AI service. Please check your connection and try again."
+    except (ModelRetry, StopAgent) as e:
+        logger.error(f"Model control exception in create_reading: {e}")
+        return "The AI service encountered an issue. Please try again."
     except AttributeError as e:
         return f"Data validation error: Missing attribute - {e}"
     except ValidationError as e:
