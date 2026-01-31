@@ -169,6 +169,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Enable social login buttons on login page
 SOCIALACCOUNT_LOGIN_ON = True
+# Security: Prevent automatic login on GET requests (CSRF protection)
+SOCIALACCOUNT_LOGIN_ON_GET = False
 ACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_AUTO_SIGNUP = True
 
