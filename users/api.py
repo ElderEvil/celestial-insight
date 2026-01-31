@@ -3,7 +3,6 @@ from asgiref.sync import sync_to_async
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from ninja_extra import api_controller, http_get, http_post
-from ninja_jwt.authentication import AsyncJWTAuth
 from ninja_jwt.tokens import RefreshToken
 
 from .schemas import TelegramAuthSchema, TokenResponseSchema, UserSchema
@@ -77,20 +76,33 @@ class UsersTGController:
             "email": user.email,
         }
 
-    @http_get("/me", response=UserSchema, auth=AsyncJWTAuth())
-    async def me(self, request):
-        """Retrieve authenticated user's info including profile data."""
-        user = request.user
+    @http_get("/me", response=UserSchema)
+    async def me(self, request, telegram_id: int | None = None):
+        """
+        Retrieve user info including profile data.
+        - If telegram_id is provided, look up user by Telegram ID (no JWT required)
+        - Otherwise, use JWT authentication
+        """
+        if telegram_id is not None:
+            social_account = await sync_to_async(
+                lambda: SocialAccount.objects.filter(provider="telegram", uid=str(telegram_id)).first()
+            )()
 
-        if not user.is_authenticated:
-            return HttpResponse("Unauthorized", status=401)
+            if not social_account:
+                return HttpResponse(b"User not found", status=401)
 
-        profile = getattr(user, "profile", None)
+            user = await sync_to_async(lambda: social_account.user)()
+        else:
+            user = request.user
+            if not user.is_authenticated:
+                return HttpResponse(b"Unauthorized", status=401)
+
+        profile = await sync_to_async(lambda: getattr(user, "profile", None))()
 
         return {
             "username": user.username,
             "email": user.email,
-            "is_authenticated": user.is_authenticated,
+            "is_authenticated": True,
             "first_name": user.first_name,
             "last_name": user.last_name,
             "profile": {
