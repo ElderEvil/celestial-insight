@@ -8,7 +8,7 @@ from tarot import views as tarot_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("_allauth/", include("allauth.headless.urls")),
+    path("accounts/", include("allauth.urls")),
     path("api/", api.urls),
     path("dashboard/", tarot_views.dashboard, name="dashboard"),
     path("read/", tarot_views.create_reading, name="create_reading"),
