@@ -5,7 +5,7 @@
 {% block content %}
 <h1>Create a Tarot Reading</h1>
 
-<form method="post" action="{% url 'create_reading' %}">
+<form method="post" action="{% url 'create_reading' %}" hx-post="{% url 'create_reading' %}" hx-target="#reading-result" hx-swap="innerHTML">
     {% csrf_token %}
 
     <label for="mentor">Choose a Mentor</label>
@@ -19,8 +19,16 @@
     <label for="question">Your Question</label>
     <textarea id="question" name="question" placeholder="Ask the cards about your future, relationships, career, or spiritual path..." required minlength="5" maxlength="500"></textarea>
 
-    <button type="submit">Draw a Card</button>
+    <button type="submit" hx-indicator="#loading">
+        Draw a Card
+    </button>
 </form>
+
+<div id="loading" style="display: none;">
+    <p>Consulting the cards...</p>
+</div>
+
+<div id="reading-result"></div>
 
 <footer>
     <small>Minimum cost: {{ min_reading_cost }} tokens</small>
