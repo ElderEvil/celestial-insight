@@ -15,7 +15,7 @@ import pytest
 
 from tarot.enums import ReadingTypeEnum
 from tarot.models import Reading
-from tarot.services.reading_service import MIN_TOKEN_COST, create_reading, generate_insight
+from tarot.services.reading_service import MAX_TOKENS_PER_READING, MIN_TOKEN_COST, create_reading, generate_insight
 from tarot.utils import deduct_tokens
 
 
@@ -264,3 +264,84 @@ class TestGenerateInsight:
 
         assert isinstance(result, str)
         assert "not found in the database" in result
+
+
+@pytest.mark.django_db(transaction=True)
+class TestCostGuardrails:
+    """Tests for token cost guardrails (per-reading cap + daily budget)."""
+
+    @pytest.mark.asyncio
+    async def test_create_reading_per_reading_cap_enforced(self, user, user_profile, mentor, mock_validation_result):
+        """Reading exceeding 2500 tokens is rejected."""
+        # Mock usage > 2500 tokens
+        mock_result = mock_validation_result(
+            is_valid=True,
+            theme="career",
+            spread_type=ReadingTypeEnum.SINGLE_CARD,
+            total_tokens=3000,  # Exceeds MAX_TOKENS_PER_READING of 2500
+        )
+
+        with patch(
+            "tarot.services.reading_service.tarot_support_agent.run",
+            new_callable=AsyncMock,
+            return_value=mock_result,
+        ):
+            result = await create_reading(
+                user=user,
+                question="What is my complete life story including past present and future for every aspect including career love health family finances spiritual growth and personal development?",
+                mentor_id=mentor.id,
+            )
+
+        assert isinstance(result, str)
+        assert "exceeds maximum token limit" in result
+        assert "2500" in result
+        assert "3000" in result
+
+    @pytest.mark.asyncio
+    async def test_create_reading_at_max_cap_allowed(self, user, user_profile, mentor, mock_validation_result):
+        """Reading at exactly 2500 tokens is allowed."""
+        # Mock usage = 2500 tokens (at the limit)
+        mock_result = mock_validation_result(
+            is_valid=True,
+            theme="career",
+            spread_type=ReadingTypeEnum.SINGLE_CARD,
+            total_tokens=2500,  # Exactly at MAX_TOKENS_PER_READING
+        )
+
+        with patch(
+            "tarot.services.reading_service.tarot_support_agent.run",
+            new_callable=AsyncMock,
+            return_value=mock_result,
+        ):
+            result = await create_reading(
+                user=user,
+                question="What career guidance do the cards offer?",
+                mentor_id=mentor.id,
+            )
+
+        assert isinstance(result, Reading)
+        assert result.reading_type == ReadingTypeEnum.SINGLE_CARD
+
+    @pytest.mark.asyncio
+    async def test_create_reading_below_cap_allowed(self, user, user_profile, mentor, mock_validation_result):
+        """Reading below 2500 tokens is allowed."""
+        mock_result = mock_validation_result(
+            is_valid=True,
+            theme="love",
+            spread_type=ReadingTypeEnum.SINGLE_CARD,
+            total_tokens=500,  # Well below limit
+        )
+
+        with patch(
+            "tarot.services.reading_service.tarot_support_agent.run",
+            new_callable=AsyncMock,
+            return_value=mock_result,
+        ):
+            result = await create_reading(
+                user=user,
+                question="What does the future hold for my love life?",
+                mentor_id=mentor.id,
+            )
+
+        assert isinstance(result, Reading)
+        assert result.reading_type == ReadingTypeEnum.SINGLE_CARD

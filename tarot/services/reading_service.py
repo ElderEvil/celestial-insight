@@ -15,6 +15,8 @@ from tarot.models import Card, Reading, ReadingCard
 from tarot.utils import deduct_tokens
 
 MIN_TOKEN_COST = 250  # Minimum upfront tokens required
+MAX_TOKENS_PER_READING = 2500  # Maximum tokens allowed per reading
+MAX_TOKENS_DAILY = 10000  # Maximum tokens allowed per user per day
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +38,13 @@ async def create_reading(user, question: str, mentor_id: int, reading_type: Read
         actual_usage = validation_result.usage().total_tokens
         msg = f"Actual token usage: {actual_usage}"
         logger.info(msg)
+
+        # Per-reading cap: reject if usage exceeds 2500 tokens
+        if actual_usage and actual_usage > MAX_TOKENS_PER_READING:
+            return (
+                f"Reading exceeds maximum token limit ({MAX_TOKENS_PER_READING} tokens). "
+                f"This reading used {actual_usage} tokens. Please try a shorter question."
+            )
 
         # Deduct the difference between actual usage and upfront tokens
         if actual_usage and actual_usage > MIN_TOKEN_COST:
