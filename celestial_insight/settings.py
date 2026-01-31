@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.github",
     "django_extensions",
+    "django_htmx",
     "ninja_extra",
     "ninja_jwt",
     "users",
@@ -90,6 +91,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
@@ -98,7 +100,7 @@ ROOT_URLCONF = "celestial_insight.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
