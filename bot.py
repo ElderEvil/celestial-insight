@@ -325,7 +325,7 @@ class BotHandlers:
                 async with httpx.AsyncClient(timeout=10.0) as client:
                     headers = {"Authorization": f"Bearer {access_token}"}
                     response = await client.post(
-                        f"{self.api_url}/api/tg/tarot/readings/",
+                        f"{self.api_url}/api/tg/tarot/readings",
                         json={"question": "What guidance do you have for me?", "mentor_id": 1},
                         headers=headers,
                     )
