@@ -15,16 +15,5 @@
     
     <button type="submit">Sign Up</button>
   </form>
-  
-  <hr>
-  <p>Or sign up with:</p>
-  <nav aria-label="Social signup">
-    <ul>
-      <li><a href="{% url 'socialaccount_signup' 'google' %}">Google</a></li>
-      <li><a href="{% url 'socialaccount_signup' 'github' %}">GitHub</a></li>
-    </ul>
-  </nav>
-  
-  {% include "socialaccount/snippets.html" %}
 </article>
 {% endblock %}

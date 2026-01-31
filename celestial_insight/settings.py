@@ -165,6 +165,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Disable social login buttons on login page (MVP - deferred social auth)
+SOCIALACCOUNT_LOGIN_ON = False
+ACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_AUTO_SIGNUP = False
+
 SOCIALACCOUNT_PROVIDERS = {
     "github": {
         "APP": {
@@ -194,6 +199,11 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
+
+# Login/logout redirects for MVP
+LOGIN_REDIRECT_URL = "/dashboard/"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
+LOGIN_URL = "/accounts/login/"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

@@ -30,7 +30,7 @@ ENTRYPOINT []
 
 CMD ["sh", "-c", "uv run manage.py migrate && \
     uv run manage.py collectstatic --noinput --clear && \
-    uv run manage.py createsuperuser --noinput && \
+    uv run manage.py shell --command \"from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.get_or_create(username='admin', defaults={'email': 'admin@example.com'})\" 2>/dev/null || true && \
     uv run manage.py loaddata mentor_data && \
     uv run manage.py loaddata tarot_data && \
     uv run uvicorn celestial_insight.asgi:application --host 0.0.0.0 --port 9090"]

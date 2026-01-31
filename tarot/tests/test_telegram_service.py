@@ -7,8 +7,9 @@ Covers:
 - send_reading_to_telegram helper function
 """
 
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
 
 from tarot.services.telegram_service import TelegramBotClient, send_reading_to_telegram
 
@@ -24,9 +25,11 @@ async def test_telegram_bot_client_init():
 @pytest.mark.asyncio
 async def test_telegram_bot_client_init_missing_token():
     """Test TelegramBotClient raises error when token is missing."""
-    with pytest.raises(ValueError, match="TELEGRAM_BOT_SECRET environment variable is required"):
-        with patch.dict("os.environ", {}, clear=True):
-            TelegramBotClient(bot_token=None)
+    with (
+        pytest.raises(ValueError, match="TELEGRAM_BOT_SECRET environment variable is required"),
+        patch.dict("os.environ", {}, clear=True),
+    ):
+        TelegramBotClient(bot_token=None)
 
 
 @pytest.mark.asyncio
@@ -157,11 +160,11 @@ async def test_send_reading_to_telegram():
     mock_client = AsyncMock()
     mock_client.send_message = AsyncMock(return_value=mock_response.json.return_value)
 
-    with patch("tarot.services.telegram_service.TelegramBotClient") as MockClient:
+    with patch("tarot.services.telegram_service.TelegramBotClient") as mock_client_class:
         mock_instance = MagicMock()
         mock_instance.__aenter__ = AsyncMock(return_value=mock_client)
         mock_instance.__aexit__ = AsyncMock(return_value=None)
-        MockClient.return_value = mock_instance
+        mock_client_class.return_value = mock_instance
 
         result = await send_reading_to_telegram(
             chat_id=123456789,
@@ -183,12 +186,12 @@ async def test_client_context_manager():
     """Test TelegramBotClient can be used as async context manager."""
     # This test verifies the context manager is properly set up
     # The actual httpx.AsyncClient is mocked in other tests
-    with patch("tarot.services.telegram_service.httpx.AsyncClient") as MockClient:
+    with patch("tarot.services.telegram_service.httpx.AsyncClient") as mock_client_class:
         mock_instance = AsyncMock()
         mock_client = AsyncMock()
         mock_instance.__aenter__.return_value = mock_client
         mock_instance.__aexit__.return_value = None
-        MockClient.return_value = mock_instance
+        mock_client_class.return_value = mock_instance
 
         # Verify context manager initializes properly
         async with TelegramBotClient(bot_token="test-token-123") as client:
@@ -197,4 +200,4 @@ async def test_client_context_manager():
             assert "telegram.org" in client.base_url
 
         # Verify httpx.AsyncClient was called with correct timeout
-        MockClient.assert_called_once_with(timeout=30.0)
+        mock_client_class.assert_called_once_with(timeout=30.0)

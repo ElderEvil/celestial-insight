@@ -7,6 +7,7 @@ Provides async HTTP client for Telegram Bot API calls:
 - get_updates: Long polling for updates
 """
 
+import asyncio
 import os
 from dataclasses import dataclass
 from typing import Any
@@ -28,7 +29,8 @@ class TelegramBotClient:
     def __init__(self, bot_token: str | None = None):
         self.bot_token = bot_token or os.getenv("TELEGRAM_BOT_SECRET")
         if not self.bot_token:
-            raise ValueError("TELEGRAM_BOT_SECRET environment variable is required")
+            msg = "TELEGRAM_BOT_SECRET environment variable is required"
+            raise ValueError(msg)
         self.base_url = f"https://api.telegram.org/bot{self.bot_token}"
         self._client: httpx.AsyncClient | None = None
 
@@ -43,7 +45,8 @@ class TelegramBotClient:
     async def _request(self, method: str, data: dict[str, Any] | None = None) -> dict[str, Any]:
         """Make a request to the Telegram Bot API."""
         if not self._client:
-            raise RuntimeError("Client not initialized. Use async context manager.")
+            msg = "Client not initialized. Use async context manager."
+            raise RuntimeError(msg)
 
         url = f"{self.base_url}/{method}"
         response = await self._client.post(url, json=data)
@@ -74,7 +77,8 @@ class TelegramBotClient:
             "limit": limit,
             "timeout": timeout,
         }
-        return await self._request("getUpdates", data)
+        async with asyncio.timeout(timeout if timeout > 0 else None):
+            return await self._request("getUpdates", data)
 
 
 async def send_reading_to_telegram(chat_id: int, reading_text: str, question: str, mentor_name: str) -> dict[str, Any]:

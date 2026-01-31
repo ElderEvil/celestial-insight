@@ -10,6 +10,7 @@ Provides fixtures for:
 """
 
 import os
+from unittest.mock import MagicMock
 
 # Set dummy API key for tests - agents are mocked, never called
 os.environ.setdefault("OPENAI_API_KEY", "test-key-not-used")
@@ -24,6 +25,9 @@ django.setup()
 from django.contrib.auth.models import User  # noqa: E402
 
 from mentors.models import Mentor  # noqa: E402
+from tarot.agents.celestial_agent import CardResponse, CelestialInsightResponse  # noqa: E402
+from tarot.agents.tarot_support_agent import QuestionValidationResult  # noqa: E402
+from tarot.enums import ReadingTypeEnum  # noqa: E402
 from tarot.models import Card, Suit  # noqa: E402
 from users.models import UserProfile  # noqa: E402
 
@@ -34,7 +38,7 @@ def user(db) -> User:
     return User.objects.create_user(
         username="testuser",
         email="test@example.com",
-        password="testpass123",  # noqa: S106
+        password="testpass123",
     )
 
 
@@ -54,7 +58,7 @@ def user_with_low_tokens(db) -> tuple[User, UserProfile]:
     user = User.objects.create_user(
         username="pooruser",
         email="poor@example.com",
-        password="testpass123",  # noqa: S106
+        password="testpass123",
     )
     profile, created = UserProfile.objects.get_or_create(user=user, defaults={"available_tokens": 100})
     if not created:
@@ -136,10 +140,6 @@ def tarot_cards(suit) -> list[Card]:
 @pytest.fixture
 def mock_validation_result():
     """Factory for creating mock validation results from tarot_support_agent."""
-    from unittest.mock import MagicMock
-
-    from tarot.agents.tarot_support_agent import QuestionValidationResult
-    from tarot.enums import ReadingTypeEnum
 
     def _create_result(
         *,
@@ -165,9 +165,6 @@ def mock_validation_result():
 @pytest.fixture
 def mock_celestial_result(tarot_cards):
     """Factory for creating mock celestial insight results."""
-    from unittest.mock import MagicMock
-
-    from tarot.agents.celestial_agent import CardResponse, CelestialInsightResponse
 
     def _create_result(
         text: str = "The cards reveal a path of transformation ahead.",

@@ -52,7 +52,7 @@ class CardAdmin(admin.ModelAdmin):
                 format_html(
                     '<a href="{}" style="text-decoration: underline;">{}</a>',
                     reverse(
-                        f"admin:{obj._meta.app_label}_{obj._meta.model_name}_changelist",  # noqa: SLF001
+                        f"admin:{obj._meta.app_label}_{obj._meta.model_name}_changelist",
                     )
                     + f"?keywords__icontains={keyword.strip()}",
                     keyword.strip(),

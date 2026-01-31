@@ -10,8 +10,11 @@ Covers:
 import pytest
 from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 
 from users.models import UserProfile
+
+DEFAULT_TOKENS = 1000
 
 
 @pytest.mark.django_db
@@ -22,14 +25,14 @@ class TestTelegramAuthBootstrap:
         """Test that UserProfile is created when User is created via signal."""
         profile = user.profile
         assert profile is not None
-        assert profile.available_tokens == 1000  # DEFAULT_TOKENS
+        assert profile.available_tokens == DEFAULT_TOKENS
 
     def test_user_profile_has_default_tokens(self):
         """Test new user profile has default token balance."""
         user = User.objects.create_user(username="test_user", email="test@example.com")
         profile = UserProfile.objects.get(user=user)
 
-        assert profile.available_tokens == 1000
+        assert profile.available_tokens == DEFAULT_TOKENS
 
     def test_telegram_auth_creates_user(self):
         """Test TG auth creates a new user if not exists."""
@@ -59,7 +62,7 @@ class TestTelegramAuthBootstrap:
         """Test TG auth returns existing user without creating new."""
         # Create existing user
         existing_user = User.objects.create_user(username="existing_user", email="existing@tg.me")
-        social_account = SocialAccount.objects.create(provider="telegram", uid="999999999", user=existing_user)
+        SocialAccount.objects.create(provider="telegram", uid="999999999", user=existing_user)
 
         # Simulate TG auth lookup
         found_account = SocialAccount.objects.filter(provider="telegram", uid="999999999").first()
@@ -73,7 +76,7 @@ class TestTelegramAuthBootstrap:
         user = User.objects.create_user(username="profile_test_user", email="profile@test.com")
         profile = UserProfile.objects.get(user=user)
 
-        assert profile.available_tokens == 1000
+        assert profile.available_tokens == DEFAULT_TOKENS
         assert profile.preferences == {}
 
     def test_telegram_auth_social_account_linked(self):
@@ -109,7 +112,7 @@ class TestUserProfileSignals:
 
         profile = UserProfile.objects.get(user=user)
         assert profile is not None
-        assert profile.available_tokens == 1000
+        assert profile.available_tokens == DEFAULT_TOKENS
 
     def test_profile_not_duplicated_on_update(self):
         """Test profile is not duplicated when user is updated."""
@@ -142,7 +145,7 @@ class TestSocialAccountIntegrity:
         SocialAccount.objects.create(provider="telegram", uid="666666666", user=user1)
 
         # Second account with same telegram_id should fail
-        with pytest.raises(Exception):  # IntegrityError
+        with pytest.raises(IntegrityError):
             SocialAccount.objects.create(provider="telegram", uid="666666666", user=user2)
 
     def test_social_account_cascade_delete(self):

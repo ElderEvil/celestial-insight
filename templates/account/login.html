@@ -29,16 +29,5 @@
   </form>
   
   <p>Don't have an account? <a href="{% url 'account_signup' %}">Sign up</a></p>
-  
-  <hr>
-  <p>Or sign in with:</p>
-  <nav aria-label="Social login">
-    <ul>
-      <li><a href="{% url 'socialaccount_login' 'google' %}">Google</a></li>
-      <li><a href="{% url 'socialaccount_login' 'github' %}">GitHub</a></li>
-    </ul>
-  </nav>
-  
-  {% include "socialaccount/snippets.html" %}
 </article>
 {% endblock %}

@@ -11,6 +11,8 @@ from ninja_extra.throttling import UserRateThrottle
 
 from tarot.throttling import UserReadingThrottle
 
+THROTTLE_DURATION = 3600
+
 
 @pytest.mark.django_db(transaction=True)
 class TestUserReadingThrottle:
@@ -40,4 +42,4 @@ class TestUserReadingThrottle:
         """Throttle duration is 3600 seconds (1 hour)."""
         throttle = UserReadingThrottle()
         # Duration should be 3600 seconds for hourly rate
-        assert throttle.duration == 3600
+        assert throttle.duration == THROTTLE_DURATION
