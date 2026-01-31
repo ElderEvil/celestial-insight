@@ -8,6 +8,7 @@ Provides session-authenticated pages for:
 
 from asgiref.sync import sync_to_async
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LogoutView
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -17,6 +18,24 @@ from tarot.services.reading_service import MIN_TOKEN_COST, create_reading
 from users.models import UserProfile
 
 MIN_QUESTION_LENGTH = 5
+
+
+class HTMXLogoutView(LogoutView):
+    """Custom logout view that handles HTMX requests gracefully."""
+
+    def dispatch(self, request, *args, **kwargs):
+        # Check if it's an HTMX request
+        if request.headers.get("HX-Request") == "true":
+            # Log out the user
+            from django.contrib.auth import logout
+
+            logout(request)
+            # Return HTMX redirect to login page
+            response = HttpResponse(status=204)
+            response["HX-Redirect"] = "/accounts/login/"
+            return response
+        # Fall back to regular logout for non-HTMX requests
+        return super().dispatch(request, *args, **kwargs)
 
 
 @login_required

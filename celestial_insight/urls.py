@@ -8,10 +8,11 @@ from tarot import views as tarot_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accounts/", include("allauth.urls")),
+    path("accounts/", include("allauth.account.urls")),
     path("api/", api.urls),
     path("dashboard/", tarot_views.dashboard, name="dashboard"),
-    path("read/", tarot_views.create_reading, name="create_reading"),
+    path("read/", tarot_views.create_reading_view, name="create_reading"),
+    path("logout/", tarot_views.HTMXLogoutView.as_view(), name="htmx_logout"),
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]
 
