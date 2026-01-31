@@ -222,9 +222,9 @@ Parallel Speedup: ~25% faster than sequential
   ```
 
   **Evidence to Capture**:
-  - [ ] New keyboard layout structure (code inspection)
-  - [ ] Bot startup without errors
-  - [ ] Help command shows proper menu structure
+  - [x] New keyboard layout structure (code inspection)
+  - [x] Bot startup without errors
+  - [x] Help command shows proper menu structure
 
   **Commit**: YES
   - Message: `feat(bot): remove /start from main menu keyboard`
@@ -308,9 +308,9 @@ Parallel Speedup: ~25% faster than sequential
   ```
 
   **Evidence to Capture**:
-  - [ ] Mentor API data retrieval verification
-  - [ ] Inline keyboard button construction
-  - [ ] Callback handler registration
+  - [x] Mentor API data retrieval verification
+  - [x] Inline keyboard button construction
+  - [x] Callback handler registration
 
   **Commit**: YES
   - Message: `feat(bot): add mentor selection inline keyboard to reading flow`
@@ -388,9 +388,9 @@ Parallel Speedup: ~25% faster than sequential
   ```
 
   **Evidence to Capture**:
-  - [ ] Successful reading creation with insight
-  - [ ] Non-fallback celestial insight text
-  - [ ] Proper error message handling
+  - [x] Successful reading creation with insight
+  - [x] Non-fallback celestial insight text
+  - [x] Proper error message handling
 
   **Commit**: YES
   - Message: `fix(bot): display actual celestial insights in reading responses`
@@ -462,9 +462,9 @@ Parallel Speedup: ~25% faster than sequential
   ```
 
   **Evidence to Capture**:
-  - [ ] Conversation states properly defined
-  - [ ] ConversationHandler includes mentor selection state
-  - [ ] State transition logic implemented
+  - [x] Conversation states properly defined
+  - [x] ConversationHandler includes mentor selection state
+  - [x] State transition logic implemented
 
   **Commit**: YES
   - Message: `feat(bot): add mentor selection state to reading conversation`
@@ -530,9 +530,9 @@ Parallel Speedup: ~25% faster than sequential
   ```
 
   **Evidence to Capture**:
-  - [ ] Fallback handlers properly registered
-  - [ ] Cancel command terminates conversation gracefully
-  - [ ] Unexpected input handled properly
+  - [x] Fallback handlers properly registered
+  - [x] Cancel command terminates conversation gracefully
+  - [x] Unexpected input handled properly
 
   **Commit**: YES
   - Message: `feat(bot): add fallback handlers and navigation to reading flow`
@@ -568,8 +568,8 @@ curl localhost:8000/api/mentors/?is_active=true  # Expected: Array of active men
 4. User sends question → Bot creates reading + shows actual AI insight
 
 ### Final Checklist
-- [ ] Main menu excludes /start button
-- [ ] `/reading` starts with mentor selection
-- [ ] Mentor selection shows active mentors with levels
-- [ ] Reading responses display actual celestial insights
-- [ ] Cancel/back navigation works throughout flow
+- [x] Main menu excludes /start button
+- [x] `/reading` starts with mentor selection
+- [x] Mentor selection shows active mentors with levels
+- [x] Reading responses display actual celestial insights
+- [x] Cancel/back navigation works throughout flow
