@@ -310,7 +310,9 @@ class BotHandlers:
 
         user = update.message.from_user
 
-        auth = await self.post_request("/api/tg/users/auth", {"telegram_id": user.id})
+        auth = await self.post_request(
+            "/api/tg/users/auth", {"telegram_id": user.id, "username": user.username or f"user_{user.id}"}
+        )
 
         if not auth or not auth.get("ok"):
             await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
@@ -330,12 +332,13 @@ class BotHandlers:
 
                 if response.status_code == HTTP_OK:
                     result = response.json()
-                    if isinstance(result, dict) and result.get("ok"):
-                        reading = result.get("result", {})
-                        text = f"🔮 *Your Reading*\n\n{reading.get('insight', 'The cards have spoken.')}"
+                    # API returns flat JSON: ReadingSchema or error string
+                    if isinstance(result, dict):
+                        insight = result.get("celestial_insight", "The cards have spoken.")
+                        text = f"🔮 *Your Reading*\n\n{insight}"
                         await update.message.reply_text(text, parse_mode="Markdown")
                     else:
-                        await update.message.reply_text(f"⚠️ {result.get('message', 'Error creating reading')}")
+                        await update.message.reply_text(f"⚠️ {result}")
                 elif response.status_code == 401:
                     logger.warning("Unauthorized reading creation for user %s", user.id)
                     await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
