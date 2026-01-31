@@ -359,7 +359,23 @@ class BotHandlers:
                     if isinstance(result, str):
                         await update.message.reply_text(f"⚠️ {result}")
                     elif isinstance(result, dict):
-                        insight = result.get("celestial_insight", "").strip()
+                        reading_id = result.get("id")
+                        if reading_id:
+                            # Now generate the celestial insight
+                            insight_response = await client.post(
+                                f"{self.api_url}/api/tg/tarot/readings/{reading_id}/insight",
+                                headers=headers,
+                            )
+                            if insight_response.status_code == HTTP_OK:
+                                insight_result = insight_response.json()
+                                if isinstance(insight_result, dict):
+                                    insight = insight_result.get("celestial_insight", "").strip()
+                                else:
+                                    insight = str(insight_result)
+                            else:
+                                insight = "The cards have spoken, but the celestial insight is being prepared."
+                        else:
+                            insight = "The cards have spoken."
                         if not insight:
                             insight = "The cards have spoken."
                         text = f"🔮 *Your Reading*\n\n{insight}"
