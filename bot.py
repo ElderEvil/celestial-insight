@@ -555,12 +555,15 @@ class BotHandlers:
 
         readings = await self.fetch_data_with_auth(f"/api/tg/tarot/readings/my?telegram_id={user.id}", access_token)
 
-        if not readings or not readings.get("results"):
+        # API returns list directly, not dict with "results"
+        readings_list = readings if isinstance(readings, list) else readings.get("results", []) if readings else []
+
+        if not readings_list:
             await update.message.reply_text("⚠️ No past readings found.")
             return
 
         text = "📜 *Your Tarot Readings:*\n\n"
-        for reading in readings.get("results", [])[:5]:  # Limit to 5 recent
+        for reading in readings_list[:5]:  # Limit to 5 recent
             text += (
                 f"🔮 *Type:* {reading.get('reading_type', 'Unknown').replace('_', ' ').title()}\n"
                 f"📅 *Date:* {reading.get('date', 'N/A')[:10]}\n"
