@@ -55,11 +55,11 @@ Enable seamless account unification between Telegram bot and web UI using email 
 - Unified token balance across all interfaces
 
 ### Definition of Done
-- [ ] Telegram users can set email via `/email` command
-- [ ] Web UI shows Google/GitHub login buttons
-- [ ] Web signup merges with existing Telegram account if email matches
-- [ ] Token balance shared across Telegram and web interfaces
-- [ ] Reading history preserved during account merging
+- [x] Telegram users can set email via `/email` command
+- [x] Web UI shows Google/GitHub login buttons
+- [x] Web signup merges with existing Telegram account if email matches
+- [x] Token balance shared across Telegram and web interfaces
+- [x] Reading history preserved during account merging
 
 ### Must Have
 - Email bridging functionality working
@@ -165,7 +165,7 @@ Parallel Speedup: ~30% faster than sequential
 
 ## TODOs
 
-- [ ] 1. Add /email Command to Telegram Bot
+- [x] 1. Add /email Command to Telegram Bot
 
   **What to do**:
   - Add `/email` command handler to `bot.py`
@@ -236,16 +236,16 @@ Parallel Speedup: ~30% faster than sequential
   ```
 
   **Evidence to Capture**:
-  - [ ] Email validation working for valid emails
-  - [ ] Error handling for invalid email formats
-  - [ ] API integration for updating user email
+  - [x] Email validation working for valid emails
+  - [x] Error handling for invalid email formats
+  - [x] API integration for updating user email
 
   **Commit**: YES
   - Message: `feat(bot): add /email command for account linking`
   - Files: `bot.py`, `users/api.py`, `users/schemas.py`
   - Pre-commit: `uv run python -c "from bot import BotHandlers; print('imports ok')"`
 
-- [ ] 2. Enable Social Auth in Settings
+- [x] 2. Enable Social Auth in Settings
 
   **What to do**:
   - Change `SOCIALACCOUNT_LOGIN_ON = False` to `True` in `celestial_insight/settings.py`
@@ -308,16 +308,16 @@ Parallel Speedup: ~30% faster than sequential
   ```
 
   **Evidence to Capture**:
-  - [ ] SOCIALACCOUNT_LOGIN_ON changed to True
-  - [ ] Social login buttons visible on login page
-  - [ ] Environment variables configured for OAuth
+  - [x] SOCIALACCOUNT_LOGIN_ON changed to True
+  - [x] Social login buttons visible on login page
+  - [x] Environment variables configured for OAuth
 
   **Commit**: YES
   - Message: `feat(auth): enable Google/GitHub social login buttons`
   - Files: `celestial_insight/settings.py`
   - Pre-commit: `uv run python manage.py check`
 
-- [ ] 3. Auto-Link on Web Signup
+- [x] 3. Auto-Link on Web Signup
 
   **What to do**:
   - Create custom allauth adapter in `users/adapters.py`
@@ -391,16 +391,16 @@ Parallel Speedup: ~30% faster than sequential
   ```
 
   **Evidence to Capture**:
-  - [ ] Custom allauth adapter created and configured
-  - [ ] Account merge working without duplicates
-  - [ ] Token balance preserved during merge
+  - [x] Custom allauth adapter created and configured
+  - [x] Account merge working without duplicates
+  - [x] Token balance preserved during merge
 
   **Commit**: YES
   - Message: `feat(auth): add auto-merge for web signup with existing Telegram users`
   - Files: `users/adapters.py`, `celestial_insight/settings.py`
   - Pre-commit: `uv run python manage.py check`
 
-- [ ] 4. Update Telegram Auth to Check Existing Emails
+- [x] 4. Update Telegram Auth to Check Existing Emails
 
   **What to do**:
   - Modify `/api/tg/users/auth` endpoint in `users/api.py`
@@ -470,16 +470,16 @@ Parallel Speedup: ~30% faster than sequential
   ```
 
   **Evidence to Capture**:
-  - [ ] Telegram auth links to existing web users
-  - [ ] No duplicate accounts created
-  - [ ] Token balance preserved correctly
+  - [x] Telegram auth links to existing web users
+  - [x] No duplicate accounts created
+  - [x] Token balance preserved correctly
 
   **Commit**: YES
   - Message: `feat(auth): link Telegram accounts to existing web users by email`
   - Files: `users/api.py`
   - Pre-commit: `curl localhost:8000/api/tg/users/auth | jq`
 
-- [ ] 5. Test Full Unification Flow
+- [x] 5. Test Full Unification Flow
 
   **What to do**:
   - Create comprehensive test of the full account unification flow
@@ -564,10 +564,10 @@ Parallel Speedup: ~30% faster than sequential
   ```
 
   **Evidence to Capture**:
-  - [ ] Full unification flow working end-to-end
-  - [ ] Token balance shared across interfaces
-  - [ ] Social login integration working
-  - [ ] No duplicate accounts created during testing
+  - [x] Full unification flow working end-to-end
+  - [x] Token balance shared across interfaces
+  - [x] Social login integration working
+  - [x] No duplicate accounts created during testing
 
   **Commit**: YES
   - Message: `test(auth): verify complete account unification flow`
@@ -618,8 +618,8 @@ python bot.py  # Expected: Bot starts with /email command
 4. Unified account with Telegram + Google providers
 
 ### Final Checklist
-- [ ] `/email` command works in Telegram bot
-- [ ] Google/GitHub buttons visible on web login
-- [ ] Web signup merges with Telegram accounts by email
-- [ ] Token balance shared across all interfaces
-- [ ] Reading history preserved during merging
+- [x] `/email` command works in Telegram bot
+- [x] Google/GitHub buttons visible on web login
+- [x] Web signup merges with Telegram accounts by email
+- [x] Token balance shared across all interfaces
+- [x] Reading history preserved during merging
