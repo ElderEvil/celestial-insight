@@ -196,6 +196,8 @@ SOCIALACCOUNT_PROVIDERS = {
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+ACCOUNT_ADAPTER = "users.adapters.AccountAdapter"
+
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
