@@ -305,9 +305,10 @@ class BotHandlers:
 
     async def create_reading(self, update, context):
         """Create a tarot reading for the user."""
+        import httpx
+
         user = update.message.from_user
 
-        # First authenticate
         auth = await self.post_request("/api/tg/users/auth", {"telegram_id": user.id})
 
         if not auth or not auth.get("ok"):
@@ -316,27 +317,58 @@ class BotHandlers:
 
         access_token = auth.get("access")
 
-        # Create reading
-        import httpx
+        for attempt in range(MAX_RETRIES):
+            try:
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    headers = {"Authorization": f"Bearer {access_token}"}
+                    response = await client.post(
+                        f"{self.api_url}/api/tg/tarot/readings/",
+                        json={"question": "What guidance do you have for me?"},
+                        headers=headers,
+                    )
 
-        async with httpx.AsyncClient() as client:
-            headers = {"Authorization": f"Bearer {access_token}"}
-            response = await client.post(
-                f"{self.api_url}/api/tg/tarot/readings/",
-                json={"question": "What guidance do you have for me?"},
-                headers=headers,
-            )
-
-        if response.status_code == HTTP_OK:
-            result = response.json()
-            if isinstance(result, dict) and result.get("ok"):
-                reading = result.get("result", {})
-                text = f"🔮 *Your Reading*\n\n{reading.get('insight', 'The cards have spoken.')}"
-                await update.message.reply_text(text, parse_mode="Markdown")
-            else:
-                await update.message.reply_text(f"⚠️ {result.get('message', 'Error creating reading')}")
-        else:
-            await update.message.reply_text("⚠️ Error creating tarot reading.")
+                if response.status_code == HTTP_OK:
+                    result = response.json()
+                    if isinstance(result, dict) and result.get("ok"):
+                        reading = result.get("result", {})
+                        text = f"🔮 *Your Reading*\n\n{reading.get('insight', 'The cards have spoken.')}"
+                        await update.message.reply_text(text, parse_mode="Markdown")
+                    else:
+                        await update.message.reply_text(f"⚠️ {result.get('message', 'Error creating reading')}")
+                elif response.status_code == 401:
+                    logger.warning("Unauthorized reading creation for user %s", user.id)
+                    await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
+                elif response.status_code == 422:
+                    logger.error("Validation error creating reading: %s", response.text)
+                    await update.message.reply_text("⚠️ Invalid request. Please try again.")
+                elif response.status_code >= 500:
+                    logger.error("Server error %s creating reading", response.status_code)
+                    if attempt < MAX_RETRIES - 1:
+                        await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                        continue
+                    await update.message.reply_text("⚠️ Server error. Please try again later.")
+                else:
+                    logger.error("API error %s creating reading", response.status_code)
+                    await update.message.reply_text("⚠️ Error creating tarot reading.")
+                return
+            except httpx.TimeoutException:
+                logger.error("Timeout creating reading (attempt %d/%d)", attempt + 1, MAX_RETRIES)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                await update.message.reply_text("⚠️ Unable to connect to server. Please try again.")
+                return
+            except httpx.ConnectError as e:
+                logger.error("Connection error creating reading (attempt %d/%d): %s", attempt + 1, MAX_RETRIES, e)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                await update.message.reply_text("⚠️ Unable to connect to server. Please try again.")
+                return
+            except Exception as e:
+                logger.error("Unexpected error creating reading: %s", e)
+                await update.message.reply_text("⚠️ An unexpected error occurred. Please try again.")
+                return
 
     async def list_reading_history(self, update, context):
         """Fetch and display the user's tarot reading history."""

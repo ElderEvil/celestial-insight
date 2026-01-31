@@ -27,6 +27,8 @@ from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 logger = logging.getLogger(__name__)
 
 HTTP_OK = 200
+MAX_RETRIES = 3
+RETRY_DELAY = 1
 
 
 class Command(BaseCommand):
@@ -90,16 +92,92 @@ class Command(BaseCommand):
         await app.run_polling()
 
     async def fetch_data(self, api_url: str, endpoint: str) -> dict[str, Any] | None:
-        """Fetch data from Django-Ninja API."""
-        async with httpx.AsyncClient() as client:
-            response = await client.get(f"{api_url}{endpoint}")
-            return response.json() if response.status_code == HTTP_OK else None
+        """Fetch data from Django-Ninja API with error handling and retries."""
+        for attempt in range(MAX_RETRIES):
+            try:
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    response = await client.get(f"{api_url}{endpoint}")
+                    if response.status_code == HTTP_OK:
+                        return response.json()
+                    elif response.status_code == 401:
+                        logger.warning("Unauthorized access to %s", endpoint)
+                        return None
+                    elif response.status_code == 404:
+                        logger.warning("Endpoint not found: %s", endpoint)
+                        return None
+                    elif response.status_code == 422:
+                        logger.error("Validation error for %s: %s", endpoint, response.text)
+                        return None
+                    elif response.status_code >= 500:
+                        logger.error("Server error %s for %s", response.status_code, endpoint)
+                        if attempt < MAX_RETRIES - 1:
+                            await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                            continue
+                        return None
+                    else:
+                        logger.error("API error %s for %s", response.status_code, endpoint)
+                        return None
+            except httpx.TimeoutException:
+                logger.error("Timeout fetching %s (attempt %d/%d)", endpoint, attempt + 1, MAX_RETRIES)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                return None
+            except httpx.ConnectError as e:
+                logger.error("Connection error fetching %s (attempt %d/%d): %s", endpoint, attempt + 1, MAX_RETRIES, e)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                return None
+            except Exception as e:
+                logger.error("Unexpected error fetching %s: %s", endpoint, e)
+                return None
+        return None
 
     async def post_request(self, api_url: str, endpoint: str, data: dict) -> dict[str, Any] | None:
-        """Send POST request to API."""
-        async with httpx.AsyncClient() as client:
-            response = await client.post(f"{api_url}{endpoint}", json=data)
-            return response.json() if response.status_code == HTTP_OK else None
+        """Send POST request to API with error handling and retries."""
+        for attempt in range(MAX_RETRIES):
+            try:
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    response = await client.post(f"{api_url}{endpoint}", json=data)
+                    if response.status_code == HTTP_OK:
+                        return response.json()
+                    elif response.status_code == 401:
+                        logger.warning("Unauthorized POST to %s", endpoint)
+                        return None
+                    elif response.status_code == 404:
+                        logger.warning("Endpoint not found: %s", endpoint)
+                        return None
+                    elif response.status_code == 422:
+                        logger.error("Validation error for %s: %s", endpoint, response.text)
+                        return None
+                    elif response.status_code >= 500:
+                        logger.error("Server error %s for %s", response.status_code, endpoint)
+                        if attempt < MAX_RETRIES - 1:
+                            await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                            continue
+                        return None
+                    else:
+                        logger.error("API error %s for %s", response.status_code, endpoint)
+                        return None
+            except httpx.TimeoutException:
+                logger.error("Timeout posting to %s (attempt %d/%d)", endpoint, attempt + 1, MAX_RETRIES)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                return None
+            except httpx.ConnectError as e:
+                logger.error(
+                    "Connection error posting to %s (attempt %d/%d): %s", endpoint, attempt + 1, MAX_RETRIES, e
+                )
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                return None
+            except Exception as e:
+                logger.error("Unexpected error posting to %s: %s", endpoint, e)
+                return None
+        return None
 
     async def send_menu(self, update, keyboard=None):
         """Send main menu with buttons."""
@@ -277,7 +355,6 @@ class Command(BaseCommand):
         user = update.message.from_user
         api_url = context.bot_data["api_url"]
 
-        # First authenticate
         auth = await self.post_request(api_url, "/api/tg/users/auth", {"telegram_id": user.id})
 
         if not auth or not auth.get("ok"):
@@ -286,25 +363,58 @@ class Command(BaseCommand):
 
         access_token = auth.get("access")
 
-        # Create reading
-        async with httpx.AsyncClient() as client:
-            headers = {"Authorization": f"Bearer {access_token}"}
-            response = await client.post(
-                f"{api_url}/api/tg/tarot/readings/",
-                json={"question": "What guidance do you have for me?"},
-                headers=headers,
-            )
+        for attempt in range(MAX_RETRIES):
+            try:
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    headers = {"Authorization": f"Bearer {access_token}"}
+                    response = await client.post(
+                        f"{api_url}/api/tg/tarot/readings/",
+                        json={"question": "What guidance do you have for me?"},
+                        headers=headers,
+                    )
 
-        if response.status_code == HTTP_OK:
-            result = response.json()
-            if isinstance(result, dict) and result.get("ok"):
-                reading = result.get("result", {})
-                text = f"🔮 *Your Reading*\n\n{reading.get('insight', 'The cards have spoken.')}"
-                await update.message.reply_text(text, parse_mode="Markdown")
-            else:
-                await update.message.reply_text(f"⚠️ {result.get('message', 'Error creating reading')}")
-        else:
-            await update.message.reply_text("⚠️ Error creating tarot reading.")
+                if response.status_code == HTTP_OK:
+                    result = response.json()
+                    if isinstance(result, dict) and result.get("ok"):
+                        reading = result.get("result", {})
+                        text = f"🔮 *Your Reading*\n\n{reading.get('insight', 'The cards have spoken.')}"
+                        await update.message.reply_text(text, parse_mode="Markdown")
+                    else:
+                        await update.message.reply_text(f"⚠️ {result.get('message', 'Error creating reading')}")
+                elif response.status_code == 401:
+                    logger.warning("Unauthorized reading creation for user %s", user.id)
+                    await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
+                elif response.status_code == 422:
+                    logger.error("Validation error creating reading: %s", response.text)
+                    await update.message.reply_text("⚠️ Invalid request. Please try again.")
+                elif response.status_code >= 500:
+                    logger.error("Server error %s creating reading", response.status_code)
+                    if attempt < MAX_RETRIES - 1:
+                        await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                        continue
+                    await update.message.reply_text("⚠️ Server error. Please try again later.")
+                else:
+                    logger.error("API error %s creating reading", response.status_code)
+                    await update.message.reply_text("⚠️ Error creating tarot reading.")
+                return
+            except httpx.TimeoutException:
+                logger.error("Timeout creating reading (attempt %d/%d)", attempt + 1, MAX_RETRIES)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                await update.message.reply_text("⚠️ Unable to connect to server. Please try again.")
+                return
+            except httpx.ConnectError as e:
+                logger.error("Connection error creating reading (attempt %d/%d): %s", attempt + 1, MAX_RETRIES, e)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                await update.message.reply_text("⚠️ Unable to connect to server. Please try again.")
+                return
+            except Exception as e:
+                logger.error("Unexpected error creating reading: %s", e)
+                await update.message.reply_text("⚠️ An unexpected error occurred. Please try again.")
+                return
 
     async def list_reading_history(self, update, context):
         """Fetch and display the user's tarot reading history."""
