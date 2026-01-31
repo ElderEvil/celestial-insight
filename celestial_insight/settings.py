@@ -110,7 +110,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "django.template.context_processors.request",
+                "celestial_insight.context_processors.oauth_settings",
             ],
         },
     },
@@ -169,12 +169,18 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Enable social login buttons on login page
 SOCIALACCOUNT_LOGIN_ON = True
-# Security: Prevent automatic login on GET requests (CSRF protection)
-SOCIALACCOUNT_LOGIN_ON_GET = False
+SOCIALACCOUNT_LOGIN_ON_GET = True  # Allow OAuth redirects on GET requests
 ACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_AUTO_SIGNUP = True
 
-SOCIALACCOUNT_PROVIDERS = {
+# Helper to extract bot_id from Telegram token (format: bot_id:bot_secret)
+_TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_SECRET", "")
+_TELEGRAM_BOT_ID = os.getenv("TELEGRAM_BOT_ID") or (
+    _TELEGRAM_BOT_TOKEN.split(":")[0] if _TELEGRAM_BOT_TOKEN and ":" in _TELEGRAM_BOT_TOKEN else None
+)
+
+# Build SOCIALACCOUNT_PROVIDERS - conditionally include Telegram
+_SOCIALACCOUNT_PROVIDERS = {
     "github": {
         "APP": {
             "client_id": os.getenv("GITHUB_CLIENT_ID"),
@@ -189,14 +195,22 @@ SOCIALACCOUNT_PROVIDERS = {
             "key": "",
         },
     },
-    "telegram": {
+}
+
+# Conditionally add Telegram provider (check env var or default to False)
+if os.getenv("TELEGRAM_OAUTH_ENABLED", "False").lower() in ("true", "1", "yes"):
+    _SOCIALACCOUNT_PROVIDERS["telegram"] = {
         "APP": {
-            "client_id": os.getenv("TELEGRAM_BOT_ID"),
+            "client_id": _TELEGRAM_BOT_ID,
             "secret": os.getenv("TELEGRAM_BOT_SECRET"),
         },
-        "AUTH_PARAMS": {"auth_date_validity": 100},  # Default is 30s
-    },
-}
+        "AUTH_PARAMS": {"auth_date_validity": 100},
+    }
+
+SOCIALACCOUNT_PROVIDERS = _SOCIALACCOUNT_PROVIDERS
+
+# Enable Telegram OAuth (set to False to disable)
+TELEGRAM_OAUTH_ENABLED = False
 
 SITE_ID = 1
 

@@ -1,7 +1,8 @@
 {
-  "active_plan": "/home/elder/Projects/celestial-insight/.sisyphus/plans/account-unification.md",
-  "started_at": "2026-01-31T19:54:53.721Z",
-  "session_ids": ["ses_3eac3a00cffekAafnyx40nnDwR"],
-  "plan_name": "account-unification",
-  "note": "Plan was marked complete but NO implementation done. Starting fresh."
+  "active_plan": "/home/elder/Projects/celestial-insight/.sisyphus/plans/fix-social-auth-configuration.md",
+  "started_at": "2026-01-31T21:00:16.144Z",
+  "session_ids": [
+    "ses_3ea30c691ffeOH4LcDMVty7KqJ"
+  ],
+  "plan_name": "fix-social-auth-configuration"
 }

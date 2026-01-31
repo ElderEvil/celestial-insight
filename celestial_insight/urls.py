@@ -19,4 +19,10 @@ urlpatterns = [
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]
 
+# Conditionally include Telegram OAuth URLs
+if getattr(settings, "TELEGRAM_OAUTH_ENABLED", False):
+    urlpatterns += [
+        path("accounts/", include("allauth.socialaccount.providers.telegram.urls")),
+    ]
+
 urlpatterns += [path("i18n/", include("django.conf.urls.i18n"))]
