@@ -40,19 +40,26 @@ def user(db) -> User:
 
 @pytest.fixture
 def user_profile(user) -> UserProfile:
-    """Create a user profile with default tokens."""
-    return UserProfile.objects.create(user=user, available_tokens=1000)
+    """Create a user profile with default tokens (handles signal-created profiles)."""
+    profile, created = UserProfile.objects.get_or_create(user=user, defaults={"available_tokens": 1000})
+    if not created:
+        profile.available_tokens = 1000
+        profile.save()
+    return profile
 
 
 @pytest.fixture
 def user_with_low_tokens(db) -> tuple[User, UserProfile]:
-    """Create a user with insufficient tokens for readings."""
+    """Create a user with insufficient tokens for readings (handles signal-created profiles)."""
     user = User.objects.create_user(
         username="pooruser",
         email="poor@example.com",
         password="testpass123",  # noqa: S106
     )
-    profile = UserProfile.objects.create(user=user, available_tokens=100)
+    profile, created = UserProfile.objects.get_or_create(user=user, defaults={"available_tokens": 100})
+    if not created:
+        profile.available_tokens = 100
+        profile.save()
     return user, profile
 
 
