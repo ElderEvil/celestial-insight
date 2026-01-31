@@ -24,16 +24,16 @@
 - [x] Telegram Bot API client wrapper (httpx)
 - [x] Telegram bot runner (management command, long polling)
 - [x] Telegram auth bootstrap (UserProfile signal connected)
-- [x] 83+ tests passing
+- [x] Telegram bot integration tests (mocked) - 16 tests passing
+- [x] 85 tests passing (including regression tests for bug fixes)
 
 ### 🚧 In Progress
 
-- [ ] Telegram bot integration tests (mocked)
 - [ ] Playwright automated browser verification
 
 ### 📋 Remaining
 
-- [ ] Update ROADMAP.md with this MVP checklist
+- [ ] Update ROADMAP.md with this MVP checklist ✅ (just updated)
 
 ### Quick Commands
 
