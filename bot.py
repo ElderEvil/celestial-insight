@@ -362,7 +362,19 @@ class BotHandlers:
         """Handle back to menu callback - return to main menu."""
         query = update.callback_query
         await query.answer()
-        await self.send_menu(update)
+
+        # For callback queries, update.message is None, so we need to use query.message
+        keyboard = ReplyKeyboardMarkup(
+            [
+                [KeyboardButton("/mentors"), KeyboardButton("/me")],
+                [KeyboardButton("/cards"), KeyboardButton("/reading")],
+                [KeyboardButton("/history"), KeyboardButton("/help")],
+            ],
+            resize_keyboard=True,
+        )
+        await context.bot.send_message(
+            chat_id=query.message.chat_id, text="📜 Choose an option:", reply_markup=keyboard
+        )
         return ConversationHandler.END
 
     async def cancel_conversation(self, update, context):
