@@ -20,6 +20,7 @@ dependencies = [
     "beautifulsoup4>=4.12.3",
     "django-ninja-jwt>=5.3.5",
     "psycopg[binary]>=3.1.0",
+    "python-telegram-bot>=21.0",
 ]
 
 [dependency-groups]
