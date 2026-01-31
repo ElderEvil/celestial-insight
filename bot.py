@@ -418,10 +418,12 @@ class BotHandlers:
                         if reading_id:
                             await update.message.reply_text("🔮 Generating your celestial insight...")
 
-                            insight_response = await client.post(
-                                f"{self.api_url}/api/tg/tarot/readings/{reading_id}/insight",
-                                headers=headers,
-                            )
+                            async with httpx.AsyncClient(timeout=30.0) as client:
+                                headers = {"Authorization": f"Bearer {access_token}"}
+                                insight_response = await client.post(
+                                    f"{self.api_url}/api/tg/tarot/readings/{reading_id}/insight",
+                                    headers=headers,
+                                )
                             if insight_response.status_code == HTTP_OK:
                                 insight_result = insight_response.json()
                                 logger.debug(f"Insight API response: {insight_result}")
@@ -540,6 +542,7 @@ def main():
             WAITING_FOR_QUESTION: [MessageHandler(filters.TEXT & ~filters.COMMAND, handlers.handle_reading_question)],
         },
         fallbacks=[CommandHandler("cancel", handlers.cancel_conversation)],
+        per_message=False,
     )
     app.add_handler(reading_conv)
 
