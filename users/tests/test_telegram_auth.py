@@ -39,18 +39,15 @@ class TestTelegramAuthBootstrap:
         telegram_id = "123456789"
         username = "new_tg_user"
 
-        # Simulate TG auth flow
         social_account = SocialAccount.objects.filter(provider="telegram", uid=telegram_id).first()
         assert social_account is None
 
-        # Create user
         user, created = User.objects.get_or_create(username=username, defaults={"email": f"{username}@tg.me"})
 
         if created:
             user.set_unusable_password()
             user.save()
 
-        # Create SocialAccount
         social_account = SocialAccount.objects.create(provider="telegram", uid=telegram_id, user=user)
 
         assert created is True
@@ -60,11 +57,9 @@ class TestTelegramAuthBootstrap:
 
     def test_telegram_auth_returns_existing_user(self):
         """Test TG auth returns existing user without creating new."""
-        # Create existing user
         existing_user = User.objects.create_user(username="existing_user", email="existing@tg.me")
         SocialAccount.objects.create(provider="telegram", uid="999999999", user=existing_user)
 
-        # Simulate TG auth lookup
         found_account = SocialAccount.objects.filter(provider="telegram", uid="999999999").first()
 
         assert found_account is not None
@@ -90,15 +85,28 @@ class TestTelegramAuthBootstrap:
 
     def test_telegram_auth_multiple_users_same_telegram_id(self):
         """Test TG auth handles same telegram_id correctly."""
-        # First user
         user1 = User.objects.create_user(username="user1_telegram", email="user1@tg.me")
         SocialAccount.objects.create(provider="telegram", uid="777777777", user=user1)
 
-        # Lookup should return the same user
         social_account = SocialAccount.objects.filter(provider="telegram", uid="777777777").first()
 
         assert social_account is not None
         assert social_account.user == user1
+
+    def test_telegram_auth_links_to_existing_web_user(self):
+        """Test TG auth links to existing web user with same email."""
+        web_user = User.objects.create_user(username="web_user", email="user@example.com")
+        web_profile = web_user.profile
+        initial_tokens = web_profile.available_tokens
+
+        existing_user = User.objects.filter(email="user@example.com").first()
+        assert existing_user is not None
+        assert existing_user == web_user
+
+        social_account = SocialAccount.objects.create(provider="telegram", uid="444444444", user=existing_user)
+
+        assert existing_user.profile.available_tokens == initial_tokens
+        assert social_account.user == web_user
 
 
 @pytest.mark.django_db
@@ -119,7 +127,7 @@ class TestUserProfileSignals:
         user = User.objects.create_user(username="update_test", email="update@test.com")
         profile1 = user.profile
 
-        user.save()  # Update
+        user.save()
         profile2 = user.profile
 
         assert profile1.id == profile2.id
@@ -144,7 +152,6 @@ class TestSocialAccountIntegrity:
 
         SocialAccount.objects.create(provider="telegram", uid="666666666", user=user1)
 
-        # Second account with same telegram_id should fail
         with pytest.raises(IntegrityError):
             SocialAccount.objects.create(provider="telegram", uid="666666666", user=user2)
 

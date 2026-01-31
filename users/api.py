@@ -66,7 +66,8 @@ class UsersTGController:
         """
         Authenticate Telegram user via Django-Allauth.
         - Checks if the user exists in SocialAccount.
-        - If not, registers the user via Telegram OAuth.
+        - If not, checks if a web user exists with the same email.
+        - Links Telegram to existing web user or creates new user.
         - Issues a JWT token for future API requests.
         """
 
@@ -77,14 +78,23 @@ class UsersTGController:
         if social_account:
             user = await sync_to_async(lambda: social_account.user)()
         else:
-            # Create user if not exists
-            user, created = await sync_to_async(
-                lambda: User.objects.get_or_create(username=data.username, defaults={"email": f"{data.username}@tg.me"})
-            )()
+            # Check if User with this email already exists from web signup
+            existing_user = await sync_to_async(lambda: User.objects.filter(email=data.username).first())()
 
-            if created:
-                user.set_unusable_password()
-                await sync_to_async(user.save)()
+            if existing_user:
+                # Link Telegram to existing web user
+                user = existing_user
+            else:
+                # Create user if not exists
+                user, created = await sync_to_async(
+                    lambda: User.objects.get_or_create(
+                        username=data.username, defaults={"email": f"{data.username}@tg.me"}
+                    )
+                )()
+
+                if created:
+                    user.set_unusable_password()
+                    await sync_to_async(user.save)()
 
             # Create a SocialAccount entry
             social_account = await sync_to_async(
