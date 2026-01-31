@@ -659,7 +659,12 @@ def main():
         print("  export TELEGRAM_BOT_SECRET='your_bot_token'")
         return 1
 
-    print(f"Starting Telegram bot with API URL: {api_url}")
+    print("=" * 60)
+    print("🔮 CELESTIAL INSIGHT - Telegram Bot")
+    print("=" * 60)
+    print(f"📡 API URL: {api_url}")
+    print(f"🔑 Bot Token: {token[:10]}...{token[-5:]}")
+    print("-" * 60)
 
     # Create application
     app = Application.builder().token(token).build()
@@ -668,6 +673,7 @@ def main():
     handlers = BotHandlers(api_url)
 
     # Register command handlers
+    print("📝 Registering command handlers...")
     app.add_handler(CommandHandler("start", handlers.start))
     app.add_handler(CommandHandler("help", handlers.show_help))
     app.add_handler(CommandHandler("mentors", handlers.list_mentors))
@@ -676,6 +682,7 @@ def main():
     app.add_handler(CommandHandler("cards", handlers.list_tarot_suits))
 
     # Conversation handler for /reading command
+    print("🔮 Registering /reading conversation handler...")
     reading_conv = ConversationHandler(
         entry_points=[CommandHandler("reading", handlers.create_reading)],
         states={
@@ -690,6 +697,7 @@ def main():
     app.add_handler(CommandHandler("history", handlers.list_reading_history))
 
     # Callback query handlers
+    print("🖱️  Registering callback handlers...")
     app.add_handler(CallbackQueryHandler(handlers.list_suit_cards, pattern=r"suit_.*"))
     app.add_handler(CallbackQueryHandler(handlers.show_card_details, pattern=r"card_.*"))
     app.add_handler(CallbackQueryHandler(handlers.back_to_suits, pattern="back_to_suits"))
@@ -698,7 +706,20 @@ def main():
     # Error handling
     app.add_error_handler(handlers.error_handler)
 
-    print("Bot is running. Press Ctrl+C to stop.")
+    print("-" * 60)
+    print("✅ Bot initialized successfully!")
+    print("📋 Available commands:")
+    print("   /start - Start the bot")
+    print("   /help - Show help message")
+    print("   /mentors - List available mentors")
+    print("   /me - Get your user info")
+    print("   /email - Update your email address")
+    print("   /cards - Browse tarot cards")
+    print("   /reading - Create a new reading")
+    print("   /history - View your reading history")
+    print("-" * 60)
+    print("🚀 Bot is running. Press Ctrl+C to stop.")
+    print("=" * 60)
 
     # python-telegram-bot v21+ handles event loop internally
     app.run_polling()
