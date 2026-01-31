@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from django.db import DatabaseError, transaction
 from django.shortcuts import aget_object_or_404
 from pydantic import ValidationError
+from pydantic_ai.exceptions import AgentRunError, UnexpectedModelBehavior, UsageLimitExceeded, UserError
+
+import httpx
 
 from mentors.models import Mentor
 from tarot.agents.celestial_agent import CardResponse, celestial_agent
@@ -54,10 +57,28 @@ async def create_reading(user, question: str, mentor_id: int, reading_type: Read
         theme = validation_result.data.theme
         spread_type = reading_type or validation_result.data.spread_type
 
+    except UsageLimitExceeded as e:
+        return f"AI service usage limit exceeded: {e}. Please try again later."
+    except AgentRunError as e:
+        logger.error(f"Agent run error in create_reading: {e}")
+        return "The reading service encountered an error. Please try again."
+    except UnexpectedModelBehavior as e:
+        return f"AI service returned an unexpected response: {e}. Please try again."
+    except UserError as e:
+        return f"Invalid request: {e}. Please review your question and try again."
+    except httpx.HTTPStatusError as e:
+        if e.response.status_code == 401:
+            return "AI service authentication failed. Please contact support."
+        return f"AI service error: {e.response.status_code}. Please try again."
+    except httpx.RequestError as e:
+        return "Unable to connect to AI service. Please check your connection and try again."
     except AttributeError as e:
         return f"Data validation error: Missing attribute - {e}"
     except ValidationError as e:
         return f"Validation error: {e}"
+    except Exception as e:
+        logger.error(f"Unexpected error in create_reading: {e}")
+        return "An unexpected error occurred while creating your reading. Please try again."
 
     return await Reading.objects.acreate(
         user=user,
@@ -136,8 +157,24 @@ async def generate_insight(user: User, reading_id: int):
         celestial_response = insight_result.data
         cards_data = celestial_response.cards
 
+    except UsageLimitExceeded as e:
+        return f"AI service usage limit exceeded: {e}. Please try again later."
+    except AgentRunError as e:
+        logger.error(f"Agent run error in generate_insight: {e}")
+        return "The insight generation service encountered an error. Please try again."
+    except UnexpectedModelBehavior as e:
+        return f"AI service returned an unexpected response: {e}. Please try again."
+    except UserError as e:
+        return f"Invalid request: {e}. Please try again."
+    except httpx.HTTPStatusError as e:
+        if e.response.status_code == 401:
+            return "AI service authentication failed. Please contact support."
+        return f"AI service error: {e.response.status_code}. Please try again."
+    except httpx.RequestError as e:
+        return "Unable to connect to AI service. Please check your connection and try again."
     except Exception as e:
-        return f"Error generating celestial insight: {e}"
+        logger.error(f"Unexpected error in generate_insight: {e}")
+        return "An unexpected error occurred while generating your insight. Please try again."
 
     try:
         card_objects = []
