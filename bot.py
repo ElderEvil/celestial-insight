@@ -13,6 +13,7 @@ Commands supported:
     /help - Show available commands
     /mentors - List available mentors
     /me - Show user profile and token balance
+    /email - Update user email address
     /cards - Browse tarot cards by suit
     /reading - Create a tarot reading
     /history - Show reading history
@@ -25,6 +26,7 @@ Environment variables:
 import asyncio
 import logging
 import os
+import re
 from pathlib import Path
 from typing import Any
 
@@ -62,24 +64,23 @@ class BotHandlers:
                     response = await client.get(f"{self.api_url}{endpoint}")
                     if response.status_code == HTTP_OK:
                         return response.json()
-                    elif response.status_code == 401:
+                    if response.status_code == 401:
                         logger.warning("Unauthorized access to %s", endpoint)
                         return None
-                    elif response.status_code == 404:
+                    if response.status_code == 404:
                         logger.warning("Endpoint not found: %s", endpoint)
                         return None
-                    elif response.status_code == 422:
+                    if response.status_code == 422:
                         logger.error("Validation error for %s: %s", endpoint, response.text)
                         return None
-                    elif response.status_code >= 500:
+                    if response.status_code >= 500:
                         logger.error("Server error %s for %s", response.status_code, endpoint)
                         if attempt < MAX_RETRIES - 1:
                             await asyncio.sleep(RETRY_DELAY * (attempt + 1))
                             continue
                         return None
-                    else:
-                        logger.error("API error %s for %s", response.status_code, endpoint)
-                        return None
+                    logger.error("API error %s for %s", response.status_code, endpoint)
+                    return None
             except httpx.TimeoutException:
                 logger.error("Timeout fetching %s (attempt %d/%d)", endpoint, attempt + 1, MAX_RETRIES)
                 if attempt < MAX_RETRIES - 1:
@@ -112,24 +113,23 @@ class BotHandlers:
                     response = await client.get(f"{self.api_url}{endpoint}", headers=headers)
                     if response.status_code == HTTP_OK:
                         return response.json()
-                    elif response.status_code == 401:
+                    if response.status_code == 401:
                         logger.warning("Unauthorized access to %s - token may be expired", endpoint)
                         return None
-                    elif response.status_code == 404:
+                    if response.status_code == 404:
                         logger.warning("Endpoint not found: %s", endpoint)
                         return None
-                    elif response.status_code == 422:
+                    if response.status_code == 422:
                         logger.error("Validation error for %s: %s", endpoint, response.text)
                         return None
-                    elif response.status_code >= 500:
+                    if response.status_code >= 500:
                         logger.error("Server error %s for %s", response.status_code, endpoint)
                         if attempt < MAX_RETRIES - 1:
                             await asyncio.sleep(RETRY_DELAY * (attempt + 1))
                             continue
                         return None
-                    else:
-                        logger.error("API error %s for %s", response.status_code, endpoint)
-                        return None
+                    logger.error("API error %s for %s", response.status_code, endpoint)
+                    return None
             except httpx.TimeoutException:
                 logger.error("Timeout fetching %s (attempt %d/%d)", endpoint, attempt + 1, MAX_RETRIES)
                 if attempt < MAX_RETRIES - 1:
@@ -157,24 +157,23 @@ class BotHandlers:
                     response = await client.post(f"{self.api_url}{endpoint}", json=data)
                     if response.status_code == HTTP_OK:
                         return response.json()
-                    elif response.status_code == 401:
+                    if response.status_code == 401:
                         logger.warning("Unauthorized POST to %s", endpoint)
                         return None
-                    elif response.status_code == 404:
+                    if response.status_code == 404:
                         logger.warning("Endpoint not found: %s", endpoint)
                         return None
-                    elif response.status_code == 422:
+                    if response.status_code == 422:
                         logger.error("Validation error for %s: %s", endpoint, response.text)
                         return None
-                    elif response.status_code >= 500:
+                    if response.status_code >= 500:
                         logger.error("Server error %s for %s", response.status_code, endpoint)
                         if attempt < MAX_RETRIES - 1:
                             await asyncio.sleep(RETRY_DELAY * (attempt + 1))
                             continue
                         return None
-                    else:
-                        logger.error("API error %s for %s", response.status_code, endpoint)
-                        return None
+                    logger.error("API error %s for %s", response.status_code, endpoint)
+                    return None
             except httpx.TimeoutException:
                 logger.error("Timeout posting to %s (attempt %d/%d)", endpoint, attempt + 1, MAX_RETRIES)
                 if attempt < MAX_RETRIES - 1:
@@ -231,6 +230,7 @@ class BotHandlers:
 /help - Show this help message
 /mentors - List all available mentors
 /me - Show your profile and token balance
+/email - Update your email address
 /cards - Browse tarot cards by suit
 /reading - Create a tarot reading
 /history - View your reading history
@@ -272,6 +272,76 @@ class BotHandlers:
             await update.message.reply_text(text, parse_mode="Markdown")
         else:
             await update.message.reply_text("⚠️ No user found. Try /start.")
+
+    async def handle_email(self, update, context):
+        """Handle /email command to update user email address."""
+        user = update.message.from_user
+        command_text = update.message.text.strip()
+
+        parts = command_text.split(maxsplit=1)
+        if len(parts) < 2:
+            await update.message.reply_text("📧 Usage: /email user@example.com")
+            return
+
+        email = parts[1].strip()
+
+        email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        if not re.match(email_pattern, email):
+            await update.message.reply_text("❌ Invalid email format. Please use: /email user@example.com")
+            return
+
+        access_token = context.user_data.get("access_token")
+        if not access_token:
+            await update.message.reply_text("🔐 Please authenticate first with /start")
+            return
+
+        import httpx
+
+        for attempt in range(MAX_RETRIES):
+            try:
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    headers = {"Authorization": f"Bearer {access_token}"}
+                    response = await client.patch(
+                        f"{self.api_url}/api/users/update-email",
+                        json={"email": email},
+                        headers=headers,
+                    )
+
+                if response.status_code == HTTP_OK:
+                    result = response.json()
+                    old_email = result.get("email", "N/A")
+                    await update.message.reply_text(f"✅ Email updated to: {old_email}")
+                    return
+                if response.status_code == 401:
+                    await update.message.reply_text("🔐 Authentication failed. Please try /start again.")
+                    return
+                if response.status_code == 422:
+                    await update.message.reply_text("❌ Validation error. Please check your email format.")
+                    return
+                logger.error("API error %s updating email: %s", response.status_code, response.text)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                await update.message.reply_text("⚠️ Failed to update email. Please try again later.")
+                return
+            except httpx.TimeoutException:
+                logger.error("Timeout updating email (attempt %d/%d)", attempt + 1, MAX_RETRIES)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                await update.message.reply_text("⚠️ Request timeout. Please try again.")
+                return
+            except httpx.ConnectError as e:
+                logger.error("Connection error updating email (attempt %d/%d): %s", attempt + 1, MAX_RETRIES, e)
+                if attempt < MAX_RETRIES - 1:
+                    await asyncio.sleep(RETRY_DELAY * (attempt + 1))
+                    continue
+                await update.message.reply_text("⚠️ Connection error. Please try again.")
+                return
+            except Exception as e:
+                logger.error("Unexpected error updating email: %s", e)
+                await update.message.reply_text("⚠️ An unexpected error occurred.")
+                return
 
     def group_cards_by_suit(self, cards, suits=None):
         """Group tarot cards by suit."""
@@ -533,7 +603,7 @@ class BotHandlers:
                     continue
                 await update.message.reply_text("⚠️ Unable to connect to server. Please try again.")
                 return ConversationHandler.END
-            except httpx.ConnectError as e:
+            except httpx.ConnectError:
                 if attempt < MAX_RETRIES - 1:
                     await asyncio.sleep(RETRY_DELAY * (attempt + 1))
                     continue
@@ -602,6 +672,7 @@ def main():
     app.add_handler(CommandHandler("help", handlers.show_help))
     app.add_handler(CommandHandler("mentors", handlers.list_mentors))
     app.add_handler(CommandHandler("me", handlers.get_user_info))
+    app.add_handler(CommandHandler("email", handlers.handle_email))
     app.add_handler(CommandHandler("cards", handlers.list_tarot_suits))
 
     # Conversation handler for /reading command

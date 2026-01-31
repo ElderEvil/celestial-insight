@@ -25,3 +25,7 @@ class TokenResponseSchema(Schema):
     refresh: str
     username: str
     email: str | None = None
+
+
+class EmailUpdateSchema(Schema):
+    email: str

@@ -1,20 +1,18 @@
 import logging
 
+import httpx
 from asgiref.sync import sync_to_async
 from django.contrib.auth.models import User
 from django.db import DatabaseError, transaction
 from django.shortcuts import aget_object_or_404
 from pydantic import ValidationError
-from pydantic_ai import Agent
 from pydantic_ai.exceptions import (
     AgentRunError,
+    ModelRetry,
     UnexpectedModelBehavior,
     UsageLimitExceeded,
     UserError,
-    ModelRetry,
 )
-
-import httpx
 
 from mentors.models import Mentor
 from tarot.agents.celestial_agent import CardResponse, celestial_agent
@@ -77,7 +75,7 @@ async def create_reading(user, question: str, mentor_id: int, reading_type: Read
         if e.response.status_code == 401:
             return "AI service authentication failed. Please contact support."
         return f"AI service error: {e.response.status_code}. Please try again."
-    except httpx.RequestError as e:
+    except httpx.RequestError:
         return "Unable to connect to AI service. Please check your connection and try again."
     except (ModelRetry, StopAgent) as e:
         logger.error(f"Model control exception in create_reading: {e}")
@@ -180,7 +178,7 @@ async def generate_insight(user: User, reading_id: int):
         if e.response.status_code == 401:
             return "AI service authentication failed. Please contact support."
         return f"AI service error: {e.response.status_code}. Please try again."
-    except httpx.RequestError as e:
+    except httpx.RequestError:
         return "Unable to connect to AI service. Please check your connection and try again."
     except Exception as e:
         logger.error(f"Unexpected error in generate_insight: {e}")

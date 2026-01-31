@@ -1,8 +1,7 @@
 {
-  "active_plan": "/home/elder/Projects/celestial-insight/.sisyphus/plans/telegram-bot-ux-improvements.md",
-  "started_at": "2026-01-31T19:09:25.806Z",
-  "session_ids": [
-    "ses_3eac3a00cffekAafnyx40nnDwR"
-  ],
-  "plan_name": "telegram-bot-ux-improvements"
+  "active_plan": "/home/elder/Projects/celestial-insight/.sisyphus/plans/account-unification.md",
+  "started_at": "2026-01-31T19:54:53.721Z",
+  "session_ids": ["ses_3eac3a00cffekAafnyx40nnDwR"],
+  "plan_name": "account-unification",
+  "note": "Plan was marked complete but NO implementation done. Starting fresh."
 }

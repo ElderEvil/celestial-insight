@@ -2,10 +2,10 @@ from allauth.socialaccount.models import SocialAccount
 from asgiref.sync import sync_to_async
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from ninja_extra import api_controller, http_get, http_post
+from ninja_extra import api_controller, http_get, http_patch, http_post
 from ninja_jwt.tokens import RefreshToken
 
-from .schemas import TelegramAuthSchema, TokenResponseSchema, UserSchema
+from .schemas import EmailUpdateSchema, TelegramAuthSchema, TokenResponseSchema, UserSchema
 
 
 @api_controller("/users", tags=["Users"])
@@ -16,6 +16,31 @@ class UsersController:
 
         if not user.is_authenticated:
             return {"username": "", "is_authenticated": False}
+
+        profile = user.profile
+
+        return {
+            "username": user.username,
+            "is_authenticated": user.is_authenticated,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "profile": {
+                "available_tokens": profile.available_tokens,
+                "preferences": profile.preferences,
+            },
+        }
+
+    @http_patch("/update-email", response=UserSchema)
+    def update_email(self, request, data: EmailUpdateSchema):
+        """Update user email address."""
+        user = request.user
+
+        if not user.is_authenticated:
+            return HttpResponse(b"Unauthorized", status=401)
+
+        user.email = data.email
+        user.save()
 
         profile = user.profile
 

@@ -99,24 +99,23 @@ class Command(BaseCommand):
                     response = await client.get(f"{api_url}{endpoint}")
                     if response.status_code == HTTP_OK:
                         return response.json()
-                    elif response.status_code == 401:
+                    if response.status_code == 401:
                         logger.warning("Unauthorized access to %s", endpoint)
                         return None
-                    elif response.status_code == 404:
+                    if response.status_code == 404:
                         logger.warning("Endpoint not found: %s", endpoint)
                         return None
-                    elif response.status_code == 422:
+                    if response.status_code == 422:
                         logger.error("Validation error for %s: %s", endpoint, response.text)
                         return None
-                    elif response.status_code >= 500:
+                    if response.status_code >= 500:
                         logger.error("Server error %s for %s", response.status_code, endpoint)
                         if attempt < MAX_RETRIES - 1:
                             await asyncio.sleep(RETRY_DELAY * (attempt + 1))
                             continue
                         return None
-                    else:
-                        logger.error("API error %s for %s", response.status_code, endpoint)
-                        return None
+                    logger.error("API error %s for %s", response.status_code, endpoint)
+                    return None
             except httpx.TimeoutException:
                 logger.error("Timeout fetching %s (attempt %d/%d)", endpoint, attempt + 1, MAX_RETRIES)
                 if attempt < MAX_RETRIES - 1:
@@ -142,24 +141,23 @@ class Command(BaseCommand):
                     response = await client.post(f"{api_url}{endpoint}", json=data)
                     if response.status_code == HTTP_OK:
                         return response.json()
-                    elif response.status_code == 401:
+                    if response.status_code == 401:
                         logger.warning("Unauthorized POST to %s", endpoint)
                         return None
-                    elif response.status_code == 404:
+                    if response.status_code == 404:
                         logger.warning("Endpoint not found: %s", endpoint)
                         return None
-                    elif response.status_code == 422:
+                    if response.status_code == 422:
                         logger.error("Validation error for %s: %s", endpoint, response.text)
                         return None
-                    elif response.status_code >= 500:
+                    if response.status_code >= 500:
                         logger.error("Server error %s for %s", response.status_code, endpoint)
                         if attempt < MAX_RETRIES - 1:
                             await asyncio.sleep(RETRY_DELAY * (attempt + 1))
                             continue
                         return None
-                    else:
-                        logger.error("API error %s for %s", response.status_code, endpoint)
-                        return None
+                    logger.error("API error %s for %s", response.status_code, endpoint)
+                    return None
             except httpx.TimeoutException:
                 logger.error("Timeout posting to %s (attempt %d/%d)", endpoint, attempt + 1, MAX_RETRIES)
                 if attempt < MAX_RETRIES - 1:
