@@ -7,12 +7,11 @@ Covers:
 - Session auth requirements
 """
 
+from unittest.mock import AsyncMock, patch
+
 import pytest
-from django.test import Client
-from django.urls import reverse
 
 from tarot.models import Reading
-from tarot.services.reading_service import MIN_TOKEN_COST
 
 
 @pytest.mark.django_db(transaction=True)
@@ -111,3 +110,32 @@ class TestCreateReading:
         assert 'hx-post="/read/"' in content
         assert 'hx-target="#reading-result"' in content
         assert 'hx-swap="innerHTML"' in content
+
+    @pytest.mark.asyncio
+    @pytest.mark.django_db(transaction=True)
+    async def test_create_reading_post_async_behavior(self, user, user_profile, mentor):
+        """Regression test: POST /read/ works without sync_to_async misuse.
+
+        Prevents bug where sync_to_async incorrectly wrapped an already-async
+        function, causing RuntimeWarnings about coroutines.
+        """
+        from asgiref.sync import sync_to_async
+        from django.test import AsyncClient
+
+        client = AsyncClient()
+        await sync_to_async(client.force_login)(user)
+
+        with patch(
+            "tarot.views.create_reading", new_callable=AsyncMock, return_value="Mocked error"
+        ) as mock_create_reading:
+            response = await client.post(
+                "/read/",
+                {
+                    "mentor_id": mentor.id,
+                    "question": "Test question for async behavior",
+                },
+            )
+
+        assert response.status_code == 400
+        assert "Mocked error" in response.content.decode()
+        mock_create_reading.assert_called_once()

@@ -12,6 +12,7 @@ Covers:
 from unittest.mock import AsyncMock, patch
 
 import pytest
+from pydantic_ai.exceptions import AgentRunError
 
 from tarot.enums import ReadingTypeEnum
 from tarot.models import Reading
@@ -186,6 +187,24 @@ class TestCreateReading:
         # Should deduct MIN_TOKEN_COST (250) + extra (400-250=150) = 400 total
         assert user_profile.available_tokens == initial_tokens - 400
 
+    @pytest.mark.asyncio
+    async def test_create_reading_agent_run_error(self, user, user_profile, mentor):
+        """Returns error string when tarot_support_agent raises AgentRunError."""
+        with patch(
+            "tarot.services.reading_service.tarot_support_agent.run",
+            new_callable=AsyncMock,
+            side_effect=AgentRunError("Agent service unavailable"),
+        ):
+            result = await create_reading(
+                user=user,
+                question="Will I find love this year?",
+                mentor_id=mentor.id,
+            )
+
+        assert isinstance(result, str)
+        assert "reading service encountered an error" in result
+        assert "Please try again" in result
+
 
 @pytest.mark.django_db(transaction=True)
 class TestGenerateInsight:
@@ -264,6 +283,27 @@ class TestGenerateInsight:
 
         assert isinstance(result, str)
         assert "not found in the database" in result
+
+    @pytest.mark.asyncio
+    async def test_generate_insight_agent_run_error(self, user, user_profile, mentor):
+        """Returns error string when celestial_agent raises AgentRunError."""
+        reading = await Reading.objects.acreate(
+            user=user,
+            mentor=mentor,
+            question="Test question",
+            reading_type=ReadingTypeEnum.SINGLE_CARD,
+        )
+
+        with patch(
+            "tarot.services.reading_service.celestial_agent.run",
+            new_callable=AsyncMock,
+            side_effect=AgentRunError("Agent service unavailable"),
+        ):
+            result = await generate_insight(user=user, reading_id=reading.id)
+
+        assert isinstance(result, str)
+        assert "insight generation service encountered an error" in result
+        assert "Please try again" in result
 
 
 @pytest.mark.django_db(transaction=True)
