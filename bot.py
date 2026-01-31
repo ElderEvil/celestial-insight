@@ -314,7 +314,7 @@ class BotHandlers:
             "/api/tg/users/auth", {"telegram_id": user.id, "username": user.username or f"user_{user.id}"}
         )
 
-        if not auth or not auth.get("ok"):
+        if not auth or not auth.get("access"):
             await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
             return
 
