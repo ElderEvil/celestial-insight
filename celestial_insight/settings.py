@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+import urllib.parse
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -25,12 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-dc^g83f*j$exqn2!gx$39t$*gozcqqx=%hh6c33pb-v2y#d81i"  # noqa: S105
+# In production, set SECRET_KEY env var to a secure random string
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-dc^g83f*j$exqn2!gx$39t$*gozcqqx=%hh6c33pb-v2y#d81i")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
 
-ALLOWED_HOSTS = ["*"]
+# Comma-separated list of hosts in production, defaults to all for dev
+ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "*").split(",") if h.strip()]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3002",
@@ -121,12 +124,26 @@ WSGI_APPLICATION = "celestial_insight.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    },
-}
+DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL:
+    url = urllib.parse.urlparse(DATABASE_URL)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": url.path[1:],
+            "USER": url.username,
+            "PASSWORD": url.password,
+            "HOST": url.hostname,
+            "PORT": url.port or 5432,
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        },
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -204,8 +221,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
-NINJA_EXTRA = {"THROTTLE_RATES": {"burst": "6/min", "sustained": "100/day"}}
+NINJA_EXTRA = {"THROTTLE_RATES": {"burst": "6/min", "sustained": "100/day", "reading_hourly": "20/hour"}}
 
 AUTH_USER_MODEL = "auth.User"
 
-HEADLESS_ONLY = True
+# Set to False to enable session-based login UI (needed for HTMX pages)
+# Set to True for API-only/headless mode
+HEADLESS_ONLY = os.getenv("HEADLESS_ONLY", "False").lower() in ("true", "1", "yes")

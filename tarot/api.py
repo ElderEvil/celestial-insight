@@ -5,6 +5,7 @@ from django.shortcuts import aget_object_or_404
 from ninja import Query
 from ninja_extra import NinjaExtraAPI, api_controller, http_get, http_post, permissions
 from ninja_extra.permissions import AllowAny, IsAuthenticated
+from ninja_extra.throttling import throttle
 from ninja_jwt.authentication import AsyncJWTAuth
 
 from .enums import ReadingTypeEnum
@@ -17,6 +18,7 @@ from .schemas import (
 )
 from .services.card_service import get_card, list_cards
 from .services.reading_service import create_reading, generate_insight, get_reading, list_readings
+from .throttling import UserReadingThrottle
 
 api = NinjaExtraAPI()
 
@@ -36,6 +38,7 @@ class AsyncTarotController:
 
     # READINGS
     @http_post("/readings", response=ReadingSchema | str)
+    @throttle(UserReadingThrottle)
     async def create_tarot_reading(
         self, request, question: str, mentor_id: int, reading_type: ReadingTypeEnum | None = None
     ):
@@ -50,6 +53,7 @@ class AsyncTarotController:
         return await get_reading(request.user, reading_id)
 
     @http_post("/readings/{reading_id}/insight", response=ReadingSchema | str)
+    @throttle(UserReadingThrottle)
     async def generate_tarot_insight(self, request, reading_id: int):
         return await generate_insight(request.user, reading_id)
 
@@ -71,6 +75,7 @@ class AsyncTarotTGController:
 
     # TAROT READINGS (Authenticated)
     @http_post("/readings", response=ReadingSchema | str)
+    @throttle(UserReadingThrottle)
     async def create_tarot_reading(
         self, request, question: str, mentor_id: int, reading_type: ReadingTypeEnum | None = None
     ):
@@ -91,6 +96,7 @@ class AsyncTarotTGController:
         return await get_reading(user, reading_id)
 
     @http_post("/readings/{reading_id}/insight", response=ReadingSchema | str)
+    @throttle(UserReadingThrottle)
     async def generate_tarot_insight(self, request, reading_id: int):
         """Generate celestial insight for a specific tarot reading."""
         user = await aget_object_or_404(User, username=request.user.username)

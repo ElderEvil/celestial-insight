@@ -1,4 +1,20 @@
 services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: celestial_insight
+      POSTGRES_USER: celestial
+      POSTGRES_PASSWORD: celestial_secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U celestial -d celestial_insight"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   app:
     build: .
     ports:
@@ -7,3 +23,18 @@ services:
       - .:/app
     environment:
       - PORT=9090
+      - DATABASE_URL=postgres://celestial:celestial_secret@db:5432/celestial_insight
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=celestial_insight
+      - DB_USER=celestial
+      - DB_PASSWORD=celestial_secret
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=admin123
+      - DJANGO_SUPERUSER_EMAIL=admin@example.com
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
