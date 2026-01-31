@@ -355,12 +355,17 @@ class BotHandlers:
 
                 if response.status_code == HTTP_OK:
                     result = response.json()
-                    if isinstance(result, dict):
-                        insight = result.get("celestial_insight", "The cards have spoken.")
+                    # Check if result is an error string (like "Insufficient tokens...")
+                    if isinstance(result, str):
+                        await update.message.reply_text(f"⚠️ {result}")
+                    elif isinstance(result, dict):
+                        insight = result.get("celestial_insight", "").strip()
+                        if not insight:
+                            insight = "The cards have spoken."
                         text = f"🔮 *Your Reading*\n\n{insight}"
                         await update.message.reply_text(text, parse_mode="Markdown")
                     else:
-                        await update.message.reply_text(f"⚠️ {result}")
+                        await update.message.reply_text("⚠️ Unexpected response format.")
                 elif response.status_code == 401:
                     await update.message.reply_text("⚠️ Authentication failed. Try /start first.")
                 elif response.status_code == 422:
