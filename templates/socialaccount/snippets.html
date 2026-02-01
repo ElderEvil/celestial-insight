@@ -2,16 +2,14 @@
 {% load account socialaccount %}
 
 {% get_providers as socialaccount_providers %}
-
 {% if socialaccount_providers %}
-<p>{% blocktrans with site.name as site_name %}You can also sign in with your existing account on third-party services:{% endblocktrans %}</p>
-
-<div class="socialaccount_ballot">
-  <ul class="socialaccount_providers">
-    {% include "socialaccount/provider_list.html" with process="login" %}
-  </ul>
-</div>
-
-{% include "socialaccount/authenticate.html" with process="connect" %}
-
+  <p>
+    {% blocktrans with site.name as site_name %}You can also sign in with your existing account on third-party services:{% endblocktrans %}
+  </p>
+  <div class="socialaccount_ballot">
+    <ul class="socialaccount_providers">
+      {% include "socialaccount/provider_list.html" with process="login" %}
+    </ul>
+  </div>
+  {% include "socialaccount/authenticate.html" with process="connect" %}
 {% endif %}
