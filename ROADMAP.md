@@ -893,6 +893,55 @@ chore: Build/tooling changes
 
 ## Future Vision
 
+## Revival Plan (August 2026)
+
+### Product Direction
+
+Revive **Celestial Insight** as the canonical tarot product: a Django/Ninja backend with a Next.js web client. Treat the other repositories as supporting material rather than equal product implementations:
+
+- `celestial-ui`: retain and modernize as the web client.
+- `celestial-neutral`: reuse useful mentor, card, localization, and prompt assets only.
+- `celestial-tg`: rebuild later as a channel integration after the web product is stable.
+
+### Core Design Decision
+
+The backend must be the source of truth for tarot cards. It should deterministically select or draw the cards for a reading, then provide those exact cards, orientations, spread positions, question, and mentor context to the AI for interpretation. Do not ask the model to invent card names and fuzzy-match them back to the database.
+
+This makes readings testable and auditable while letting the model focus on its strengths: nuanced, structured interpretation; tone; localization; and personalization.
+
+### Phased Work
+
+1. **Security preflight**
+   - [ ] Revoke and rotate the Telegram bot credential currently present in `celestial-tg` source history.
+   - [ ] Remove credentials from tracked files, including any `.env` files; replace them with documented environment variables and `.env.example` templates.
+   - [ ] Review the repository history and deployed environments for exposed credentials.
+
+2. **Backend health audit**
+   - [ ] Create a clean local environment and verify dependency installation, migrations, fixtures, tests, linting, and Docker startup.
+   - [ ] Inventory API routes, authentication behavior, data fixtures, and the existing Next.js client contract.
+   - [ ] Add missing regression tests before changing behavior.
+
+3. **AI and reading workflow modernization**
+   - [ ] Upgrade and validate the PydanticAI/OpenAI integration using typed, structured responses.
+   - [ ] Move card selection and spread construction to deterministic backend services.
+   - [ ] Supply the selected cards to the AI and store only its interpretation, with model/usage metadata.
+   - [ ] Redesign usage limits around a clear product budget instead of treating raw model-token counts as user currency.
+   - [ ] Add mocked agent tests and end-to-end tests for a complete reading.
+
+4. **Web client restoration**
+   - [ ] Update Next.js dependencies and build tooling.
+   - [ ] Replace the hard-coded local API URL with environment-based configuration.
+   - [ ] Reconcile UI calls, CORS, authentication, error states, and reading flows with the backend contract.
+   - [ ] Build visual spread layouts and mobile-friendly reading history.
+
+5. **Deployment and channels**
+   - [ ] Deploy the secure web flow with PostgreSQL, production settings, monitoring, backups, and CI.
+   - [ ] Reintroduce Telegram as an authenticated client of the stable API.
+
+### Model-Assisted Development
+
+Use a high-capability coding/reasoning model for the initial codebase audit, dependency migration, and architecture decisions. Use a balanced model for routine refactors and test-writing, and reserve a low-cost model for high-volume mechanical tasks. Evaluate changes against tests and the written API contract rather than relying on generated code alone.
+
 ### Short Term (3-6 months)
 - Complete visual spread layouts
 - Implement user favorites
@@ -928,4 +977,4 @@ chore: Build/tooling changes
 
 ---
 
-**Last Updated**: January 2026
+**Last Updated**: August 2026
