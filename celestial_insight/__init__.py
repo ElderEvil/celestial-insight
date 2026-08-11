@@ -1,0 +1,1 @@
+# Celestial Insight - Django Project

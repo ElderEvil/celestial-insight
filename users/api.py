@@ -2,11 +2,10 @@ from allauth.socialaccount.models import SocialAccount
 from asgiref.sync import sync_to_async
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from ninja_extra import api_controller, http_get, http_post
-from ninja_jwt.authentication import AsyncJWTAuth
+from ninja_extra import api_controller, http_get, http_patch, http_post
 from ninja_jwt.tokens import RefreshToken
 
-from .schemas import TelegramAuthSchema, TokenResponseSchema, UserSchema
+from .schemas import EmailUpdateSchema, TelegramAuthSchema, TokenResponseSchema, UserSchema
 
 
 @api_controller("/users", tags=["Users"])
@@ -32,6 +31,31 @@ class UsersController:
             },
         }
 
+    @http_patch("/update-email", response=UserSchema)
+    def update_email(self, request, data: EmailUpdateSchema):
+        """Update user email address."""
+        user = request.user
+
+        if not user.is_authenticated:
+            return HttpResponse(b"Unauthorized", status=401)
+
+        user.email = data.email
+        user.save()
+
+        profile = user.profile
+
+        return {
+            "username": user.username,
+            "is_authenticated": user.is_authenticated,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "profile": {
+                "available_tokens": profile.available_tokens,
+                "preferences": profile.preferences,
+            },
+        }
+
 
 @api_controller("/tg/users", tags=["Telegram Users"])
 class UsersTGController:
@@ -42,7 +66,8 @@ class UsersTGController:
         """
         Authenticate Telegram user via Django-Allauth.
         - Checks if the user exists in SocialAccount.
-        - If not, registers the user via Telegram OAuth.
+        - If not, checks if a web user exists with the same email.
+        - Links Telegram to existing web user or creates new user.
         - Issues a JWT token for future API requests.
         """
 
@@ -53,14 +78,23 @@ class UsersTGController:
         if social_account:
             user = await sync_to_async(lambda: social_account.user)()
         else:
-            # Create user if not exists
-            user, created = await sync_to_async(
-                lambda: User.objects.get_or_create(username=data.username, defaults={"email": f"{data.username}@tg.me"})
-            )()
+            # Check if User with this email already exists from web signup
+            existing_user = await sync_to_async(lambda: User.objects.filter(email=data.username).first())()
 
-            if created:
-                user.set_unusable_password()
-                await sync_to_async(user.save)()
+            if existing_user:
+                # Link Telegram to existing web user
+                user = existing_user
+            else:
+                # Create user if not exists
+                user, created = await sync_to_async(
+                    lambda: User.objects.get_or_create(
+                        username=data.username, defaults={"email": f"{data.username}@tg.me"}
+                    )
+                )()
+
+                if created:
+                    user.set_unusable_password()
+                    await sync_to_async(user.save)()
 
             # Create a SocialAccount entry
             social_account = await sync_to_async(
@@ -77,20 +111,33 @@ class UsersTGController:
             "email": user.email,
         }
 
-    @http_get("/me", response=UserSchema, auth=AsyncJWTAuth())
-    async def me(self, request):
-        """Retrieve authenticated user's info including profile data."""
-        user = request.user
+    @http_get("/me", response=UserSchema)
+    async def me(self, request, telegram_id: int | None = None):
+        """
+        Retrieve user info including profile data.
+        - If telegram_id is provided, look up user by Telegram ID (no JWT required)
+        - Otherwise, use JWT authentication
+        """
+        if telegram_id is not None:
+            social_account = await sync_to_async(
+                lambda: SocialAccount.objects.filter(provider="telegram", uid=str(telegram_id)).first()
+            )()
 
-        if not user.is_authenticated:
-            return HttpResponse("Unauthorized", status=401)
+            if not social_account:
+                return HttpResponse(b"User not found", status=401)
 
-        profile = getattr(user, "profile", None)
+            user = await sync_to_async(lambda: social_account.user)()
+        else:
+            user = request.user
+            if not user.is_authenticated:
+                return HttpResponse(b"Unauthorized", status=401)
+
+        profile = await sync_to_async(lambda: getattr(user, "profile", None))()
 
         return {
             "username": user.username,
             "email": user.email,
-            "is_authenticated": user.is_authenticated,
+            "is_authenticated": True,
             "first_name": user.first_name,
             "last_name": user.last_name,
             "profile": {

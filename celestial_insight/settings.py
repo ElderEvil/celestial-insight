@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+import urllib.parse
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -25,12 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-dc^g83f*j$exqn2!gx$39t$*gozcqqx=%hh6c33pb-v2y#d81i"  # noqa: S105
+# In production, set SECRET_KEY env var to a secure random string
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-dc^g83f*j$exqn2!gx$39t$*gozcqqx=%hh6c33pb-v2y#d81i")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
 
-ALLOWED_HOSTS = ["*"]
+# Comma-separated list of hosts in production, defaults to all for dev
+ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "*").split(",") if h.strip()]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3002",
@@ -61,6 +64,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.sites",
     "django.contrib.staticfiles",
     "allauth",
     "allauth.account",
@@ -68,7 +72,9 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.github",
+    "allauth.socialaccount.providers.telegram",
     "django_extensions",
+    "django_htmx",
     "ninja_extra",
     "ninja_jwt",
     "users",
@@ -87,6 +93,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
@@ -95,7 +102,7 @@ ROOT_URLCONF = "celestial_insight.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -103,7 +110,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "django.template.context_processors.request",
+                "celestial_insight.context_processors.oauth_settings",
             ],
         },
     },
@@ -121,12 +128,26 @@ WSGI_APPLICATION = "celestial_insight.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    },
-}
+DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL:
+    url = urllib.parse.urlparse(DATABASE_URL)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": url.path[1:],
+            "USER": url.username,
+            "PASSWORD": url.password,
+            "HOST": url.hostname,
+            "PORT": url.port or 5432,
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        },
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -146,7 +167,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-SOCIALACCOUNT_PROVIDERS = {
+# Enable social login buttons on login page
+SOCIALACCOUNT_LOGIN_ON = True
+SOCIALACCOUNT_LOGIN_ON_GET = True  # Allow OAuth redirects on GET requests
+ACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
+# Helper to extract bot_id from Telegram token (format: bot_id:bot_secret)
+_TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_SECRET", "")
+_TELEGRAM_BOT_ID = os.getenv("TELEGRAM_BOT_ID") or (
+    _TELEGRAM_BOT_TOKEN.split(":")[0] if _TELEGRAM_BOT_TOKEN and ":" in _TELEGRAM_BOT_TOKEN else None
+)
+
+# Build SOCIALACCOUNT_PROVIDERS - conditionally include Telegram
+_SOCIALACCOUNT_PROVIDERS = {
     "github": {
         "APP": {
             "client_id": os.getenv("GITHUB_CLIENT_ID"),
@@ -161,20 +195,37 @@ SOCIALACCOUNT_PROVIDERS = {
             "key": "",
         },
     },
-    "telegram": {
-        "APP": {
-            "client_id": os.getenv("TELEGRAM_BOT_ID"),
-            "secret": os.getenv("TELEGRAM_BOT_SECRET"),
-        },
-        "AUTH_PARAMS": {"auth_date_validity": 100},  # Default is 30s
-    },
 }
 
+# Conditionally add Telegram provider (check env var or default to False)
+if os.getenv("TELEGRAM_OAUTH_ENABLED", "False").lower() in ("true", "1", "yes"):
+    _SOCIALACCOUNT_PROVIDERS["telegram"] = {
+        "APP": {
+            "client_id": _TELEGRAM_BOT_ID,
+            "secret": os.getenv("TELEGRAM_BOT_SECRET"),
+        },
+        "AUTH_PARAMS": {"auth_date_validity": 100},
+    }
+
+SOCIALACCOUNT_PROVIDERS = _SOCIALACCOUNT_PROVIDERS
+
+# Enable Telegram OAuth (set to False to disable)
+TELEGRAM_OAUTH_ENABLED = False
+
+SITE_ID = 1
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+ACCOUNT_ADAPTER = "users.adapters.AccountAdapter"
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
+
+# Login/logout redirects for MVP
+LOGIN_REDIRECT_URL = "/dashboard/"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
+LOGIN_URL = "/accounts/login/"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -204,8 +255,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
-NINJA_EXTRA = {"THROTTLE_RATES": {"burst": "6/min", "sustained": "100/day"}}
+NINJA_EXTRA = {"THROTTLE_RATES": {"burst": "6/min", "sustained": "100/day", "reading_hourly": "20/hour"}}
 
 AUTH_USER_MODEL = "auth.User"
 
-HEADLESS_ONLY = True
+# Set to False to enable session-based login UI (needed for HTMX pages)
+# Set to True for API-only/headless mode
+HEADLESS_ONLY = os.getenv("HEADLESS_ONLY", "False").lower() in ("true", "1", "yes")

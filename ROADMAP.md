@@ -6,6 +6,57 @@
 
 ---
 
+## MVP (Next 1-2 weeks) ✅ In Progress
+
+> **Goal**: Ship a dev-ready MVP with HTMX web UI + Telegram bot, complete with guardrails and tests.
+
+### ✅ Completed
+
+- [x] Dev setup: env-based settings, PostgreSQL docker-compose
+- [x] CI runs pytest (not just ruff)
+- [x] Rate limiting: 20 readings/hour/user
+- [x] Input validation + prompt-injection hardening
+- [x] Cost guardrails: 2,500 tokens/reading cap, 10,000 tokens/day budget
+- [x] HTMX dependency + base templates (PicoCSS)
+- [x] Dashboard: token balance + recent readings list
+- [x] `/read` form: mentor selection + HTMX POST handling
+- [x] Allauth session login (Google, GitHub)
+- [x] Telegram Bot API client wrapper (httpx)
+- [x] Telegram bot runner (management command, long polling)
+- [x] Telegram auth bootstrap (UserProfile signal connected)
+- [x] Telegram bot integration tests (mocked) - 16 tests passing
+- [x] 85 tests passing (including regression tests for bug fixes)
+
+### 🚧 In Progress
+
+- [ ] Playwright automated browser verification
+
+### 📋 Remaining
+
+- [ ] Update ROADMAP.md with this MVP checklist ✅ (just updated)
+
+### Quick Commands
+
+```bash
+# Setup
+uv sync
+uv run python manage.py migrate
+
+# Run tests
+uv run pytest -q
+
+# Run web server
+uv run python manage.py runserver
+
+# Run Telegram bot
+uv run python manage.py run_bot
+
+# Docker
+docker compose up -d
+```
+
+---
+
 ## Technology Stack
 
 ### Core Technologies

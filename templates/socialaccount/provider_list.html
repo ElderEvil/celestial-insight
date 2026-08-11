@@ -1,0 +1,17 @@
+{% load socialaccount %}
+
+{% get_providers as socialaccount_providers %}
+{% for provider in socialaccount_providers %}
+  {% if provider.id == "google" %}
+    <li>
+      <a href="{% url 'socialaccount_signup' provider.id %}"
+         class="button secondary">Sign in with Google</a>
+    </li>
+  {% endif %}
+  {% if provider.id == "github" %}
+    <li>
+      <a href="{% url 'socialaccount_signup' provider.id %}"
+         class="button secondary">Sign in with GitHub</a>
+    </li>
+  {% endif %}
+{% endfor %}

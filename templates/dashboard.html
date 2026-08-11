@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Celestial Insight{% endblock %}
+{% block content %}
+  <h1>Your Celestial Dashboard</h1>
+  <section>
+    <h2>Token Balance</h2>
+    <article>
+      <header>
+        <strong>Available Tokens</strong>
+      </header>
+      <p>{{ token_balance }} tokens</p>
+      <footer>
+        <small>Minimum reading cost: {{ min_reading_cost }} tokens</small>
+      </footer>
+    </article>
+  </section>
+  <section>
+    <h2>Create a Reading</h2>
+    <a href="{% url 'create_reading' %}" role="button" class="outline">Draw a Card</a>
+  </section>
+  <section>
+    <h2>Recent Readings</h2>
+    {% if readings %}
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Question</th>
+            <th>Mentor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for reading in readings %}
+            <tr>
+              <td>{{ reading.date|date:"M d, Y H:i" }}</td>
+              <td>{{ reading.question|truncatewords:10 }}</td>
+              <td>{{ reading.mentor.name }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>
+        No readings yet. <a href="{% url 'create_reading' %}">Create your first reading!</a>
+      </p>
+    {% endif %}
+  </section>
+{% endblock %}

@@ -6,4 +6,6 @@ class UsersConfig(AppConfig):
     name = "users"
 
     def ready(self):
-        pass
+        # Import signals here to avoid AppRegistryNotReady error
+        # Signals must be connected after Django apps are loaded
+        from . import signals  # noqa: F401

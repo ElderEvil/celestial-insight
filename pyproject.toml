@@ -11,6 +11,7 @@ dependencies = [
     "django-ninja-extra>=0.22.0",
     "django-cors-headers>=4.6.0",
     "django-extensions>=3.2.3",
+    "django-htmx>=1.19.0",
     "pydantic-ai>=0.0.17",
     "jwt>=1.3.1",
     "python-dotenv>=1.0.1",
@@ -18,10 +19,18 @@ dependencies = [
     "uvicorn>=0.34.0",
     "beautifulsoup4>=4.12.3",
     "django-ninja-jwt>=5.3.5",
+    "psycopg[binary]>=3.1.0",
+    "python-telegram-bot>=21.0",
 ]
 
 [dependency-groups]
-dev = ["pre-commit>=4.0.1", "pytest>=8.3.4", "ruff>=0.8.5"]
+dev = [
+    "pre-commit>=4.0.1",
+    "pytest>=8.3.4",
+    "pytest-asyncio>=1.3.0",
+    "pytest-django>=4.11.1",
+    "ruff>=0.8.5",
+]
 
 # ==== djLint ====
 [tool.djlint]
@@ -135,6 +144,23 @@ ignore = [
     "COM812", # conflicting
     "B008",   # do not perform function calls in argument defaults
     "BLE001", # for now
+    # Test-specific ignores (acceptable in tests)
+    "S105",   # Hardcoded password in tests (test tokens like "test-token-123")
+    "S106",   # Hardcoded password assigned to argument (test tokens)
+    "SLF001", # Private member access (needed in tests for mocking)
+    "N806",   # Variable in function should be lowercase (test variable naming)
+    # Django/API patterns (acceptable patterns)
+    "FBT001", # Boolean-typed positional argument (common in Django APIs)
+    "TRY003", # Avoid specifying long messages outside the exception class
+    "EM101",  # Exception must not use a string literal
+    "G004",   # Logging statement uses f-string (modern Python preference)
+    # Style preferences too strict for this project
+    "PLR2004", # Magic value used in comparison (HTTP codes, test constants)
+    "PYI034",  # __aenter__ return type (too strict for this project)
+    "ASYNC109", # Async function definition with a timeout parameter
+    "SIM117",  # Use a single with statement (readability preference)
+    "B017",    # Do not assert blind exception (sometimes appropriate)
+    "PT011",   # pytest.raises(Exception) is too broad (sometimes appropriate)
 ]
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
@@ -150,4 +176,7 @@ line-ending = "auto"
 
 
 [tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "celestial_insight.settings"
 python_files = ["tests.py", "test_*.py"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"

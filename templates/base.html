@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}Celestial Insight{% endblock %}
+    </title>
+    <!-- PicoCSS for minimal styling -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <!-- HTMX for dynamic interactions -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script>
+      // Add CSRF token to all HTMX requests
+      document.addEventListener('htmx:configRequest', function(evt) {
+        evt.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+      });
+    </script>
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <header class="container">
+      <nav>
+        <ul>
+          <li>
+            <strong>Celestial Insight</strong>
+          </li>
+        </ul>
+        <ul>
+          {% if user.is_authenticated %}
+            <li>{{ user.email }}</li>
+            <li>
+              <button hx-post="{% url 'htmx_logout' %}"
+                      hx-target="closest ul"
+                      hx-swap="outerHTML"
+                      role="button"
+                      class="secondary">Logout</button>
+            </li>
+          {% else %}
+            <li>
+              <a href="{% url 'account_login' %}">Login</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
