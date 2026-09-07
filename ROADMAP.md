@@ -332,15 +332,12 @@ The project uses async-first architecture throughout the API layer, making HTTPX
 import httpx
 from django.conf import settings
 
+
 async def send_reading_to_telegram(user_id: int, reading: Reading):
     async with httpx.AsyncClient() as client:
         await client.post(
             f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage",
-            json={
-                "chat_id": user_id,
-                "text": reading.celestial_insight,
-                "parse_mode": "Markdown"
-            }
+            json={"chat_id": user_id, "text": reading.celestial_insight, "parse_mode": "Markdown"},
         )
 ```
 
@@ -352,7 +349,7 @@ async def fetch_card_imagery(card_name: str) -> dict:
     async with httpx.AsyncClient(timeout=10.0) as client:
         response = await client.get(
             f"https://tarot-api.example.com/cards/{card_name}",
-            headers={"Authorization": f"Bearer {settings.EXTERNAL_API_KEY}"}
+            headers={"Authorization": f"Bearer {settings.EXTERNAL_API_KEY}"},
         )
         response.raise_for_status()
         return response.json()
@@ -366,12 +363,8 @@ async def notify_reading_complete(reading_id: int, webhook_url: str):
     async with httpx.AsyncClient() as client:
         await client.post(
             webhook_url,
-            json={
-                "event": "reading.completed",
-                "reading_id": reading_id,
-                "timestamp": datetime.utcnow().isoformat()
-            },
-            timeout=5.0
+            json={"event": "reading.completed", "reading_id": reading_id, "timestamp": datetime.utcnow().isoformat()},
+            timeout=5.0,
         )
 ```
 
@@ -386,8 +379,8 @@ async def generate_reading_preview(reading: Reading) -> str:
             json={
                 "title": f"Tarot Reading: {reading.question[:50]}",
                 "cards": [card.card.name for card in reading.cards.all()[:3]],
-                "insight": reading.celestial_insight[:200]
-            }
+                "insight": reading.celestial_insight[:200],
+            },
         )
         return response.json()["image_url"]
 ```
@@ -400,13 +393,8 @@ async def purchase_tokens(user: User, amount: int) -> dict:
     async with httpx.AsyncClient() as client:
         response = await client.post(
             "https://payment-gateway.example.com/api/v1/charge",
-            json={
-                "user_id": user.id,
-                "amount": amount,
-                "currency": "USD",
-                "description": f"Purchase {amount} tokens"
-            },
-            headers={"Authorization": f"Bearer {settings.PAYMENT_API_KEY}"}
+            json={"user_id": user.id, "amount": amount, "currency": "USD", "description": f"Purchase {amount} tokens"},
+            headers={"Authorization": f"Bearer {settings.PAYMENT_API_KEY}"},
         )
         return response.json()
 ```
@@ -419,8 +407,10 @@ async def purchase_tokens(user: User, amount: int) -> dict:
 import httpx
 from django.conf import settings
 
+
 class HTTPXClient:
     """Shared HTTPX client with connection pooling."""
+
     _client: httpx.AsyncClient | None = None
 
     @classmethod
@@ -429,7 +419,7 @@ class HTTPXClient:
             cls._client = httpx.AsyncClient(
                 timeout=httpx.Timeout(10.0, connect=5.0),
                 limits=httpx.Limits(max_keepalive_connections=20),
-                headers={"User-Agent": "CelestialInsight/0.1.0"}
+                headers={"User-Agent": "CelestialInsight/0.1.0"},
             )
         return cls._client
 
@@ -450,7 +440,7 @@ class TarotAPIClient:
         self.client = httpx.AsyncClient(
             base_url="https://tarot-api.example.com",
             headers={"Authorization": f"Bearer {settings.TAROT_API_KEY}"},
-            timeout=15.0
+            timeout=15.0,
         )
 
     async def get_card(self, slug: str) -> dict:
@@ -475,13 +465,10 @@ from typing import TypeVar, Callable
 import logging
 
 logger = logging.getLogger(__name__)
-T = TypeVar('T')
+T = TypeVar("T")
 
-async def with_retry(
-    func: Callable[[], T],
-    max_retries: int = 3,
-    backoff_factor: float = 1.0
-) -> T:
+
+async def with_retry(func: Callable[[], T], max_retries: int = 3, backoff_factor: float = 1.0) -> T:
     """Retry logic for external API calls."""
     for attempt in range(max_retries):
         try:
@@ -490,12 +477,12 @@ async def with_retry(
             if e.response.status_code < 500 or attempt == max_retries - 1:
                 raise
             logger.warning(f"Attempt {attempt + 1} failed: {e}")
-            await asyncio.sleep(backoff_factor * (2 ** attempt))
+            await asyncio.sleep(backoff_factor * (2**attempt))
         except httpx.TimeoutException as e:
             if attempt == max_retries - 1:
                 raise
             logger.warning(f"Timeout on attempt {attempt + 1}")
-            await asyncio.sleep(backoff_factor * (2 ** attempt))
+            await asyncio.sleep(backoff_factor * (2**attempt))
 ```
 
 ### Configuration
@@ -525,13 +512,11 @@ import pytest
 import httpx
 from unittest.mock import AsyncMock, patch
 
+
 @pytest.mark.asyncio
 async def test_fetch_external_card():
-    with patch('httpx.AsyncClient.get') as mock_get:
-        mock_get.return_value = AsyncMock(
-            status_code=200,
-            json=lambda: {"name": "The Fool", "number": 0}
-        )
+    with patch("httpx.AsyncClient.get") as mock_get:
+        mock_get.return_value = AsyncMock(status_code=200, json=lambda: {"name": "The Fool", "number": 0})
 
         result = await fetch_card_imagery("the-fool")
         assert result["name"] == "The Fool"
@@ -713,12 +698,7 @@ DATABASE_URL=postgresql://user:pass@localhost/dbname
 
 ```python
 # API Throttling
-NINJA_EXTRA = {
-    "THROTTLE_RATES": {
-        "burst": "6/min",
-        "sustained": "100/day"
-    }
-}
+NINJA_EXTRA = {"THROTTLE_RATES": {"burst": "6/min", "sustained": "100/day"}}
 
 # Authentication
 ACCOUNT_AUTHENTICATION_METHOD = "email"

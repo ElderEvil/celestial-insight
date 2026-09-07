@@ -102,11 +102,12 @@ preferences: dict[str, str] = {}
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 class Card(models.Model):
     name = models.CharField(_("Name"), max_length=100)
     slug = AutoSlugField(populate_from="name")
     description = models.TextField(_("Description"))
-    
+
     # ForeignKey with explicit related_name and verbose_name
     suit = models.ForeignKey(
         Suit,
@@ -130,6 +131,7 @@ class Card(models.Model):
 ```python
 from ninja_extra import api_controller, http_get, http_post, permissions
 
+
 @api_controller("/tarot", tags=["Tarot"], permissions=[permissions.IsAuthenticatedOrReadOnly])
 class AsyncTarotController:
     @http_get("/cards", response=list[CardSchemaShort])
@@ -149,15 +151,17 @@ class AsyncTarotController:
 from pydantic import BaseModel, Field
 from pydantic_ai import Agent
 
+
 class CelestialInsightResponse(BaseModel):
     text: str = Field(description="The mystical guidance text.")
     cards: list[CardResponse] = Field(description="List of cards with details.")
+
 
 celestial_agent = Agent(
     "openai:gpt-4o",
     deps_type=ReadingDependencies,
     result_type=CelestialInsightResponse,
-    system_prompt="You are a wise and mystical guide..."
+    system_prompt="You are a wise and mystical guide...",
 )
 ```
 
@@ -208,6 +212,7 @@ Use Python Enum in `enums.py` for type safety:
 
 ```python
 from enum import Enum
+
 
 class ReadingTypeEnum(str, Enum):
     SINGLE_CARD = "single_card"
