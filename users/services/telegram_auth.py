@@ -9,6 +9,7 @@ MISSING_HASH_MESSAGE = "Telegram init data has no hash."
 INVALID_SIGNATURE_MESSAGE = "Telegram init data signature is invalid."
 INCOMPLETE_DATA_MESSAGE = "Telegram init data is incomplete."
 EXPIRED_DATA_MESSAGE = "Telegram init data has expired."
+MALFORMED_DATA_MESSAGE = "Telegram init data is malformed."
 
 
 class TelegramAuthenticationError(ValueError):
@@ -25,7 +26,10 @@ def verify_telegram_init_data(
     if not bot_token:
         raise TelegramAuthenticationError(NOT_CONFIGURED_MESSAGE)
 
-    values = dict(parse_qsl(init_data, keep_blank_values=True, strict_parsing=True))
+    try:
+        values = dict(parse_qsl(init_data, keep_blank_values=True, strict_parsing=True))
+    except ValueError as error:
+        raise TelegramAuthenticationError(MALFORMED_DATA_MESSAGE) from error
     supplied_hash = values.pop("hash", "")
     if not supplied_hash:
         raise TelegramAuthenticationError(MISSING_HASH_MESSAGE)

@@ -47,6 +47,11 @@ def test_expired_init_data_is_rejected():
         verify_telegram_init_data(signed_init_data(), BOT_TOKEN, 300, now=AUTH_DATE + 301)
 
 
+def test_malformed_init_data_is_rejected():
+    with pytest.raises(TelegramAuthenticationError, match="malformed"):
+        verify_telegram_init_data("garbage", BOT_TOKEN, 300, now=AUTH_DATE + 10)
+
+
 @pytest.mark.django_db
 @override_settings(TELEGRAM_BOT_TOKEN=BOT_TOKEN, TELEGRAM_INIT_DATA_MAX_AGE_SECONDS=300)
 def test_username_only_auth_request_is_rejected(client):
@@ -80,6 +85,18 @@ def test_invalid_init_data_endpoint_is_unauthorized(client):
     response = client.post(
         "/api/tg/users/auth",
         data={"init_data": f"{signed_init_data(auth_date=int(time.time()))}tampered"},
+        content_type="application/json",
+    )
+
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
+
+
+@pytest.mark.django_db
+@override_settings(TELEGRAM_BOT_TOKEN=BOT_TOKEN, TELEGRAM_INIT_DATA_MAX_AGE_SECONDS=300)
+def test_malformed_init_data_endpoint_is_unauthorized(client):
+    response = client.post(
+        "/api/tg/users/auth",
+        data={"init_data": "garbage"},
         content_type="application/json",
     )
 
