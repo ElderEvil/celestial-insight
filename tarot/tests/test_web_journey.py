@@ -106,6 +106,22 @@ def test_ukrainian_saved_reading_uses_localized_reflection_notice(client, journe
 
 
 @pytest.mark.django_db
+def test_saved_reading_renders_in_stored_locale_regardless_of_accept_language(
+    client, journey_catalogue
+):
+    client.post("/", journey_payload(journey_catalogue, locale="uk"))
+    reading = Reading.objects.get()
+
+    detail = client.get(f"/readings/{reading.id}/", HTTP_ACCEPT_LANGUAGE="en")
+
+    content = detail.content.decode()
+    assert detail.status_code == HTTPStatus.OK
+    assert "Ваше читання" in content
+    assert "простір для роздумів" in content
+    assert "Tarot offers space for reflection" not in content
+
+
+@pytest.mark.django_db
 def test_ukrainian_journey_uses_localized_mentor_content(client, journey_catalogue):
     journey_catalogue.display_name_uk = "Астер"
     journey_catalogue.biography_en = "English biography"
@@ -116,6 +132,7 @@ def test_ukrainian_journey_uses_localized_mentor_content(client, journey_catalog
 
     content = response.content.decode()
     assert "Почніть рефлексивне читання таро" in content
+    assert "Begin a reflective tarot reading" not in content
     assert "Астер" in content
     assert "Українська біографія" in content
     assert "English biography" not in content

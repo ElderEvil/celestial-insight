@@ -1,13 +1,8 @@
+{% load i18n %}
 <article id="journey-region" class="panel reading" aria-live="polite">
-  {% if reading.locale == "uk" %}
-    <p class="eyebrow">Ваше читання</p>
-    <h1>{{ reading.question }}</h1>
-    <p class="notice">Таро пропонує простір для роздумів, а не певні прогнози чи професійні поради.</p>
-  {% else %}
-    <p class="eyebrow">Your reading</p>
-    <h1>{{ reading.question }}</h1>
-    <p class="notice">Tarot offers space for reflection, not certain predictions or professional advice.</p>
-  {% endif %}
+  <p class="eyebrow">{% translate "Your reading" %}</p>
+  <h1>{{ reading.question }}</h1>
+  <p class="notice">{% translate "Tarot offers space for reflection, not certain predictions or professional advice." %}</p>
 
   <ol class="cards">
     {% for reading_card in reading.cards.all %}
@@ -22,20 +17,20 @@
   {% if reading.interpretation_status == "completed" %}
     <p>{{ reading.celestial_insight }}</p>
   {% elif reading.interpretation_status == "failed" %}
-    <p>{% if reading.locale == "uk" %}Тлумачення не вдалося завершити. Ваш початковий розклад збережено.{% else %}Interpretation could not be completed. Your original draw is still saved.{% endif %}</p>
+    <p>{% translate "Interpretation could not be completed. Your original draw is still saved." %}</p>
     <form method="post" action="{% url 'tarot:reading-retry' reading.id %}" hx-post="{% url 'tarot:reading-retry' reading.id %}" hx-target="#journey-region" hx-swap="outerHTML">
       {% csrf_token %}
-      <button type="submit">{% if reading.locale == "uk" %}Повторити тлумачення{% else %}Retry interpretation{% endif %}</button>
+      <button type="submit">{% translate "Retry interpretation" %}</button>
     </form>
   {% else %}
-    <p>{% if reading.locale == "uk" %}Ваші карти збережено. Тлумачення очікує на виконання.{% else %}Your cards are saved. Interpretation is pending.{% endif %}</p>
+    <p>{% translate "Your cards are saved. Interpretation is pending." %}</p>
     <form method="post" action="{% url 'tarot:reading-interpret' reading.id %}" hx-post="{% url 'tarot:reading-interpret' reading.id %}" hx-trigger="load" hx-target="#journey-region" hx-swap="outerHTML">
       {% csrf_token %}
-      <button type="submit">{% if reading.locale == "uk" %}Створити тлумачення{% else %}Generate interpretation{% endif %}</button>
+      <button type="submit">{% translate "Generate interpretation" %}</button>
     </form>
   {% endif %}
 
   {% if not request.user.is_authenticated %}
-    <p class="account-seam">{% if reading.locale == "uk" %}Це читання належить цій сесії браузера. Пізніше ви зможете прив’язати його після входу.{% else %}This reading belongs to this browser session. You can attach it after signing in later.{% endif %}</p>
+    <p class="account-seam">{% translate "This reading belongs to this browser session. You can attach it after signing in later." %}</p>
   {% endif %}
 </article>

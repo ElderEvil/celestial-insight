@@ -177,6 +177,10 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 LANGUAGE_CODE = "en-us"
 
+LANGUAGES = [("en", "English"), ("uk", "Українська")]
+
+LOCALE_PATHS = [BASE_DIR / "locale"]
+
 TIME_ZONE = "UTC"
 
 USE_I18N = True

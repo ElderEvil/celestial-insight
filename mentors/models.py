@@ -1,5 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
 
@@ -28,6 +29,18 @@ class Mentor(models.Model):
     class Meta:
         verbose_name = _("Mentor")
         verbose_name_plural = _("Mentors")
+
+    @property
+    def localized_display_name(self) -> str:
+        if (get_language() or "").startswith("uk") and self.display_name_uk:
+            return self.display_name_uk
+        return self.name
+
+    @property
+    def localized_biography(self) -> str:
+        if (get_language() or "").startswith("uk") and self.biography_uk:
+            return self.biography_uk
+        return self.biography_en
 
     def __str__(self):
         return f"{self.name} (Mystical Level: {self.mystical_level})"

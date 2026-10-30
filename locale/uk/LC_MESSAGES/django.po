@@ -1,0 +1,89 @@
+# Ukrainian translation for Celestial Insight.
+# This file is distributed under the same license as the Celestial Insight project.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: celestial-insight\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 00:00+0000\n"
+"PO-Revision-Date: 2026-10-30 00:00+0000\n"
+"Last-Translator: Celestial Insight\n"
+"Language-Team: Ukrainian\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: tarot/templates/tarot/base.html
+#: tarot/templates/tarot/partials/journey_form.html
+msgid "Celestial Insight"
+msgstr "Celestial Insight"
+
+#: tarot/templates/tarot/journey.html
+msgid "Begin a reading · Celestial Insight"
+msgstr "Почніть читання · Celestial Insight"
+
+#: tarot/templates/tarot/reading_detail.html
+msgid "Your reading · Celestial Insight"
+msgstr "Ваше читання · Celestial Insight"
+
+#: tarot/templates/tarot/partials/journey_form.html
+msgid "Begin a reflective tarot reading"
+msgstr "Почніть рефлексивне читання таро"
+
+#: tarot/templates/tarot/partials/journey_form.html
+msgid "Choose a guide and a spread. Your cards are saved before interpretation begins."
+msgstr "Оберіть наставника й розклад. Ваші карти буде збережено до початку тлумачення."
+
+#: tarot/templates/tarot/partials/journey_form.html
+msgid "English"
+msgstr "English"
+
+#: tarot/templates/tarot/partials/journey_form.html
+msgid "Українська"
+msgstr "Українська"
+
+#: tarot/templates/tarot/partials/journey_form.html
+msgid "Mentor"
+msgstr "Наставник"
+
+#: tarot/templates/tarot/partials/journey_form.html
+msgid "Your question"
+msgstr "Ваше запитання"
+
+#: tarot/templates/tarot/partials/journey_form.html
+msgid "Spread"
+msgstr "Розклад"
+
+#: tarot/templates/tarot/partials/journey_form.html
+msgid "Draw cards"
+msgstr "Витягнути карти"
+
+#: tarot/templates/tarot/partials/reading.html
+msgid "Your reading"
+msgstr "Ваше читання"
+
+#: tarot/templates/tarot/partials/reading.html
+msgid "Tarot offers space for reflection, not certain predictions or professional advice."
+msgstr "Таро пропонує простір для роздумів, а не певні прогнози чи професійні поради."
+
+#: tarot/templates/tarot/partials/reading.html
+msgid "Interpretation could not be completed. Your original draw is still saved."
+msgstr "Тлумачення не вдалося завершити. Ваш початковий розклад збережено."
+
+#: tarot/templates/tarot/partials/reading.html
+msgid "Retry interpretation"
+msgstr "Повторити тлумачення"
+
+#: tarot/templates/tarot/partials/reading.html
+msgid "Your cards are saved. Interpretation is pending."
+msgstr "Ваші карти збережено. Тлумачення очікує на виконання."
+
+#: tarot/templates/tarot/partials/reading.html
+msgid "Generate interpretation"
+msgstr "Створити тлумачення"
+
+#: tarot/templates/tarot/partials/reading.html
+msgid "This reading belongs to this browser session. You can attach it after signing in later."
+msgstr "Це читання належить цій сесії браузера. Пізніше ви зможете прив’язати його після входу."

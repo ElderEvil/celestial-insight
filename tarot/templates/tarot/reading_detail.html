@@ -1,6 +1,7 @@
 {% extends "tarot/base.html" %}
+{% load i18n %}
 
-{% block title %}Your reading · Celestial Insight{% endblock %}
+{% block title %}{% translate "Your reading · Celestial Insight" %}{% endblock %}
 
 {% block content %}
   {% include "tarot/partials/reading.html" %}
