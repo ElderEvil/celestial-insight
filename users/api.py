@@ -1,12 +1,15 @@
 from allauth.socialaccount.models import SocialAccount
 from asgiref.sync import sync_to_async
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from ninja.errors import HttpError
 from ninja_extra import api_controller, http_get, http_post
 from ninja_jwt.authentication import AsyncJWTAuth
 from ninja_jwt.tokens import RefreshToken
 
 from .schemas import TelegramAuthSchema, TokenResponseSchema, UserSchema
+from .services.telegram_auth import TelegramAuthenticationError, verify_telegram_init_data
 
 
 @api_controller("/users", tags=["Users"])
@@ -35,36 +38,51 @@ class UsersController:
 
 @api_controller("/tg/users", tags=["Telegram Users"])
 class UsersTGController:
-    """Handles Telegram OAuth authentication and user creation."""
+    """Authenticates verified Telegram Web App identities."""
 
     @http_post("/auth", response=TokenResponseSchema)
     async def telegram_auth(self, data: TelegramAuthSchema):
-        """
-        Authenticate Telegram user via Django-Allauth.
-        - Checks if the user exists in SocialAccount.
-        - If not, registers the user via Telegram OAuth.
-        - Issues a JWT token for future API requests.
-        """
+        """Verify signed init data and issue a scoped backend JWT."""
+
+        try:
+            telegram_user = verify_telegram_init_data(
+                data.init_data,
+                settings.TELEGRAM_BOT_TOKEN,
+                settings.TELEGRAM_INIT_DATA_MAX_AGE_SECONDS,
+            )
+        except TelegramAuthenticationError as error:
+            raise HttpError(401, str(error)) from error
+
+        telegram_id = str(telegram_user["id"])
 
         # Check if user already exists in SocialAccount
         social_account = await sync_to_async(
-            lambda: SocialAccount.objects.filter(provider="telegram", uid=str(data.telegram_id)).first()
+            lambda: SocialAccount.objects.filter(provider="telegram", uid=telegram_id).first()
         )()
         if social_account:
             user = await sync_to_async(lambda: social_account.user)()
         else:
-            # Create user if not exists
             user, created = await sync_to_async(
-                lambda: User.objects.get_or_create(username=data.username, defaults={"email": f"{data.username}@tg.me"})
+                lambda: User.objects.get_or_create(
+                    username=f"telegram_{telegram_id}",
+                    defaults={
+                        "first_name": str(telegram_user.get("first_name", ""))[:150],
+                        "last_name": str(telegram_user.get("last_name", ""))[:150],
+                    },
+                )
             )()
 
             if created:
                 user.set_unusable_password()
                 await sync_to_async(user.save)()
 
-            # Create a SocialAccount entry
-            social_account = await sync_to_async(
-                lambda: SocialAccount.objects.create(provider="telegram", uid=str(data.telegram_id), user=user)
+            await sync_to_async(
+                lambda: SocialAccount.objects.create(
+                    provider="telegram",
+                    uid=telegram_id,
+                    user=user,
+                    extra_data=telegram_user,
+                )
             )()
 
         # Generate JWT Token

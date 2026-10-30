@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from ninja import Schema
-from pydantic.networks import HttpUrl
 
 
 class MentorSchema(Schema):
@@ -10,7 +9,14 @@ class MentorSchema(Schema):
     slug: str
     mystical_level: int
     specialization: str | None
-    avatar_url: HttpUrl | None
+    avatar_url: str | None
+    display_name_uk: str
+    biography_en: str
+    biography_uk: str
+    style_instruction: str
+    visual_description: str
+    managed_image_path: str
+    content_source: str
     is_active: bool
 
 

@@ -12,8 +12,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from secrets import token_urlsafe
 
 from dotenv import load_dotenv
+
+from .configuration import ProductionConfiguration, production_configuration_errors
 
 load_dotenv()
 
@@ -24,22 +27,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-dc^g83f*j$exqn2!gx$39t$*gozcqqx=%hh6c33pb-v2y#d81i"  # noqa: S105
+# A development server gets an ephemeral key. Production must supply a stable
+# secret through its deployment environment.
+DEBUG = os.getenv("DJANGO_DEBUG", "true").lower() == "true"
+PRODUCTION_SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "")
+SECRET_KEY = PRODUCTION_SECRET_KEY or token_urlsafe(50)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
-ALLOWED_HOSTS = ["*"]
+CORS_ALLOWED_ORIGINS = os.getenv(
+    "CORS_ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000"
+).split(",")
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3002",
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://elderevil.net",
-    "http://localhost:3002",
-]
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "CSRF_TRUSTED_ORIGINS",
+    "https://elderevil.net,http://localhost:3000,http://localhost:3002",
+).split(",")
 
 CORS_ALLOW_METHODS = [
     "GET",
@@ -124,7 +127,7 @@ WSGI_APPLICATION = "celestial_insight.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": os.getenv("DJANGO_DB_PATH", BASE_DIR / "db.sqlite3"),
     },
 }
 
@@ -161,13 +164,6 @@ SOCIALACCOUNT_PROVIDERS = {
             "key": "",
         },
     },
-    "telegram": {
-        "APP": {
-            "client_id": os.getenv("TELEGRAM_BOT_ID"),
-            "secret": os.getenv("TELEGRAM_BOT_SECRET"),
-        },
-        "AUTH_PARAMS": {"auth_date_validity": 100},  # Default is 30s
-    },
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
@@ -203,9 +199,39 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
+SECURE_SSL_REDIRECT = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_HSTS_SECONDS = 31_536_000 if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
 
 NINJA_EXTRA = {"THROTTLE_RATES": {"burst": "6/min", "sustained": "100/day"}}
 
 AUTH_USER_MODEL = "auth.User"
 
 HEADLESS_ONLY = True
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+TAROT_JOURNEY_ENABLED = os.getenv("TAROT_JOURNEY_ENABLED", str(DEBUG)).lower() == "true"
+TELEGRAM_CHANNEL_ENABLED = os.getenv("TELEGRAM_CHANNEL_ENABLED", "false").lower() == "true"
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_INIT_DATA_MAX_AGE_SECONDS = int(os.getenv("TELEGRAM_INIT_DATA_MAX_AGE_SECONDS", "300"))
+
+if not DEBUG:
+    production_errors = production_configuration_errors(
+        ProductionConfiguration(
+            secret_key=PRODUCTION_SECRET_KEY,
+            allowed_hosts=ALLOWED_HOSTS,
+            trusted_origins=CSRF_TRUSTED_ORIGINS,
+            media_root=Path(MEDIA_ROOT),
+            media_url=MEDIA_URL,
+            journey_enabled=TAROT_JOURNEY_ENABLED,
+            openai_api_key=OPENAI_API_KEY,
+            telegram_enabled=TELEGRAM_CHANNEL_ENABLED,
+            telegram_bot_token=TELEGRAM_BOT_TOKEN,
+        )
+    )
+    if production_errors:
+        message = "Unsafe production configuration: " + "; ".join(production_errors)
+        raise RuntimeError(message)

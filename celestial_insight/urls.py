@@ -6,6 +6,7 @@ from django.urls import include, path
 from celestial_insight.api import api
 
 urlpatterns = [
+    path("", include("tarot.urls")),
     path("admin/", admin.site.urls),
     path("_allauth/", include("allauth.headless.urls")),
     path("api/", api.urls),

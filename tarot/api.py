@@ -1,7 +1,5 @@
 import logging
 
-from django.contrib.auth.models import User
-from django.shortcuts import aget_object_or_404
 from ninja import Query
 from ninja_extra import NinjaExtraAPI, api_controller, http_get, http_post, permissions
 from ninja_extra.permissions import AllowAny, IsAuthenticated
@@ -70,28 +68,12 @@ class AsyncTarotTGController:
         return await get_card(card_slug)
 
     # TAROT READINGS (Authenticated)
-    @http_post("/readings", response=ReadingSchema | str)
-    async def create_tarot_reading(
-        self, request, question: str, mentor_id: int, reading_type: ReadingTypeEnum | None = None
-    ):
-        """Create a tarot reading for an authenticated user."""
-        user = await aget_object_or_404(User, username=request.user.username)
-        return await create_reading(user, question, mentor_id, reading_type)
-
     @http_get("/readings/my", response=list[ReadingSchemaShort])
     async def list_tarot_readings(self, request, filters: ReadingFilterSchema = Query(...)):
         """Retrieve the user's tarot reading history."""
-        user = await aget_object_or_404(User, username=request.user.username)
-        return await list_readings(user, filters)
+        return await list_readings(request.user, filters)
 
     @http_get("/readings/{reading_id}", response=ReadingSchema)
     async def get_tarot_reading(self, request, reading_id: int):
         """Retrieve a specific tarot reading for the authenticated user."""
-        user = await aget_object_or_404(User, username=request.user.username)
-        return await get_reading(user, reading_id)
-
-    @http_post("/readings/{reading_id}/insight", response=ReadingSchema | str)
-    async def generate_tarot_insight(self, request, reading_id: int):
-        """Generate celestial insight for a specific tarot reading."""
-        user = await aget_object_or_404(User, username=request.user.username)
-        return await generate_insight(user, reading_id)
+        return await get_reading(request.user, reading_id)

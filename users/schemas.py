@@ -2,8 +2,7 @@ from ninja import Schema
 
 
 class TelegramAuthSchema(Schema):
-    telegram_id: int
-    username: str
+    init_data: str
 
 
 class UserProfileSchema(Schema):

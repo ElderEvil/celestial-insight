@@ -64,6 +64,11 @@ class Card(models.Model):
 
 
 class Reading(models.Model):
+    class InterpretationStatus(models.TextChoices):
+        PENDING = "pending", _("Pending")
+        COMPLETED = "completed", _("Completed")
+        FAILED = "failed", _("Failed")
+
     reading_type = models.CharField(
         _("Reading Type"), max_length=20, choices=READING_TYPE_CHOICES, default="single_card"
     )
@@ -71,6 +76,22 @@ class Reading(models.Model):
     question = models.TextField(_("Question"), blank=True)
     notes = models.TextField(_("Notes"), blank=True)
     celestial_insight = models.TextField(_("Celestial Insight"), blank=True, default="")
+    anonymous_owner_key = models.CharField(_("Anonymous Owner Key"), max_length=64, blank=True, db_index=True)
+    draw_seed = models.CharField(_("Draw Seed"), max_length=64, blank=True, editable=False)
+    spread_version = models.PositiveSmallIntegerField(_("Spread Content Version"), default=1)
+    interpretation_status = models.CharField(
+        _("Interpretation Status"),
+        max_length=16,
+        choices=InterpretationStatus.choices,
+        default=InterpretationStatus.PENDING,
+    )
+    interpretation_error = models.TextField(_("Interpretation Error"), blank=True)
+    locale = models.CharField(
+        _("Locale"),
+        max_length=5,
+        choices=[("en", "English"), ("uk", "Українська")],
+        default="en",
+    )
 
     mentor = models.ForeignKey(
         Mentor,
@@ -126,7 +147,10 @@ class ReadingCard(models.Model):
 
     class Meta:
         ordering = ["position"]
-        unique_together = ("reading", "position")
+        constraints = [
+            models.UniqueConstraint(fields=["reading", "position"], name="unique_reading_position"),
+            models.UniqueConstraint(fields=["reading", "card"], name="unique_reading_card"),
+        ]
         verbose_name = _("Reading Card")
         verbose_name_plural = _("Reading Cards")
 

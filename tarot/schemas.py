@@ -31,6 +31,7 @@ class ReadingCardSchema(Schema):
     card: CardSchemaShort
     position: int
     orientation: str
+    role: str | None = None
     interpretation: str | None = None
 
 
@@ -45,3 +46,5 @@ class ReadingSchemaShort(Schema):
 class ReadingSchema(ReadingSchemaShort):
     cards: list[ReadingCardSchema]
     celestial_insight: str
+    interpretation_status: str
+    interpretation_error: str

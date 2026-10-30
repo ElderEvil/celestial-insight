@@ -78,6 +78,7 @@ uv sync
 ### 4. Run Database Migrations
 ```bash
 uv run python manage.py migrate
+uv run python manage.py seed_demo
 ```
 
 ### 5. Start the Development Server

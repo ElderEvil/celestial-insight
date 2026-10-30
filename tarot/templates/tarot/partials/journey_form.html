@@ -1,0 +1,45 @@
+{% load static %}
+<div id="journey-region" class="panel">
+  <header>
+    <p class="eyebrow">Celestial Insight</p>
+    {% if locale == "uk" %}
+      <h1>Почніть рефлексивне читання таро</h1>
+      <p>Оберіть наставника й розклад. Ваші карти буде збережено до початку тлумачення.</p>
+    {% else %}
+      <h1>Begin a reflective tarot reading</h1>
+      <p>Choose a guide and a spread. Your cards are saved before interpretation begins.</p>
+    {% endif %}
+  </header>
+  <p class="locale-switch">
+    <a href="{% url 'tarot:journey' %}?locale=en" lang="en">English</a>
+    <a href="{% url 'tarot:journey' %}?locale=uk" lang="uk">Українська</a>
+  </p>
+  <ul class="mentors">
+    {% for mentor in mentors %}
+      <li>
+        {% if mentor.managed_image_path %}
+          <img src="{% static mentor.managed_image_path %}" alt="" width="96" height="96">
+        {% endif %}
+        <strong>{% if locale == "uk" %}{{ mentor.display_name_uk|default:mentor.name }}{% else %}{{ mentor.name }}{% endif %}</strong>
+        <p>{% if locale == "uk" %}{{ mentor.biography_uk }}{% else %}{{ mentor.biography_en }}{% endif %}</p>
+      </li>
+    {% endfor %}
+  </ul>
+  <form method="post" action="{% url 'tarot:journey' %}" hx-post="{% url 'tarot:journey' %}" hx-target="#journey-region" hx-swap="outerHTML">
+    {% csrf_token %}
+    <p>
+      <label for="{{ form.mentor.id_for_label }}">{% if locale == "uk" %}Наставник{% else %}Mentor{% endif %}</label>
+      {{ form.mentor }}{{ form.mentor.errors }}
+    </p>
+    <p>
+      <label for="{{ form.question.id_for_label }}">{% if locale == "uk" %}Ваше запитання{% else %}Your question{% endif %}</label>
+      {{ form.question }}{{ form.question.errors }}
+    </p>
+    <p>
+      <label for="{{ form.reading_type.id_for_label }}">{% if locale == "uk" %}Розклад{% else %}Spread{% endif %}</label>
+      {{ form.reading_type }}{{ form.reading_type.errors }}
+    </p>
+    {{ form.locale.as_hidden }}
+    <button type="submit">{% if locale == "uk" %}Витягнути карти{% else %}Draw cards{% endif %}</button>
+  </form>
+</div>
