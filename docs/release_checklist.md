@@ -7,6 +7,8 @@ Last verified: 2026-10-30
 - [x] Apply every Django migration to a new SQLite database.
 - [x] Run `uv run python manage.py seed_demo` twice.
 - [x] Confirm both runs leave 5 suits, 78 cards, 7 mentor rows, and 3 active curated mentors.
+- [x] Confirm both runs leave all 78 cards with non-empty English and Ukrainian description, upright meaning,
+      reversed meaning and keywords, and that the second run reports `0 filled`.
 - [x] Confirm the spread catalogue defines 10 spreads and exactly 5 are active.
 - [x] Run `uv run python manage.py compilemessages` and confirm `locale/uk/LC_MESSAGES/django.mo` is current.
 
@@ -38,8 +40,11 @@ Last verified: 2026-10-30
   `content_source` are recorded, but the interpretation prompt still reads `mentor.style_instruction` live, so
   editing a biography changes how past readings present. Snapshotting was deliberately dropped rather than shipped
   as a write-only field.
-- Card meanings (`upright_meaning`, `reversed_meaning`, `keywords`) are still empty for all 78 cards and are out of
-  scope for the content harvest.
+- Localized card copy is not exposed through the public card API. `CardSchemaShort` still returns the English
+  `description`, `upright_meaning`, `reversed_meaning` and `keywords`; the `_uk` columns are admin- and
+  prompt-only until a channel needs them.
+- `tarot/filters.py` still filters cards by the English `keywords__icontains`; Ukrainian keyword filtering is a
+  follow-up.
 - The intent×theme→spread matrix and the 20 tone prompts are stored and tested as inert content; they are not yet
   wired into the interpretation prompt.
 - `celestial-neutral` has not been archived yet; the port must land and be verified first.
