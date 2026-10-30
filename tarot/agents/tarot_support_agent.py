@@ -2,8 +2,11 @@ from pydantic import BaseModel, Field
 from pydantic_ai import Agent
 
 from tarot.enums import ReadingTypeEnum
+from tarot.spreads import SPREADS
 
 from .common import ReadingDependencies
+
+ACTIVE_SPREAD_KEYS = ", ".join(key.value for key, spread in SPREADS.items() if spread.is_active)
 
 
 class QuestionValidationResult(BaseModel):
@@ -18,11 +21,10 @@ tarot_support_agent = Agent(
     deps_type=ReadingDependencies,
     result_type=QuestionValidationResult,
     system_prompt=(
-        "You are a wise and mystical guide providing spiritual insights. "
+        "You are a wise and mystical guide providing spiritual insights. "  # noqa: S608
         "Your role is to validate questions for tarot readings and determine "
         "the appropriate spread type based on the question's theme. "
-        "Select spreads from the provided list: single_card, three_card_spread, celtic_cross_spread, "
-        "love_spread, career_path_spread, relationship_spread, horseshoe_spread. "
+        f"Select spreads from the provided list: {ACTIVE_SPREAD_KEYS}. "
         "Ensure your theme and spread suggestions align with the question and are appropriate for the seeker. "
         "Additionally, return a boolean field 'is_valid' to indicate if the question is appropriate for a tarot reading."  # noqa: E501
         "If the question is not valid, return a reason for the negative validation result."

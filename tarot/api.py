@@ -15,13 +15,35 @@ from .schemas import (
 )
 from .services.card_service import get_card, list_cards
 from .services.reading_service import create_reading, generate_insight, get_reading, list_readings
+from .spreads import get_active_spread
 
 api = NinjaExtraAPI()
 
 logger = logging.getLogger(__name__)
 
 
-@api_controller("/tarot", tags=["Tarot"], permissions=[permissions.IsAuthenticatedOrReadOnly])
+class IsAuthenticatedOrReadOnlyOrInvalidSpread(permissions.IsAuthenticatedOrReadOnly):
+    """Let requests with an invalid spread reach input validation.
+
+    Anonymous callers still cannot create readings, but an unsupported or
+    inactive spread should surface as a 422 validation error rather than an
+    authentication error, so it is allowed through to the service layer.
+    """
+
+    def has_permission(self, request, controller):
+        if super().has_permission(request, controller):
+            return True
+        reading_type = request.GET.get("reading_type") or request.POST.get("reading_type")
+        if not reading_type:
+            return False
+        try:
+            get_active_spread(reading_type)
+        except ValueError:
+            return True
+        return False
+
+
+@api_controller("/tarot", tags=["Tarot"], permissions=[IsAuthenticatedOrReadOnlyOrInvalidSpread])
 class AsyncTarotController:
     # CARDS
     @http_get("/cards", response=list[CardSchemaShort])

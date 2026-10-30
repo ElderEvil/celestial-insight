@@ -2,6 +2,7 @@ import logging
 
 from django.contrib.auth.models import User
 from django.shortcuts import aget_object_or_404
+from ninja.errors import HttpError
 from pydantic import ValidationError
 
 from mentors.models import Mentor
@@ -11,6 +12,7 @@ from tarot.enums import ReadingTypeEnum
 from tarot.models import Reading
 from tarot.services.draw_service import persist_draw
 from tarot.services.interpretation_service import generate_interpretation
+from tarot.spreads import get_active_spread
 from tarot.utils import deduct_tokens
 
 MIN_TOKEN_COST = 250  # Minimum upfront tokens required
@@ -19,6 +21,12 @@ logger = logging.getLogger(__name__)
 
 
 async def create_reading(user, question: str, mentor_id: int, reading_type: ReadingTypeEnum | None = None):
+    if reading_type is not None:
+        try:
+            get_active_spread(reading_type)
+        except ValueError as error:
+            raise HttpError(422, str(error)) from error
+
     has_tokens = await deduct_tokens(user, MIN_TOKEN_COST)
     if not has_tokens:
         return "Insufficient tokens to create a reading."
@@ -48,6 +56,16 @@ async def create_reading(user, question: str, mentor_id: int, reading_type: Read
         return f"Data validation error: Missing attribute - {e}"
     except ValidationError as e:
         return f"Validation error: {e}"
+
+    try:
+        get_active_spread(spread_type)
+    except ValueError:
+        logger.info(
+            "Support agent suggested unavailable spread %s; falling back to %s",
+            spread_type,
+            ReadingTypeEnum.SINGLE_CARD.value,
+        )
+        spread_type = ReadingTypeEnum.SINGLE_CARD
 
     reading = await Reading.objects.acreate(
         user=user,
