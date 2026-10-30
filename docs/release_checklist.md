@@ -28,6 +28,9 @@ Last verified: 2026-10-30
 - [x] `uv run python manage.py check`
 - [x] `openspec validate htmx-tarot-vertical-slice --strict`
 - [x] Django configuration check with production-style environment values.
+- [x] Confirm `manage.py check` and `makemigrations --check` run with a non-empty `OPENAI_API_KEY`
+      (the URLconf builds the AI clients at import). The pytest suite sets its own placeholder and
+      never calls the provider.
 
 ## Known deferred work
 
