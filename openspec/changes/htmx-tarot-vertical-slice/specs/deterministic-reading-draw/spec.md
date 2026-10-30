@@ -5,11 +5,15 @@ Make every saved reading reproducible and auditable by selecting its cards and o
 ## ADDED Requirements
 
 ### Requirement: Server owns spread construction
-The system SHALL define supported spreads as ordered position roles and descriptions. It SHALL reject a request whose spread has no supported position definition.
+The system SHALL define supported spreads as ordered position roles and descriptions. It SHALL reject, with a client validation error rather than a server error, any request whose spread has no supported position definition or whose spread is defined but not active.
 
 #### Scenario: Supported spread has ordered positions
 - **WHEN** a visitor creates a three-card reading
 - **THEN** the saved reading has Past, Present, and Future positions in that order
+
+#### Scenario: Unsupported or inactive spread is rejected
+- **WHEN** a client requests a reading with a spread that has no position definition, or with a defined spread that is not active
+- **THEN** the request is rejected with a 4xx validation error and no reading is created
 
 ### Requirement: Draw is persisted before interpretation
 The system SHALL select distinct cards and upright or reversed orientations server-side and persist them with their roles before an interpretation request is started. The selection SHALL not depend on an AI response.
