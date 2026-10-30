@@ -50,3 +50,28 @@ def test_load_catalog_is_idempotent():
     assert Card.objects.count() == EXPECTED_CARD_COUNT
     assert Suit.objects.values("name").distinct().count() == EXPECTED_SUIT_COUNT
     assert Card.objects.values("name").distinct().count() == EXPECTED_CARD_COUNT
+
+
+@pytest.mark.django_db
+def test_load_catalog_does_not_import_legacy_copy():
+    call_command("load_catalog", verbosity=0)
+
+    assert not Card.objects.exclude(description="").exists()
+    assert not Card.objects.exclude(upright_meaning="").exists()
+    assert not Card.objects.exclude(reversed_meaning="").exists()
+    assert not Card.objects.exclude(keywords="").exists()
+
+
+@pytest.mark.django_db
+def test_load_catalog_never_overwrites_existing_rows():
+    call_command("load_catalog", verbosity=0)
+    card = Card.objects.get(slug="the-fool")
+    card.description = "Hand-edited description"
+    card.upright_meaning = "Hand-edited meaning"
+    card.save(update_fields=["description", "upright_meaning"])
+
+    call_command("load_catalog", verbosity=0)
+
+    card.refresh_from_db()
+    assert card.description == "Hand-edited description"
+    assert card.upright_meaning == "Hand-edited meaning"
