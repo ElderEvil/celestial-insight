@@ -1,34 +1,39 @@
 {% load i18n %}
-<article id="journey-region" class="panel reading" aria-live="polite">
-  <p class="eyebrow">{% translate "Your reading" %}</p>
-  <h1>{{ reading.question }}</h1>
-  <p class="notice">{% translate "Tarot offers space for reflection, not certain predictions or professional advice." %}</p>
+<article id="journey-region" class="reading" aria-live="polite">
+  <header class="reading-header">
+    <p class="eyebrow">{% translate "Your reading" %}</p>
+    <h1>{{ reading.question }}</h1>
+    <p class="notice">{% translate "Tarot offers space for reflection, not certain predictions or professional advice." %}</p>
+  </header>
 
   <ol class="cards">
     {% for reading_card in reading.cards.all %}
-      <li>
-        <strong>{{ reading_card.role }}</strong>
-        <span>{{ reading_card.card.name }} · {{ reading_card.get_orientation_display }}</span>
-        {% if reading_card.interpretation %}<p>{{ reading_card.interpretation }}</p>{% endif %}
+      <li class="card-tile">
+        <span class="card-role">{{ reading_card.role }}</span>
+        <span class="card-name">{{ reading_card.card.name }}</span>
+        <span class="card-orientation">{{ reading_card.get_orientation_display }}</span>
+        {% if reading_card.interpretation %}<p class="card-interpretation">{{ reading_card.interpretation }}</p>{% endif %}
       </li>
     {% endfor %}
   </ol>
 
-  {% if reading.interpretation_status == "completed" %}
-    <p>{{ reading.celestial_insight }}</p>
-  {% elif reading.interpretation_status == "failed" %}
-    <p>{% translate "Interpretation could not be completed. Your original draw is still saved." %}</p>
-    <form method="post" action="{% url 'tarot:reading-retry' reading.id %}" hx-post="{% url 'tarot:reading-retry' reading.id %}" hx-target="#journey-region" hx-swap="outerHTML">
-      {% csrf_token %}
-      <button type="submit">{% translate "Retry interpretation" %}</button>
-    </form>
-  {% else %}
-    <p>{% translate "Your cards are saved. Interpretation is pending." %}</p>
-    <form method="post" action="{% url 'tarot:reading-interpret' reading.id %}" hx-post="{% url 'tarot:reading-interpret' reading.id %}" hx-trigger="load" hx-target="#journey-region" hx-swap="outerHTML">
-      {% csrf_token %}
-      <button type="submit">{% translate "Generate interpretation" %}</button>
-    </form>
-  {% endif %}
+  <div class="reading-status">
+    {% if reading.interpretation_status == "completed" %}
+      <p class="insight">{{ reading.celestial_insight }}</p>
+    {% elif reading.interpretation_status == "failed" %}
+      <p>{% translate "Interpretation could not be completed. Your original draw is still saved." %}</p>
+      <form method="post" action="{% url 'tarot:reading-retry' reading.id %}" hx-post="{% url 'tarot:reading-retry' reading.id %}" hx-target="#journey-region" hx-swap="outerHTML">
+        {% csrf_token %}
+        <button type="submit">{% translate "Retry interpretation" %}</button>
+      </form>
+    {% else %}
+      <p>{% translate "Your cards are saved. Interpretation is pending." %}</p>
+      <form method="post" action="{% url 'tarot:reading-interpret' reading.id %}" hx-post="{% url 'tarot:reading-interpret' reading.id %}" hx-trigger="load" hx-target="#journey-region" hx-swap="outerHTML">
+        {% csrf_token %}
+        <button type="submit">{% translate "Generate interpretation" %}</button>
+      </form>
+    {% endif %}
+  </div>
 
   {% if not request.user.is_authenticated %}
     <p class="account-seam">{% translate "This reading belongs to this browser session. You can attach it after signing in later." %}</p>

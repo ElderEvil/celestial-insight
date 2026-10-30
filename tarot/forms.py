@@ -14,7 +14,7 @@ class ReadingJourneyForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["reading_type"].choices = [
-            (key.value, spread.name) for key, spread in SPREADS.items() if spread.is_active
+            (key.value, _(spread.name)) for key, spread in SPREADS.items() if spread.is_active
         ]
         self.fields["mentor"].queryset = Mentor.objects.filter(is_active=True).order_by("name")
 

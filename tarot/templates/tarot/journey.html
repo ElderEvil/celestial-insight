@@ -3,6 +3,13 @@
 
 {% block title %}{% translate "Begin a reading · Celestial Insight" %}{% endblock %}
 
+{% block topbar_actions %}
+  <nav class="locale-switch" aria-label="{% translate 'Language' %}">
+    <a href="{% url 'tarot:journey' %}?locale=en" lang="en" hreflang="en"{% if locale == "en" %} aria-current="true"{% endif %}>EN</a>
+    <a href="{% url 'tarot:journey' %}?locale=uk" lang="uk" hreflang="uk"{% if locale == "uk" %} aria-current="true"{% endif %}>УКР</a>
+  </nav>
+{% endblock %}
+
 {% block content %}
   {% include "tarot/partials/journey_form.html" %}
 {% endblock %}

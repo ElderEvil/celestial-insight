@@ -1,40 +1,46 @@
 {% load static i18n %}
-<div id="journey-region" class="panel">
-  <header>
-    <p class="eyebrow">{% translate "Celestial Insight" %}</p>
+<div id="journey-region">
+  <header class="intro">
     <h1>{% translate "Begin a reflective tarot reading" %}</h1>
-    <p>{% translate "Choose a guide and a spread. Your cards are saved before interpretation begins." %}</p>
+    <p class="lede">{% translate "Choose a guide and a spread. Your cards are saved before interpretation begins." %}</p>
   </header>
-  <p class="locale-switch">
-    <a href="{% url 'tarot:journey' %}?locale=en" lang="en">{% translate "English" %}</a>
-    <a href="{% url 'tarot:journey' %}?locale=uk" lang="uk">{% translate "Українська" %}</a>
-  </p>
-  <ul class="mentors">
-    {% for mentor in mentors %}
-      <li>
-        {% if mentor.managed_image_path %}
-          <img src="{% static mentor.managed_image_path %}" alt="" width="96" height="96">
-        {% endif %}
-        <strong>{{ mentor.localized_display_name }}</strong>
-        <p>{{ mentor.localized_biography }}</p>
-      </li>
-    {% endfor %}
-  </ul>
-  <form method="post" action="{% url 'tarot:journey' %}" hx-post="{% url 'tarot:journey' %}" hx-target="#journey-region" hx-swap="outerHTML">
+
+  <form method="post" action="{% url 'tarot:journey' %}" class="journey-form" hx-post="{% url 'tarot:journey' %}" hx-target="#journey-region" hx-swap="outerHTML">
     {% csrf_token %}
-    <p>
-      <label for="{{ form.mentor.id_for_label }}">{% translate "Mentor" %}</label>
-      {{ form.mentor }}{{ form.mentor.errors }}
-    </p>
-    <p>
-      <label for="{{ form.question.id_for_label }}">{% translate "Your question" %}</label>
-      {{ form.question }}{{ form.question.errors }}
-    </p>
-    <p>
-      <label for="{{ form.reading_type.id_for_label }}">{% translate "Spread" %}</label>
-      {{ form.reading_type }}{{ form.reading_type.errors }}
-    </p>
-    {{ form.locale.as_hidden }}
-    <button type="submit">{% translate "Draw cards" %}</button>
+    <div class="layout">
+      <section class="guides" aria-labelledby="guides-heading">
+        <h2 class="section-title" id="guides-heading">{% translate "Choose your guide" %}</h2>
+        <div class="mentor-list">
+          {% for mentor in mentors %}
+            <label class="mentor-card">
+              <input class="mentor-radio" type="radio" name="mentor" value="{{ mentor.pk }}"{% if form.mentor.value|stringformat:"s" == mentor.pk|stringformat:"s" %} checked{% elif not form.mentor.value and forloop.first %} checked{% endif %}>
+              {% if mentor.managed_image_path %}
+                <img src="{% static mentor.managed_image_path %}" alt="" width="56" height="56">
+              {% endif %}
+              <span class="mentor-body">
+                <strong class="mentor-name">{{ mentor.localized_display_name }}</strong>
+                <span class="mentor-bio">{{ mentor.localized_biography }}</span>
+              </span>
+            </label>
+          {% endfor %}
+        </div>
+        {{ form.mentor.errors }}
+      </section>
+
+      <section class="details" aria-label="{% translate 'Reading details' %}">
+        <div class="field">
+          <label for="{{ form.question.id_for_label }}">{% translate "Your question" %}</label>
+          {{ form.question }}
+          {{ form.question.errors }}
+        </div>
+        <div class="field">
+          <label for="{{ form.reading_type.id_for_label }}">{% translate "Spread" %}</label>
+          {{ form.reading_type }}
+          {{ form.reading_type.errors }}
+        </div>
+        {{ form.locale.as_hidden }}
+        <button type="submit">{% translate "Draw cards" %}</button>
+      </section>
+    </div>
   </form>
 </div>

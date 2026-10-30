@@ -36,17 +36,45 @@ msgstr "Почніть рефлексивне читання таро"
 msgid "Choose a guide and a spread. Your cards are saved before interpretation begins."
 msgstr "Оберіть наставника й розклад. Ваші карти буде збережено до початку тлумачення."
 
-#: tarot/templates/tarot/partials/journey_form.html
-msgid "English"
-msgstr "English"
+#: tarot/templates/tarot/journey.html
+msgid "Language"
+msgstr "Мова"
+
+#: tarot/templates/tarot/journey.html
+msgid "Choose your guide"
+msgstr "Оберіть наставника"
 
 #: tarot/templates/tarot/partials/journey_form.html
-msgid "Українська"
-msgstr "Українська"
+msgid "Reading details"
+msgstr "Деталі читання"
+
+#: tarot/templates/tarot/reading_detail.html
+msgid "New reading"
+msgstr "Нове читання"
 
 #: tarot/templates/tarot/partials/journey_form.html
 msgid "Mentor"
 msgstr "Наставник"
+
+#: tarot/spreads.py
+msgid "Single Card"
+msgstr "Одна карта"
+
+#: tarot/spreads.py
+msgid "Past, Present, and Future"
+msgstr "Минуле, теперішнє й майбутнє"
+
+#: tarot/spreads.py
+msgid "Celtic Cross"
+msgstr "Кельтський хрест"
+
+#: tarot/spreads.py
+msgid "Career Growth"
+msgstr "Кар’єрне зростання"
+
+#: tarot/spreads.py
+msgid "Love Choice"
+msgstr "Вибір у стосунках"
 
 #: tarot/templates/tarot/partials/journey_form.html
 msgid "Your question"
