@@ -135,7 +135,7 @@ class ReadingAdmin(admin.ModelAdmin):
     @admin.action(description=_("Assign random mentor to selected readings"))
     def assign_random_mentor(self, request, queryset):
         # Get all active mentors
-        mentors = list(Mentor.objects.filter(active=True))
+        mentors = list(Mentor.objects.filter(is_active=True))
         if not mentors:
             self.message_user(request, _("No mentors available to assign."), level="error")
             return
