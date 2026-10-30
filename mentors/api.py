@@ -27,7 +27,7 @@ class AsyncMentorController:
         """
         Pick preferred mentor by slug field.
         """
-        mentor = await aget_object_or_404(Mentor, slug=mentor_slug)
+        mentor = await aget_object_or_404(Mentor, slug=mentor_slug, is_active=True)
         user_profile = await aget_object_or_404(UserProfile, user=request.user)
         user_profile.preferred_mentor = mentor
         await user_profile.asave()

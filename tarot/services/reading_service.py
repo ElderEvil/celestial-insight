@@ -31,7 +31,7 @@ async def create_reading(user, question: str, mentor_id: int, reading_type: Read
     if not has_tokens:
         return "Insufficient tokens to create a reading."
 
-    mentor = await aget_object_or_404(Mentor, id=mentor_id)
+    mentor = await aget_object_or_404(Mentor, id=mentor_id, is_active=True)
 
     try:
         deps = ReadingDependencies(question=question)

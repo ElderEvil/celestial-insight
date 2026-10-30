@@ -112,3 +112,39 @@ def test_readings_api_accepts_active_spread(client, django_user_model, monkeypat
     assert HTTPStatus.OK <= response.status_code < HTTPStatus.MULTIPLE_CHOICES
     assert Reading.objects.count() == 1
     assert Reading.objects.get().reading_type == ReadingTypeEnum.THREE_CARD_SPREAD
+
+
+@pytest.mark.django_db
+def test_create_reading_rejects_inactive_mentor(client, django_user_model, monkeypatch):
+    client.raise_request_exception = False
+    _login_with_profile(client, django_user_model)
+    mentor = baker.make("mentors.Mentor", name="Dormant Mentor", is_active=False)
+    baker.make("tarot.Card")
+    monkeypatch.setattr(
+        reading_service,
+        "tarot_support_agent",
+        _FakeSupportAgent(ReadingTypeEnum.SINGLE_CARD),
+    )
+
+    response = client.post(
+        f"/api/tarot/readings?question=x&mentor_id={mentor.id}&reading_type=single_card",
+    )
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert Reading.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_pick_mentor_rejects_inactive_mentor(client, django_user_model):
+    user = _login_with_profile(client, django_user_model)
+    mentor = baker.make("mentors.Mentor", name="Dormant Mentor", is_active=False)
+    profile = UserProfile.objects.get(user=user)
+
+    response = client.post(f"/api/mentors/{mentor.slug}")
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+    profile.refresh_from_db()
+    assert profile.preferred_mentor is None
+
+
+
