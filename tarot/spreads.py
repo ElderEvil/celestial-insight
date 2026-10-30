@@ -17,6 +17,7 @@ class SpreadDefinition:
     name: str
     positions: tuple[SpreadPosition, ...]
     version: int = SPREAD_CONTENT_VERSION
+    is_active: bool = True
 
 
 SPREADS = {
@@ -82,3 +83,11 @@ def get_spread(reading_type: ReadingTypeEnum | str) -> SpreadDefinition:
     except (KeyError, ValueError) as error:
         message = f"Unsupported spread: {reading_type}"
         raise ValueError(message) from error
+
+
+def get_active_spread(reading_type: ReadingTypeEnum | str) -> SpreadDefinition:
+    spread = get_spread(reading_type)
+    if not spread.is_active:
+        message = f"Inactive spread: {reading_type}"
+        raise ValueError(message)
+    return spread
