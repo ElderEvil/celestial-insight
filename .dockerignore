@@ -23,6 +23,16 @@ db.sqlite3
 *.tmp
 .DS_Store
 
+# Ignore local tooling state and VCS data
+.git/
+.venv/
+.omo/
+.agents/
+.pytest_cache/
+.ruff_cache/
+staticfiles/
+media/
+
 # Ignore documentation and readme files
 README.md
 

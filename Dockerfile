@@ -11,27 +11,19 @@ ENV UV_COMPILE_BYTECODE=1
 ENV UV_LINK_MODE=copy
 
 # Install the project's dependencies using the lockfile and settings
-RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-install-project --no-dev
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-install-project --no-dev
 
 # Then, add the rest of the project source code and install it
 # Installing separately from its dependencies allows optimal layer caching
 ADD . /app
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev
+RUN uv sync --frozen --no-dev
 
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONUNBUFFERED=1
 
 # Reset the entrypoint, don't invoke `uv`
 ENTRYPOINT []
 
-CMD ["sh", "-c", "uv run manage.py migrate && \
-    uv run manage.py collectstatic --noinput --clear && \
-    uv run manage.py createsuperuser --noinput && \
-    uv run manage.py loaddata admin_interface_theme_bootstrap.json &&  \
-    uv run manage.py loaddata mentor_data && \
-    uv run manage.py loaddata tarot_data && \
-    uv run uvicorn celestial_insight.asgi:application --host 0.0.0.0 --port 9090"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput --clear && python manage.py seed_demo && python manage.py loaddata admin_interface_theme_bootstrap.json && (python manage.py createsuperuser --noinput || echo 'superuser already present') && uvicorn celestial_insight.asgi:application --host 0.0.0.0 --port 9090"]
