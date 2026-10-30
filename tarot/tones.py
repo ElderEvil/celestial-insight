@@ -50,7 +50,7 @@ TONE_PROMPTS: dict[ToneModifier, str] = {
     ToneModifier.CASUAL_SELF_REFLECTION: (
         "Help look inward and think, but present it as a conversation with a good friend."
     ),
-    ToneModifier.CASUAL_GUIDANCE: ("Give advice in an informal and positive manner. Be simple and caring in tone."),
+    ToneModifier.CASUAL_GUIDANCE: "Give advice in an informal and positive manner. Be simple and caring in tone.",
     ToneModifier.CASUAL_WARNING: (
         "Warn the person gently without creating tension, be like a good friend who suggests being more careful."
     ),
@@ -63,21 +63,19 @@ TONE_PROMPTS: dict[ToneModifier, str] = {
     ToneModifier.PLAYFUL_PREDICTION: (
         "Predict with a sense of humor and lightness, add playfulness to your intonation."
     ),
-    ToneModifier.PLAYFUL_SELF_REFLECTION: ("Help reflect on yourself easily and naturally, as if it were a game."),
-    ToneModifier.PLAYFUL_GUIDANCE: ("Give advice cheerfully, with jokes and optimism, but without mockery."),
-    ToneModifier.PLAYFUL_WARNING: ("Warn with humor, without being dramatic, but hint at the need for caution."),
-    ToneModifier.ANXIOUS_PREDICTION: ("Respond with slight anxiety, as if you were a bit worried about the person."),
-    ToneModifier.ANXIOUS_SELF_REFLECTION: (
-        "Suggest reflection while expressing concern about the person's inner state."
-    ),
+    ToneModifier.PLAYFUL_SELF_REFLECTION: "Help reflect on yourself easily and naturally, as if it were a game.",
+    ToneModifier.PLAYFUL_GUIDANCE: "Give advice cheerfully, with jokes and optimism, but without mockery.",
+    ToneModifier.PLAYFUL_WARNING: "Warn with humor, without being dramatic, but hint at the need for caution.",
+    ToneModifier.ANXIOUS_PREDICTION: "Respond with slight anxiety, as if you were a bit worried about the person.",
+    ToneModifier.ANXIOUS_SELF_REFLECTION: "Suggest reflection while expressing concern about the person's inner state.",
     ToneModifier.ANXIOUS_GUIDANCE: (
         "Give advice with sympathy and concern, like a caring companion worried about the situation."
     ),
     ToneModifier.ANXIOUS_WARNING: "Warn cautiously and with care, expressing sympathy and concern.",
-    ToneModifier.SARCASTIC_PREDICTION: ("Give a prediction with irony or sarcasm, but without direct offense."),
-    ToneModifier.SARCASTIC_SELF_REFLECTION: ("Help reflect on yourself with a degree of irony and self-irony."),
-    ToneModifier.SARCASTIC_GUIDANCE: ("Give advice with light sarcasm, as if gently poking fun at the situation."),
-    ToneModifier.SARCASTIC_WARNING: ("Warn with sarcasm, as if hinting at the absurdity of possible consequences."),
+    ToneModifier.SARCASTIC_PREDICTION: "Give a prediction with irony or sarcasm, but without direct offense.",
+    ToneModifier.SARCASTIC_SELF_REFLECTION: "Help reflect on yourself with a degree of irony and self-irony.",
+    ToneModifier.SARCASTIC_GUIDANCE: "Give advice with light sarcasm, as if gently poking fun at the situation.",
+    ToneModifier.SARCASTIC_WARNING: "Warn with sarcasm, as if hinting at the absurdity of possible consequences.",
 }
 
 
