@@ -21,7 +21,7 @@ MAX_QUESTION_LENGTH = 25
 @admin.register(Card)
 class CardAdmin(admin.ModelAdmin):
     list_display = ("name", "suit", "number", "keyword_links")
-    search_fields = ("name", "keywords", "description")
+    search_fields = ("name", "keywords", "keywords_uk", "description", "description_uk")
     list_filter = ("suit",)
     ordering = ("suit", "number")
     readonly_fields = (
@@ -30,7 +30,11 @@ class CardAdmin(admin.ModelAdmin):
     )
     fieldsets = (
         ("Basic Information", {"fields": ("name", "suit", "number")}),
-        ("Details", {"fields": ("slug", "keywords", "description", "upright_meaning", "reversed_meaning")}),
+        ("English Content", {"fields": ("slug", "keywords", "description", "upright_meaning", "reversed_meaning")}),
+        (
+            "Ukrainian Content",
+            {"fields": ("keywords_uk", "description_uk", "upright_meaning_uk", "reversed_meaning_uk")},
+        ),
         ("Image", {"fields": ("preview_image", "image")}),
     )
     actions = ["populate_empty_slugs"]

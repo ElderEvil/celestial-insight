@@ -26,14 +26,23 @@ class Card(models.Model):
     name = models.CharField(_("Name"), max_length=100)
     slug = AutoSlugField(populate_from="name")
     description = models.TextField(_("Description"))
+    description_uk = models.TextField(_("Ukrainian Description"), blank=True)
     number = models.PositiveSmallIntegerField(_("Number"), null=True, blank=True)
     image = models.ImageField(_("Image"), upload_to="tarot_cards/", blank=True)
     upright_meaning = models.TextField(_("Upright Meaning"))
+    upright_meaning_uk = models.TextField(_("Ukrainian Upright Meaning"), blank=True)
     reversed_meaning = models.TextField(_("Reversed Meaning"))
+    reversed_meaning_uk = models.TextField(_("Ukrainian Reversed Meaning"), blank=True)
 
     keywords = models.CharField(
         _("Keywords"),
         max_length=255,
+        help_text=_("Comma-separated keywords"),
+    )
+    keywords_uk = models.CharField(
+        _("Ukrainian Keywords"),
+        max_length=255,
+        blank=True,
         help_text=_("Comma-separated keywords"),
     )
     suit = models.ForeignKey(
@@ -61,6 +70,28 @@ class Card(models.Model):
         return _("No image")
 
     preview_image.short_description = _("Card Image")
+
+    def _localized(self, locale: str, english: str, ukrainian: str) -> str:
+        if (locale or "").startswith("uk") and ukrainian:
+            return ukrainian
+        return english
+
+    def localized_description(self, locale: str) -> str:
+        return self._localized(locale, self.description, self.description_uk)
+
+    def localized_upright_meaning(self, locale: str) -> str:
+        return self._localized(locale, self.upright_meaning, self.upright_meaning_uk)
+
+    def localized_reversed_meaning(self, locale: str) -> str:
+        return self._localized(locale, self.reversed_meaning, self.reversed_meaning_uk)
+
+    def localized_keywords(self, locale: str) -> str:
+        return self._localized(locale, self.keywords, self.keywords_uk)
+
+    def localized_meaning(self, orientation: str, locale: str) -> str:
+        if orientation == "reversed":
+            return self.localized_reversed_meaning(locale)
+        return self.localized_upright_meaning(locale)
 
 
 class Reading(models.Model):
