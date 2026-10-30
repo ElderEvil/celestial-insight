@@ -1,0 +1,1420 @@
+{
+  "_meta": {
+    "version": 1,
+    "voice": "Reflective, present tense, second person. Meanings describe a field of experience to notice, never an outcome to expect.",
+    "provenance": "Authored for celestial-insight. Not harvested from celestial-neutral.",
+    "locales": ["en", "uk"],
+    "register_uk": "polite plural (ви), matching the shipped django.po catalogue",
+    "lengths": {
+      "description": "1-2 sentences, 18-55 English words / 15-45 Ukrainian words",
+      "meaning": "2-3 sentences, 28-60 English words / 20-55 Ukrainian words",
+      "keywords": "4-6 lowercase items"
+    }
+  },
+  "cards": {
+    "the-fool": {
+      "description": {
+        "en": "A young traveller steps toward a cliff edge with a small bundle, a white dog at their side. The scene captures the moment before a beginning, when the path is not yet visible.",
+        "uk": "Молодий мандрівник ступає до краю скелі з невеликим клунком, а поруч біжить білий пес. Сцена передає мить перед початком, коли шлях ще не видно."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where curiosity is stronger than certainty. A fresh start rarely arrives with a full map, and the willingness to move before every answer is known can be a form of trust.",
+        "uk": "Ця карта запрошує помітити, де цікавість сильніша за впевненість. Новий початок рідко приходить із готовою картою, і готовність рухатися, не знаючи всіх відповідей, може бути формою довіри."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice the difference between openness and avoidance. Leaping without looking can be impulsiveness, while refusing to move at all can be fear wearing the mask of caution.",
+        "uk": "Ця карта запрошує помітити різницю між відкритістю та уникненням. Стрибок навмання може бути імпульсивністю, а відмова рухатися взагалі — страхом у масці обережності."
+      },
+      "keywords": {
+        "en": ["beginnings", "curiosity", "trust", "openness", "inexperience"],
+        "uk": ["початок", "цікавість", "довіра", "відкритість", "недосвідченість"]
+      }
+    },
+    "the-magician": {
+      "description": {
+        "en": "A figure stands before a table holding a wand, cup, sword and pentacle, one hand raised toward the sky and the other toward the ground. The gesture suggests a channel between intention and form.",
+        "uk": "Постать стоїть перед столом, на якому лежать жезл, чаша, меч і пентакль; одна рука піднята до неба, інша — до землі. Жест нагадує канал між задумом і формою."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice the resources already within reach. Skill, attention and will are most useful when they are directed at something specific, so consider what you are actually trying to bring into being.",
+        "uk": "Ця карта запрошує помітити ресурси, які вже поруч. Майстерність, увага й воля найкорисніші, коли спрямовані на щось конкретне, тож варто замислитися, що саме ви хочете втілити."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where intention and action have drifted apart. Cleverness can become manipulation when it serves an unexamined goal, and scattered effort can look like progress without ever arriving.",
+        "uk": "Ця карта запрошує помітити, де задум і дія розійшлися. Кмітливість може стати маніпуляцією, коли служить неусвідомленій меті, а розпорошені зусилля можуть виглядати як рух, не приводячи до мети."
+      },
+      "keywords": {
+        "en": ["intention", "skill", "focus", "resourcefulness", "manifestation"],
+        "uk": ["намір", "майстерність", "зосередженість", "винахідливість", "втілення"]
+      }
+    },
+    "the-high-priestess": {
+      "description": {
+        "en": "A seated figure between two pillars holds a scroll partly hidden by a veil, with a crescent moon at her feet. The image belongs to the quiet space between what is known and what is still forming.",
+        "uk": "Постать сидить між двома колонами й тримає сувій, частково прихований завою; біля її ніг лежить півмісяць. Образ належить тихому простору між тим, що відомо, і тим, що ще формується."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you already sense but have not yet put into words. Stillness and careful attention can reveal more than a hurried explanation, so give the inner voice room before you decide.",
+        "uk": "Ця карта запрошує помітити те, що ви вже відчуваєте, але ще не назвали словами. Тиша й уважність можуть відкрити більше, ніж поспішне пояснення, тож дайте внутрішньому голосу простір перед рішенням."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice when intuition has been drowned out or overruled. Ignoring an inner signal does not make it disappear, and secrecy can protect a truth or quietly keep you from facing it.",
+        "uk": "Ця карта запрошує помітити, коли інтуїцію заглушили або проігнорували. Внутрішній сигнал не зникає від того, що його не чують, а таємниця може берегти правду або тихо заважати зустрітися з нею."
+      },
+      "keywords": {
+        "en": ["intuition", "stillness", "mystery", "inner voice", "secrecy"],
+        "uk": ["інтуїція", "тиша", "таємниця", "внутрішній голос", "приховане"]
+      }
+    },
+    "the-empress": {
+      "description": {
+        "en": "A crowned figure rests in a garden of wheat and flowers, with a shield bearing a heart beside her. The scene speaks of growth that is tended rather than forced.",
+        "uk": "Увінчана постать відпочиває в саду пшениці й квітів, а поруч стоїть щит із серцем. Сцена говорить про ріст, який плекають, а не прискорюють."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what is nourishing you and what you are nourishing in turn. Care, patience and a sense of plenty can support growth that schedules and pressure cannot produce.",
+        "uk": "Ця карта запрошує помітити, що живить вас і що ви живите у відповідь. Турбота, терпіння й відчуття достатку підтримують ріст, якого не дадуть ані графіки, ані тиск."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where care has turned into depletion or control. Giving until nothing remains, or holding too tightly to what you have grown, can both interrupt the very growth you want.",
+        "uk": "Ця карта запрошує помітити, де турбота стала виснаженням або контролем. Віддавати, доки нічого не лишиться, або тримати надто міцно те, що вирощене, може перервати саме той ріст, якого ви прагнете."
+      },
+      "keywords": {
+        "en": ["nurture", "abundance", "patience", "growth", "care"],
+        "uk": ["плекання", "достаток", "терпіння", "ріст", "турбота"]
+      }
+    },
+    "the-emperor": {
+      "description": {
+        "en": "A stern figure sits on a stone throne decorated with ram heads, holding a sceptre and an orb, with mountains behind. The image concerns structure, boundaries and the exercise of authority.",
+        "uk": "Строга постать сидить на кам’яному троні, прикрашеному головами баранів, тримаючи скіпетр і державу; позаду височіють гори. Образ стосується структури, меж і здійснення влади."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where clear structure would help rather than hinder. Boundaries, agreements and consistent effort can create the stability that makes freedom possible, so consider what you are responsible for.",
+        "uk": "Ця карта запрошує помітити, де чітка структура допоможе, а не завадить. Межі, домовленості й послідовні зусилля створюють стабільність, у якій стає можливою свобода, тож подумайте, за що ви відповідаєте."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice how authority is being used or withheld. Rigidity can harden into control, while an absence of structure can leave everyone guessing, and both invite a closer look at who holds the power.",
+        "uk": "Ця карта запрошує помітити, як використовують або утримують владу. Жорсткість може затвердіти в контроль, а брак структури залишає всіх у здогадах; і те, і те варто роздивитися ближче."
+      },
+      "keywords": {
+        "en": ["structure", "authority", "boundaries", "responsibility", "stability"],
+        "uk": ["структура", "влада", "межі", "відповідальність", "стабільність"]
+      }
+    },
+    "the-hierophant": {
+      "description": {
+        "en": "A robed figure sits between pillars and raises a hand in blessing, while two figures kneel before him. The scene concerns inherited teaching, shared rituals and the frameworks that hold a community together.",
+        "uk": "Постать у мантії сидить між колонами й піднімає руку в благословенні, а двоє людей схиляються перед нею. Сцена стосується успадкованого вчення, спільних обрядів і рамок, що тримають спільноту."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you have inherited and what still carries meaning for you. Tradition can offer tested ground and a sense of belonging, or it can become a script you follow without asking whether it fits.",
+        "uk": "Ця карта запрошує помітити, що ви успадкували і що досі має для вас сенс. Традиція може дати випробуваний ґрунт і відчуття приналежності, а може стати сценарієм, який ви виконуєте, не питаючи, чи він вам пасує."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where inherited rules no longer fit your experience. Questioning a teaching is not the same as rejecting it, and the most honest inquiry often begins with asking who a rule was written for.",
+        "uk": "Ця карта запрошує помітити, де успадковані правила вже не відповідають вашому досвіду. Сумнів у вченні не означає його відкидання, і найчесніше питання часто починається з того, для кого ці правила писали."
+      },
+      "keywords": {
+        "en": ["tradition", "teaching", "belonging", "ritual", "conformity"],
+        "uk": ["традиція", "учення", "приналежність", "обряд", "узгодженість"]
+      }
+    },
+    "the-lovers": {
+      "description": {
+        "en": "Two figures stand beneath a radiant being, with a tree behind each of them. The card belongs to the field of choice, attraction and the values that shape a bond.",
+        "uk": "Дві постаті стоять під сяйною істотою, а позаду кожної з них росте дерево. Карта належить до поля вибору, притягання й цінностей, що формують зв’язок."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are choosing and what that choice says about your values. Connection grows when people meet as whole selves, so consider whether the bond before you supports both people's integrity.",
+        "uk": "Ця карта запрошує помітити, що ви обираєте і що цей вибір каже про ваші цінності. Зв’язок росте, коли люди зустрічаються цілісними, тож подумайте, чи підтримує цей зв’язок гідність обох."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where alignment has broken down. A choice made to avoid conflict, or a bond kept out of fear of being alone, can look like harmony while quietly asking someone to abandon themselves.",
+        "uk": "Ця карта запрошує помітити, де зникла узгодженість. Вибір, зроблений аби уникнути конфлікту, або зв’язок, утримуваний зі страху самотності, може виглядати як гармонія, а насправді просити когось зрадити себе."
+      },
+      "keywords": {
+        "en": ["choice", "connection", "values", "alignment", "attraction"],
+        "uk": ["вибір", "зв’язок", "цінності", "узгодженість", "притягання"]
+      }
+    },
+    "the-chariot": {
+      "description": {
+        "en": "A figure in armour stands in a chariot drawn by two sphinxes pulling in different directions. The image is about movement held together by will and direction.",
+        "uk": "Постать у броні стоїть у колісниці, запряженій двома сфінксами, що тягнуть у різні боки. Образ про рух, який тримають разом воля й напрям."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where competing pulls need a steady hand. Progress often depends less on eliminating tension than on holding it long enough to choose a direction and keep moving.",
+        "uk": "Ця карта запрошує помітити, де суперечливі пориви потребують твердої руки. Поступ часто залежить не від усунення напруги, а від здатності втримати її досить довго, щоб обрати напрям і рухатися далі."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where effort has lost its direction. Pushing harder is not always the answer; sometimes the chariot needs to stop so the driver can ask where it is actually going.",
+        "uk": "Ця карта запрошує помітити, де зусилля втратили напрям. Тиск сильніше не завжди є відповіддю; іноді колісниці варто зупинитися, щоб візник спитав, куди вона насправді прямує."
+      },
+      "keywords": {
+        "en": ["direction", "willpower", "momentum", "discipline", "control"],
+        "uk": ["напрям", "воля", "рух", "дисципліна", "контроль"]
+      }
+    },
+    "strength": {
+      "description": {
+        "en": "A calm figure gently closes the jaws of a lion, with an infinity symbol above. The scene concerns a steadiness that does not need to overpower what it meets.",
+        "uk": "Спокійна постать лагідно стуляє пащу лева, а над нею сяє символ нескінченності. Сцена про стійкість, якій не потрібно долати те, з чим вона зустрічається."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice the difference between force and steadiness. Patience with your own fear, and with another person's, can be stronger than pressure, and courage often looks quieter than it is expected to.",
+        "uk": "Ця карта запрошує помітити різницю між силою і стійкістю. Терпіння до власного страху й до страху іншої людини може бути сильнішим за тиск, а сміливість часто виглядає тихіше, ніж від неї очікують."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where self-doubt has been mistaken for humility. You do not have to feel fearless to act with care, and admitting a struggle is not the same as being ruled by it.",
+        "uk": "Ця карта запрошує помітити, де невпевненість у собі прийняли за скромність. Не обов’язково бути безстрашним, щоб діяти дбайливо, і визнати боротьбу не означає бути нею керованим."
+      },
+      "keywords": {
+        "en": ["courage", "patience", "compassion", "steadiness", "self-doubt"],
+        "uk": ["сміливість", "терпіння", "співчуття", "стійкість", "невпевненість"]
+      }
+    },
+    "the-hermit": {
+      "description": {
+        "en": "A cloaked figure stands on a mountain holding a lantern that contains a single star. The image belongs to solitude, careful searching and the light that comes from within.",
+        "uk": "Постать у плащі стоїть на горі й тримає ліхтар, у якому світиться одна зоря. Образ належить самотності, уважному пошуку й світлу, що приходить зсередини."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what becomes clearer when you step away from noise. Solitude is not the same as isolation, and a deliberate retreat can help you hear what your own experience is trying to tell you.",
+        "uk": "Ця карта запрошує помітити, що стає яснішим, коли ви відходите від шуму. Самотність не тотожна ізоляції, і свідомий відступ може допомогти почути, що намагається сказати ваш власний досвід."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice when retreat has become hiding. Time alone can restore you, but it can also become a place to avoid a conversation or a decision that keeps waiting for you.",
+        "uk": "Ця карта запрошує помітити, коли відступ став схованкою. Час наодинці може відновити вас, але може й стати місцем, де ви уникаєте розмови або рішення, яке не перестає чекати."
+      },
+      "keywords": {
+        "en": ["solitude", "searching", "introspection", "guidance", "withdrawal"],
+        "uk": ["самотність", "пошук", "самозаглиблення", "орієнтир", "відсторонення"]
+      }
+    },
+    "wheel-of-fortune": {
+      "description": {
+        "en": "A great wheel turns in the sky, watched by figures at its edges and surrounded by symbols of change. The card belongs to cycles, timing and the limits of control.",
+        "uk": "У небі обертається велике колесо, за ним стежать постаті по краях, а довкола розташовані символи змін. Карта належить до циклів, часу й меж контролю."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what is moving beyond your planning. Circumstances shift, and the useful question is not how to stop the wheel but how to meet the turn with steadiness and attention.",
+        "uk": "Ця карта запрошує помітити те, що рухається поза вашим планом. Обставини змінюються, і корисне питання не в тому, як зупинити колесо, а в тому, як зустріти поворот зі стійкістю й увагою."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where you are fighting a change that has already begun. Clinging to a familiar phase can make the transition harder, while naming what is ending can make room for what comes next.",
+        "uk": "Ця карта запрошує помітити, де ви боретеся зі зміною, яка вже почалася. Тримання за звичний етап ускладнює перехід, а коли назвати те, що завершується, звільняється місце для наступного."
+      },
+      "keywords": {
+        "en": ["cycles", "change", "timing", "turning point", "uncertainty"],
+        "uk": ["цикли", "зміна", "час", "поворот", "невизначеність"]
+      }
+    },
+    "justice": {
+      "description": {
+        "en": "A seated figure holds an upright sword in one hand and balanced scales in the other. The image concerns fairness, consequence and the honest weighing of what has happened.",
+        "uk": "Постать сидить із піднятим мечем в одній руці й зрівноваженими терезами в іншій. Образ про справедливість, наслідки й чесне зважування того, що сталося."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where honesty and proportion matter more than convenience. Fairness begins with seeing clearly, including your own part, and consequences are easier to face when they are named plainly.",
+        "uk": "Ця карта запрошує помітити, де чесність і міра важливіші за зручність. Справедливість починається з ясного бачення, зокрема власної ролі, а наслідки легше зустріти, коли їх названо прямо."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where a situation is being judged unevenly. Avoidance of accountability, or a verdict reached before all the facts, can leave a quiet imbalance that asks to be corrected.",
+        "uk": "Ця карта запрошує помітити, де ситуацію оцінюють нерівно. Уникнення відповідальності або рішення, ухвалене до з’ясування фактів, залишає тихий дисбаланс, який просить виправлення."
+      },
+      "keywords": {
+        "en": ["fairness", "truth", "accountability", "balance", "consequence"],
+        "uk": ["справедливість", "правда", "відповідальність", "баланс", "наслідок"]
+      }
+    },
+    "the-hanged-man": {
+      "description": {
+        "en": "A figure hangs upside down from a wooden frame, calm and unbound, with a halo around the head. The image belongs to pause, reversal and seeing a situation from another angle.",
+        "uk": "Постать висить головою вниз на дерев’яній рамі, спокійна й не зв’язана, з ореолом навколо голови. Образ належить паузі, перевороту й погляду на ситуацію під іншим кутом."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where waiting is more useful than pushing. A change of perspective can loosen a problem that resists every direct attempt, and some things only become visible when you stop struggling.",
+        "uk": "Ця карта запрошує помітити, де очікування корисніше за тиск. Зміна перспективи може послабити проблему, що не піддається прямим спробам, а дещо стає видимим лише тоді, коли ви перестаєте боротися."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where suspension has become refusal to move. Patience is different from indecision, and a pause that no longer teaches anything may be asking you to choose a direction.",
+        "uk": "Ця карта запрошує помітити, де зависання стало відмовою рухатися. Терпіння відрізняється від нерішучості, і пауза, яка вже нічого не вчить, може просити вас обрати напрям."
+      },
+      "keywords": {
+        "en": ["pause", "perspective", "surrender", "waiting", "reversal"],
+        "uk": ["пауза", "перспектива", "відпускання", "очікування", "переворот"]
+      }
+    },
+    "death": {
+      "description": {
+        "en": "A skeletal figure rides through a landscape where a sun rises on the horizon, and all kinds of people meet its approach. The card concerns endings that make room for something else.",
+        "uk": "Скелетна постать їде краєвидом, де на обрії сходить сонце, а люди різного стану зустрічають її наближення. Карта про завершення, що звільняють місце для іншого."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what has already ended, even if it has not been acknowledged. Letting a chapter close is not a failure; it is how attention and energy become available for what is still alive.",
+        "uk": "Ця карта запрошує помітити те, що вже завершилося, навіть якщо це ще не визнано. Дозволити розділу закритися — не поразка; саме так увага й енергія звільняються для того, що ще живе."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where resistance to an ending is prolonging the strain. Holding on can feel safer than grieving, but the unfinished goodbye often keeps asking for attention in quieter ways.",
+        "uk": "Ця карта запрошує помітити, де опір завершенню лише продовжує напругу. Триматися може здаватися безпечнішим, ніж сумувати, але незавершене прощання часто просить уваги тихішими способами."
+      },
+      "keywords": {
+        "en": ["ending", "transition", "release", "renewal", "grief"],
+        "uk": ["завершення", "перехід", "відпускання", "оновлення", "сум"]
+      }
+    },
+    "temperance": {
+      "description": {
+        "en": "A winged figure pours water between two cups, one foot on land and one in a pool. The image is about balance found through patient adjustment rather than extremes.",
+        "uk": "Крилата постать переливає воду з однієї чаші в іншу, стоячи однією ногою на землі, а іншою у водоймі. Образ про баланс, знайдений через терпляче налагодження, а не через крайнощі."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where a measured middle path is available. Blending different parts of your life takes ongoing adjustment, and small, consistent choices often do more than a dramatic correction.",
+        "uk": "Ця карта запрошує помітити, де доступний виважений серединний шлях. Поєднання різних частин життя потребує постійного налагодження, і малі послідовні вибори часто роблять більше, ніж різка корекція."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where something has become all-or-nothing. Excess and depletion can be two faces of the same imbalance, and the first step is often to name what you have been rationing or overfilling.",
+        "uk": "Ця карта запрошує помітити, де щось стало «все або нічого». Надлишок і виснаження можуть бути двома обличчями одного дисбалансу, і перший крок — назвати те, чого ви собі недодавали або чим переповнювалися."
+      },
+      "keywords": {
+        "en": ["balance", "moderation", "patience", "blending", "adjustment"],
+        "uk": ["баланс", "помірність", "терпіння", "поєднання", "налагодження"]
+      }
+    },
+    "the-devil": {
+      "description": {
+        "en": "Two figures stand chained beneath a horned being on a pedestal, though the chains around their necks are loose. The scene concerns attachment, appetite and the bargains people make with themselves.",
+        "uk": "Дві постаті стоять у ланцюгах під рогатою істотою на п’єдесталі, хоча ланцюги на їхніх шиях вільні. Сцена про прив’язаність, бажання й угоди, які люди укладають із собою."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are attached to and what that attachment costs. Desire is not the problem; the difficulty begins when a habit, comfort or fear starts making your choices for you.",
+        "uk": "Ця карта запрошує помітити, до чого ви прив’язані і чого це вам коштує. Бажання — не проблема; труднощі починаються, коли звичка, комфорт або страх починають обирати за вас."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where a hold is loosening. Seeing a pattern clearly is often the first real freedom, and you do not have to fix everything at once to begin reclaiming your own direction.",
+        "uk": "Ця карта запрошує помітити, де хватка слабшає. Побачити патерн ясно — часто перша справжня свобода, і не потрібно виправляти все одразу, щоб почати повертати собі власний напрям."
+      },
+      "keywords": {
+        "en": ["attachment", "temptation", "habit", "bargain", "release"],
+        "uk": ["прив’язаність", "спокуса", "звичка", "угода", "звільнення"]
+      }
+    },
+    "the-tower": {
+      "description": {
+        "en": "A tall tower is struck by lightning, its crown thrown off, and figures fall from its windows into a dark landscape. The image concerns sudden disruption and the collapse of a structure that could not hold.",
+        "uk": "У високу вежу влучає блискавка, її верхівка злітає, а постаті падають із вікон у темний краєвид. Образ про раптове потрясіння й обвал структури, що не могла встояти."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what a sudden change has exposed. Disruption is painful, yet it can reveal which foundations were brittle, and the honest inventory that follows is often more valuable than rebuilding the same shape.",
+        "uk": "Ця карта запрошує помітити, що відкрила раптова зміна. Потрясіння болісне, але воно може показати, які основи були крихкими, і чесний перегляд після нього часто цінніший за відбудову тієї самої форми."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where you are bracing against a change that has already happened. Delay can soften the shock, but it can also prolong the uncertainty, and small honest steps may be the safest way through.",
+        "uk": "Ця карта запрошує помітити, де ви готуєтеся до зміни, яка вже сталася. Відтермінування може пом’якшити удар, але й продовжити невизначеність, і малі чесні кроки можуть бути найбезпечнішим шляхом."
+      },
+      "keywords": {
+        "en": ["disruption", "upheaval", "collapse", "revelation", "rebuilding"],
+        "uk": ["потрясіння", "злам", "обвал", "одкровення", "відбудова"]
+      }
+    },
+    "the-star": {
+      "description": {
+        "en": "A figure kneels by a pool under a large star, pouring water onto the land and into the pool. The scene speaks of quiet hope returning after difficulty.",
+        "uk": "Постать схиляється біля водойми під великою зорею й виливає воду на землю та у воду. Сцена говорить про тиху надію, що повертається після труднощів."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what hope looks like when it is not dramatic. Healing often arrives slowly, through small acts of care and the willingness to trust again, even while some uncertainty remains.",
+        "uk": "Ця карта запрошує помітити, як виглядає надія, коли вона не гучна. Зцілення часто приходить повільно, через малі акти турботи й готовність знову довіряти, навіть коли частина невизначеності лишається."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where discouragement has made hope feel naive. Doubt does not cancel the possibility of renewal; it may simply mean that trust needs to be rebuilt slowly and on your own terms.",
+        "uk": "Ця карта запрошує помітити, де зневіра зробила надію наївною. Сумнів не скасовує можливості оновлення; він може означати лише те, що довіру потрібно відбудовувати повільно й на ваших умовах."
+      },
+      "keywords": {
+        "en": ["hope", "healing", "renewal", "trust", "serenity"],
+        "uk": ["надія", "зцілення", "оновлення", "довіра", "спокій"]
+      }
+    },
+    "the-moon": {
+      "description": {
+        "en": "A moon hangs over a path between two towers, while a dog and a wolf call upward and a crayfish emerges from the water. The image concerns uncertainty, dream and what lies beneath the surface.",
+        "uk": "Місяць висить над стежкою між двома вежами, пес і вовк виють угору, а з води виходить рак. Образ про невизначеність, сон і те, що лежить під поверхнею."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice how much you are assuming. When the path is dim, imagination can be helpful and misleading at once, so separate what you know from what you fear or hope might be true.",
+        "uk": "Ця карта запрошує помітити, скільки ви припускаєте. Коли стежка темна, уява може водночас допомагати й збивати, тож відділіть те, що ви знаєте, від того, що ви боїтеся або сподіваєтеся."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where confusion is beginning to clear. Fears that were once shapeless can lose their power when they are named, and the way forward may look simpler than the fog suggested.",
+        "uk": "Ця карта запрошує помітити, де сум’яття починає розвіюватися. Страхи, які були безформними, втрачають владу, коли їх назвати, і шлях далі може виглядати простішим, ніж здавалося в тумані."
+      },
+      "keywords": {
+        "en": ["uncertainty", "imagination", "intuition", "illusion", "shadow"],
+        "uk": ["невизначеність", "уява", "інтуїція", "ілюзія", "тінь"]
+      }
+    },
+    "the-sun": {
+      "description": {
+        "en": "A child rides a white horse beneath a bright sun, surrounded by sunflowers and a low garden wall. The scene concerns clarity, openness and a return of warmth.",
+        "uk": "Дитина їде на білому коні під яскравим сонцем, довкола соняшники й невисокий садовий мур. Сцена про ясність, відкритість і повернення тепла."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what is going well and to let yourself experience it. Clarity, play and honest warmth are not rewards to earn; they are signals that deserve attention while they are present.",
+        "uk": "Ця карта запрошує помітити, що йде добре, і дозволити собі це відчути. Ясність, гра й щире тепло — не нагороди, які треба заслужити; це сигнали, що заслуговують уваги, поки вони є."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where brightness has become hard to trust. Joy can feel unsafe after a difficult season, and allowing yourself a small, genuine pleasure is not the same as ignoring what still needs care.",
+        "uk": "Ця карта запрошує помітити, де радість стала важкою для довіри. Після складного періоду тепло може здаватися небезпечним, і дозволити собі малу щиру радість не означає ігнорувати те, що ще потребує уваги."
+      },
+      "keywords": {
+        "en": ["joy", "clarity", "warmth", "success", "vitality"],
+        "uk": ["радість", "ясність", "тепло", "успіх", "життєвість"]
+      }
+    },
+    "judgement": {
+      "description": {
+        "en": "Figures rise from open graves at the sound of a trumpet, their arms lifted toward a figure in the clouds. The image concerns awakening, reckoning and the call to look at one's life honestly.",
+        "uk": "Постаті підводяться з відкритих могил на звук сурми, здіймаючи руки до постаті в хмарах. Образ про пробудження, переоцінку й заклик чесно подивитися на власне життя."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are ready to see clearly. A reckoning does not have to be a punishment; it can be the moment you stop avoiding an old story and decide what you want to carry forward.",
+        "uk": "Ця карта запрошує помітити, що ви готові побачити ясно. Переоцінка не обов’язково є покаранням; це може бути мить, коли ви перестаєте уникати давньої історії й обираєте, що взяти з собою далі."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where self-judgement has become louder than honesty. Shame rarely produces change, while a plain, compassionate look at what happened can free the energy that criticism keeps locked in place.",
+        "uk": "Ця карта запрошує помітити, де самозасудження стало гучнішим за чесність. Сором рідко змінює, тоді як спокійний, співчутливий погляд на те, що сталося, звільняє енергію, яку критика тримає на місці."
+      },
+      "keywords": {
+        "en": ["awakening", "reckoning", "honesty", "self-assessment", "calling"],
+        "uk": ["пробудження", "переоцінка", "чесність", "самооцінка", "поклик"]
+      }
+    },
+    "the-world": {
+      "description": {
+        "en": "A figure dances within a wreath, holding two wands, with the four fixed signs of the zodiac at the corners. The scene concerns completion, integration and a cycle finding its whole shape.",
+        "uk": "Постать танцює у вінку, тримаючи два жезли, а по кутах розташовані чотири знаки зодіаку. Сцена про завершення, цілісність і цикл, що знаходить свою повну форму."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what has come full circle. Completion is worth marking, not rushing past, and the integration of what you learned is part of the achievement rather than a delay before the next thing.",
+        "uk": "Ця карта запрошує помітити, що завершило коло. Завершення варто відзначити, а не пробігти повз, і осмислення засвоєного є частиною досягнення, а не затримкою перед наступним."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where an ending feels unfinished. A missing conversation, an unmet need or a lesson not yet absorbed can leave a cycle open, and naming the gap is the first step toward closing it.",
+        "uk": "Ця карта запрошує помітити, де завершення здається незакінченим. Недоговорена розмова, незадоволена потреба чи не засвоєний урок можуть залишити цикл відкритим, і назвати цю прогалину — перший крок до завершення."
+      },
+      "keywords": {
+        "en": ["completion", "integration", "wholeness", "cycle", "fulfillment"],
+        "uk": ["завершення", "цілісність", "повнота", "цикл", "здійснення"]
+      }
+    },
+    "ace-of-wands": {
+      "description": {
+        "en": "A hand emerges from a cloud holding a green wand that sprouts new leaves, with a river and distant hills below. The image belongs to the first spark of desire and creative energy.",
+        "uk": "З хмари виходить рука й тримає зелену гілку, що вже пускає листя; внизу тече річка й видніються далекі пагорби. Образ належить першій іскрі бажання й творчої енергії."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where new energy is asking for a channel. Inspiration is most alive when it is given a small, concrete form, so consider one honest action that would let the spark breathe.",
+        "uk": "Ця карта запрошує помітити, де нова енергія просить каналу. Натхнення найживіше, коли його надано малої конкретної форми, тож подумайте про одну чесну дію, яка дасть іскрі дихати."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where enthusiasm has stalled before it could take root. A delayed start is not a lost one, and it may help to ask what the spark is actually waiting for.",
+        "uk": "Ця карта запрошує помітити, де запал зупинився, ще не встигнувши вкорінитися. Відкладений початок не є втраченим, і може допомогти щире питання до себе: чого насправді чекає ця іскра?"
+      },
+      "keywords": {
+        "en": ["spark", "initiative", "potential", "beginning", "creative energy"],
+        "uk": ["іскра", "ініціатива", "потенціал", "початок", "творча енергія"]
+      }
+    },
+    "two-of-wands": {
+      "description": {
+        "en": "A figure stands on a high wall holding a globe in one hand and a wand in the other, looking out over land and sea. The card concerns planning and the moment before a choice is acted on.",
+        "uk": "Постать стоїть на високому мурі, тримаючи в одній руці глобус, а в другій жезл, і дивиться на землю та море. Карта про планування й мить перед тим, як вибір стане дією."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice how far your plans have actually reached. Vision needs a decision to become real, and standing at the edge can be either preparation or a way of postponing the first step.",
+        "uk": "Ця карта запрошує помітити, наскільки далеко сягнули ваші плани. Задум потребує рішення, щоб стати реальним, а стояння на краю може бути і підготовкою, і способом відкласти перший крок."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where fear of choosing has become comfortable. Weighing options is useful until it turns into a place to hide, and a smaller commitment may reveal more than another round of planning.",
+        "uk": "Ця карта запрошує помітити, де страх перед вибором став зручним. Зважувати варіанти корисно, доки це не перетворилося на схованку, і менше зобов’язання може відкрити більше, ніж ще одне коло планування."
+      },
+      "keywords": {
+        "en": ["planning", "choice", "vision", "patience", "commitment"],
+        "uk": ["планування", "вибір", "бачення", "терпіння", "зобов’язання"]
+      }
+    },
+    "three-of-wands": {
+      "description": {
+        "en": "A figure stands on a cliff watching distant ships cross the sea, with three wands planted behind them. The scene concerns expansion and the first signs that an effort is travelling.",
+        "uk": "Постать стоїть на скелі й дивиться, як далекі кораблі перетинають море; позаду неї встановлено три жезли. Сцена про розширення й перші ознаки того, що зусилля вирушило в дорогу."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice the results that are still on their way. Patience with a process you have already started is its own kind of work, and looking ahead can help you prepare without gripping the outcome.",
+        "uk": "Ця карта запрошує помітити результати, які ще в дорозі. Терпіння до процесу, який ви вже почали, — окремий вид роботи, а погляд уперед допомагає готуватися, не хапаючись за результат."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where waiting has become passivity. A ship that never leaves the harbour cannot return with news, and it may be time to check whether the delay is strategic or simply comfortable.",
+        "uk": "Ця карта запрошує помітити, де очікування стало пасивністю. Корабель, який не виходить із гавані, не повернеться з новинами, і, можливо, час перевірити, чи затримка є стратегією, а чи просто зручністю."
+      },
+      "keywords": {
+        "en": ["expansion", "foresight", "patience", "progress", "horizon"],
+        "uk": ["розширення", "далекоглядність", "терпіння", "поступ", "обрій"]
+      }
+    },
+    "four-of-wands": {
+      "description": {
+        "en": "Four wands form a canopy hung with flowers, and two figures celebrate beneath it. The image belongs to homecoming, shared joy and a moment of earned stability.",
+        "uk": "Чотири жезли утворюють шатро, прикрашене квітами, а під ним святкують дві постаті. Образ належить поверненню додому, спільній радості й миті заслуженої стабільності."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where a foundation is worth celebrating. Joy shared with others strengthens the ground beneath it, so allow yourself to mark what has been built instead of moving straight to the next task.",
+        "uk": "Ця карта запрошує помітити, де фундамент варто відсвяткувати. Радість, поділена з іншими, зміцнює ґрунт під ним, тож дозвольте собі відзначити збудоване, а не одразу братися за наступне завдання."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where celebration feels withheld. A home that no longer feels welcoming, or a milestone passed over in silence, can leave a quiet sense of unfinished belonging.",
+        "uk": "Ця карта запрошує помітити, де святкування наче відкладене. Дім, який більше не здається гостинним, або віха, яку обійшли мовчанням, можуть залишити тихе відчуття незавершеної приналежності."
+      },
+      "keywords": {
+        "en": ["celebration", "home", "stability", "community", "milestone"],
+        "uk": ["святкування", "дім", "стабільність", "спільнота", "віха"]
+      }
+    },
+    "five-of-wands": {
+      "description": {
+        "en": "Five figures wave wands in a chaotic scuffle, each pushing for space. The scene concerns conflict, competition and the noise that makes it hard to hear a shared goal.",
+        "uk": "П’ять постатей розмахують жезлами в безладній сутичці, кожна виборює собі місце. Сцена про конфлікт, суперництво й шум, через який важко почути спільну мету."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where competition is crowding out cooperation. Friction can sharpen ideas, but it becomes exhausting when no one is listening, so consider whether the struggle still serves something shared.",
+        "uk": "Ця карта запрошує помітити, де суперництво витісняє співпрацю. Тертя може загострювати ідеї, але виснажує, коли ніхто не слухає, тож подумайте, чи боротьба ще служить чомусь спільному."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where conflict is being avoided at a cost. Peace kept by silence can hide resentments that later speak louder, and a calm, direct conversation may be the kinder path.",
+        "uk": "Ця карта запрошує помітити, де конфлікту уникають ціною втрат. Мир, збережений мовчанням, може ховати образи, які згодом заговорять гучніше, і спокійна пряма розмова може бути добрішим шляхом."
+      },
+      "keywords": {
+        "en": ["conflict", "competition", "tension", "rivalry", "negotiation"],
+        "uk": ["конфлікт", "змагання", "напруга", "сутичка", "переговори"]
+      }
+    },
+    "six-of-wands": {
+      "description": {
+        "en": "A rider returns in triumph wearing a laurel wreath, with wands held high by those around them. The image concerns recognition and the vulnerability of being seen.",
+        "uk": "Вершник повертається з перемогою, у лавровому вінку, а люди навколо піднімають жезли вгору. Образ про визнання й уразливість бути побаченим."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what public recognition means for you. Praise can confirm progress, yet it is not the same as self-worth, so let the acknowledgment encourage you without letting it decide who you are.",
+        "uk": "Ця карта запрошує помітити, що для вас означає публічне визнання. Похвала може підтвердити поступ, але вона не тотожна самоцінності, тож дозвольте визнанню підбадьорити вас, не визначаючи, хто ви є."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where a need for approval is shaping your choices. Seeking validation is human, but when it becomes the only measure, your own judgment can quietly disappear from the room.",
+        "uk": "Ця карта запрошує помітити, де потреба у схваленні формує ваші вибори. Прагнення визнання природне, але коли воно стає єдиним мірилом, ваш власний розсуд може тихо зникнути з кімнати."
+      },
+      "keywords": {
+        "en": ["recognition", "achievement", "pride", "approval", "visibility"],
+        "uk": ["визнання", "досягнення", "гордість", "схвалення", "видимість"]
+      }
+    },
+    "seven-of-wands": {
+      "description": {
+        "en": "A figure stands on higher ground holding a wand defensively as six wands rise against them from below. The scene concerns boundaries and the cost of holding a position.",
+        "uk": "Постать стоїть на вищому місці й оборонно тримає жезл, тоді як знизу проти неї піднімаються шість жезлів. Сцена про межі й ціну утримання позиції."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are defending and whether it is worth the effort. Standing your ground can be necessary, yet the useful question is what the boundary protects, not simply how hard you can hold it.",
+        "uk": "Ця карта запрошує помітити, що ви захищаєте і чи варте це зусиль. Встояти на своєму може бути необхідно, але корисне питання в тому, що саме охороняє межа, а не лише в тому, як міцно ви її тримаєте."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where defensiveness has become the default. When every challenge feels like an attack, it is hard to tell a real threat from a misread conversation, and a pause can restore perspective.",
+        "uk": "Ця карта запрошує помітити, де захисність стала звичною. Коли кожен виклик відчувається як напад, важко відрізнити справжню загрозу від непорозуміння, і пауза може відновити перспективу."
+      },
+      "keywords": {
+        "en": ["boundaries", "perseverance", "defense", "courage", "pressure"],
+        "uk": ["межі", "наполегливість", "захист", "сміливість", "тиск"]
+      }
+    },
+    "eight-of-wands": {
+      "description": {
+        "en": "Eight wands fly through an open sky above a river and a distant house. The card concerns speed, communication and developments that gather momentum quickly.",
+        "uk": "Вісім жезлів летять відкритим небом над річкою й далеким домом. Карта про швидкість, спілкування й події, що стрімко набирають обертів."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where things are moving faster than expected. Momentum can be helpful when your direction is clear, so use the pace to act on what you already know rather than waiting for perfect certainty.",
+        "uk": "Ця карта запрошує помітити, де події рухаються швидше, ніж очікувалося. Імпульс допомагає, коли напрям ясний, тож скористайтеся темпом, щоб діяти на основі того, що вже знаєте, не чекаючи цілковитої певності."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where haste is creating avoidable noise. Not every message needs to be sent at once, and a brief pause before acting can spare you a correction later.",
+        "uk": "Ця карта запрошує помітити, де поспіх створює зайвий шум. Не кожне повідомлення треба надсилати негайно, і коротка пауза перед дією може вберегти вас від виправлень згодом."
+      },
+      "keywords": {
+        "en": ["speed", "movement", "communication", "momentum", "urgency"],
+        "uk": ["швидкість", "рух", "спілкування", "імпульс", "нагальність"]
+      }
+    },
+    "nine-of-wands": {
+      "description": {
+        "en": "A weary figure leans on a wand before a fence of eight more, a bandage around their head. The scene concerns resilience measured against what has already been endured.",
+        "uk": "Виснажена постать спирається на жезл перед огорожею з восьми інших, голова перев’язана. Сцена про стійкість, зміряну тим, що вже довелося пережити."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice how much you have already carried. Caution learned from experience is valuable, but you do not have to keep guarding against every past wound, and rest is part of continuing.",
+        "uk": "Ця карта запрошує помітити, скільки ви вже винесли. Обережність, здобута досвідом, цінна, але не обов’язково охоронятися від кожної минулої рани, і відпочинок є частиною продовження."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where exhaustion is being treated as weakness. Admitting that your resources are low is not defeat, and asking for help can be a way of protecting what you still want to build.",
+        "uk": "Ця карта запрошує помітити, де виснаження сприймають як слабкість. Визнати, що ресурсів мало, — не поразка, і прохання про допомогу може бути способом захистити те, що ви ще хочете збудувати."
+      },
+      "keywords": {
+        "en": ["resilience", "caution", "endurance", "boundaries", "fatigue"],
+        "uk": ["стійкість", "обережність", "витривалість", "межі", "втома"]
+      }
+    },
+    "ten-of-wands": {
+      "description": {
+        "en": "A figure carries a heavy bundle of ten wands toward a distant town, bowed under the weight. The image concerns overcommitment and the point where effort stops feeling like progress.",
+        "uk": "Постать несе важкий оберемок із десяти жезлів до далекого міста, зігнувшись під вагою. Образ про надмірні зобов’язання й межу, за якою зусилля перестає відчуватися як поступ."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are carrying that is not yours to carry alone. Responsibility has a limit, and naming which load could be shared or set down is not laziness but good stewardship.",
+        "uk": "Ця карта запрошує помітити, що ви несете не самотужки. Відповідальність має межу, і назвати те, що можна розділити або відкласти, — не лінощі, а дбайливе господарювання власними силами."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where overwork has become a way to avoid something else. Busyness can feel safer than a difficult conversation, and putting the bundle down may reveal what the effort was hiding.",
+        "uk": "Ця карта запрошує помітити, де надмірна праця стала способом уникати чогось іншого. Зайнятість може здаватися безпечнішою за складну розмову, і, відклавши оберемок, можна побачити, що саме приховувало зусилля."
+      },
+      "keywords": {
+        "en": ["burden", "overcommitment", "responsibility", "exhaustion", "release"],
+        "uk": ["тягар", "перевантаження", "відповідальність", "виснаження", "відпускання"]
+      }
+    },
+    "page-of-wands": {
+      "description": {
+        "en": "A young figure holds a single wand and looks at it with curiosity, an open landscape behind them. The card concerns beginner's enthusiasm and the courage to explore without expertise.",
+        "uk": "Молода постать тримає один жезл і з цікавістю роздивляється його; позаду відкритий краєвид. Карта про ентузіазм початківця й сміливість досліджувати без досвіду."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are curious enough to start badly at. Early attempts are meant to teach rather than impress, and allowing yourself to be a beginner can reopen energy that expertise has made cautious.",
+        "uk": "Ця карта запрошує помітити, що вас цікавить настільки, аби почати недосконало. Перші спроби покликані вчити, а не вражати, і дозвіл бути початківцем може повернути енергію, яку досвід зробив обережною."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where fear of looking foolish is blocking a first step. Enthusiasm that is mocked or postponed tends to fade, so give the beginner in you a private, low-stakes place to practice.",
+        "uk": "Ця карта запрошує помітити, де страх виглядати нерозумно блокує перший крок. Запал, який висміяли або відклали, зазвичай згасає, тож дайте початківцю в собі приватне місце для вправ без великих ставок."
+      },
+      "keywords": {
+        "en": ["curiosity", "enthusiasm", "beginnings", "exploration", "learning"],
+        "uk": ["цікавість", "ентузіазм", "початок", "дослідження", "навчання"]
+      }
+    },
+    "knight-of-wands": {
+      "description": {
+        "en": "An armoured rider urges a rearing horse forward, wand raised, with desert hills behind. The image concerns bold action and the thrill of moving before doubt can catch up.",
+        "uk": "Вершник у броні спонукає коня, що звівся на диби, вперед, піднявши жезл; позаду пустельні пагорби. Образ про сміливу дію й азарт руху, поки сумнів не наздогнав."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where boldness could carry you past hesitation. Courage is useful when it is aimed, so let the energy move you while keeping one eye on where the ride is actually taking you.",
+        "uk": "Ця карта запрошує помітити, де сміливість могла б провести вас крізь вагання. Відвага корисна, коли має мету, тож дозвольте енергії рухати вас, тримаючи одне око на тому, куди насправді веде ця їзда."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where urgency has become recklessness. Starting before you are ready can be brave, but it can also leave others to manage the consequences, so check who else is affected by the pace.",
+        "uk": "Ця карта запрошує помітити, де нагальність стала нерозважливістю. Почати до готовності може бути сміливо, але це також може залишити іншим розбиратися з наслідками, тож зважте, на кого ще впливає цей темп."
+      },
+      "keywords": {
+        "en": ["boldness", "adventure", "action", "impulse", "passion"],
+        "uk": ["сміливість", "пригода", "дія", "імпульс", "пристрасть"]
+      }
+    },
+    "queen-of-wands": {
+      "description": {
+        "en": "A queen sits on a throne decorated with lions and sunflowers, holding a wand and a sunflower. The scene concerns warmth, confidence and the courage to be fully present.",
+        "uk": "Королева сидить на троні, прикрашеному левами й соняшниками, тримаючи жезл і соняшник. Сцена про тепло, впевненість і сміливість бути цілковито присутньою."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where your presence itself is a form of leadership. Confidence does not require loudness, and warm, steady attention can give others permission to be honest about what they carry.",
+        "uk": "Ця карта запрошує помітити, де сама ваша присутність є формою лідерства. Впевненість не потребує гучності, а тепла, стійка увага може дати іншим дозвіл чесно говорити про те, що вони несуть."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where self-assurance has tipped into self-doubt or overcontrol. Warmth that is performed to hide insecurity costs energy, and a little honesty about your limits can make your presence more grounded.",
+        "uk": "Ця карта запрошує помітити, де впевненість у собі перейшла у невпевненість або надмірний контроль. Тепло, яке грають, щоб приховати неспокій, забирає сили, і трохи чесності про власні межі може зробити присутність ґрунтовнішою."
+      },
+      "keywords": {
+        "en": ["confidence", "warmth", "presence", "independence", "courage"],
+        "uk": ["впевненість", "тепло", "присутність", "самостійність", "сміливість"]
+      }
+    },
+    "king-of-wands": {
+      "description": {
+        "en": "A crowned figure sits on a throne holding a wand and a salamander, with lions carved into the stone. The image concerns vision, influence and the responsibility of leading.",
+        "uk": "Увінчана постать сидить на троні з жезлом і саламандрою, а в камінь висічені леви. Образ про бачення, вплив і відповідальність вести за собою."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where a clear vision could give others direction. Leadership is most useful when it makes room for other people's strengths, so consider what you are inviting rather than only what you are commanding.",
+        "uk": "Ця карта запрошує помітити, де ясне бачення могло б дати іншим напрям. Лідерство найкорисніше, коли звільняє місце для сильних сторін інших, тож подумайте, що ви запрошуєте, а не лише чим керуєте."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where influence has become pressure. A strong will can inspire, but when it stops listening, the people around it may comply while quietly withdrawing their trust.",
+        "uk": "Ця карта запрошує помітити, де вплив став тиском. Сильна воля може надихати, але коли вона перестає слухати, люди навколо можуть підкорятися, тихо втрачаючи довіру."
+      },
+      "keywords": {
+        "en": ["vision", "leadership", "influence", "will", "responsibility"],
+        "uk": ["бачення", "лідерство", "вплив", "воля", "відповідальність"]
+      }
+    },
+    "ace-of-cups": {
+      "description": {
+        "en": "A hand rises from a cloud holding a cup from which water spills into a lotus pond. The image belongs to emotional opening and the first stirring of a feeling that has not yet found words.",
+        "uk": "З хмари піднімається рука й тримає чашу, з якої вода виливається в ставок із лотосами. Образ належить емоційному відкриттю й першому поруху почуття, яке ще не знайшло слів."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what is filling your inner cup right now. Tenderness, gratitude and the capacity to receive are worth attending to, and allowing a feeling space may open more than analysing it immediately.",
+        "uk": "Ця карта запрошує помітити, що зараз наповнює вашу внутрішню чашу. Ніжність, вдячність і здатність приймати варті уваги, і дозвіл почуттю побути може відкрити більше, ніж негайний аналіз."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where a feeling is being held back or overflowed. Shutting the cup too tightly and letting it spill everywhere are both attempts to manage what feels like too much.",
+        "uk": "Ця карта запрошує помітити, де почуття стримують або переповнюють. Затуляти чашу надто щільно й дозволяти їй розливатися повсюди — обидва способи керувати тим, що здається надмірним."
+      },
+      "keywords": {
+        "en": ["emotion", "openness", "tenderness", "receptivity", "love"],
+        "uk": ["емоція", "відкритість", "ніжність", "сприйнятливість", "любов"]
+      }
+    },
+    "two-of-cups": {
+      "description": {
+        "en": "Two figures face each other and exchange cups beneath a winged symbol of healing. The card concerns mutual recognition and the quiet agreements that make a bond feel equal.",
+        "uk": "Дві постаті стоять одна навпроти одної й обмінюються чашами під крилатим символом зцілення. Карта про взаємне визнання й тихі домовленості, що роблять зв’язок рівним."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where a connection feels reciprocal. Meeting someone as an equal involves both giving and receiving, and it can be worth asking whether the balance you feel is shared by the other person.",
+        "uk": "Ця карта запрошує помітити, де зв’язок відчувається взаємним. Зустріч на рівних включає і давання, і приймання, і варто спитати, чи відчуває цю рівновагу інша людина так само."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where a relationship has become uneven. Unspoken expectations or a habit of keeping score can quietly erode trust, and naming the imbalance is often gentler than letting it grow.",
+        "uk": "Ця карта запрошує помітити, де стосунки стали нерівними. Невисловлені очікування або звичка рахуватися можуть тихо підривати довіру, і назвати дисбаланс часто лагідніше, ніж дати йому рости."
+      },
+      "keywords": {
+        "en": ["partnership", "reciprocity", "trust", "union", "balance"],
+        "uk": ["партнерство", "взаємність", "довіра", "єднання", "баланс"]
+      }
+    },
+    "three-of-cups": {
+      "description": {
+        "en": "Three figures raise their cups together in a circle of celebration, with fruit and flowers around them. The image belongs to friendship, shared joy and the strengthening of community.",
+        "uk": "Три постаті разом піднімають чаші в колі святкування, а довкола них фрукти й квіти. Образ належить дружбі, спільній радості й зміцненню спільноти."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice who you celebrate with and who celebrates you. Belonging grows through small shared moments, and making room for others' joy can deepen a connection as much as asking for support does.",
+        "uk": "Ця карта запрошує помітити, з ким ви святкуєте і хто святкує вас. Приналежність росте через малі спільні миті, і місце для радості інших може поглибити зв’язок не менше, ніж прохання про підтримку."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where social connection has become draining or superficial. Time together is not always closeness, and it is fair to ask which gatherings restore you and which leave you feeling more alone.",
+        "uk": "Ця карта запрошує помітити, де соціальні зв’язки стали виснажливими або поверховними. Час разом не завжди означає близькість, і справедливо спитати, які зустрічі вас відновлюють, а які лишають самотнішими."
+      },
+      "keywords": {
+        "en": ["friendship", "community", "celebration", "support", "belonging"],
+        "uk": ["дружба", "спільнота", "святкування", "підтримка", "приналежність"]
+      }
+    },
+    "four-of-cups": {
+      "description": {
+        "en": "A seated figure crosses their arms beneath a tree, ignoring a cup offered by a hand in the clouds, while three other cups stand nearby. The scene concerns apathy and the difficulty of receiving.",
+        "uk": "Постать сидить під деревом, схрестивши руки, і не помічає чаші, яку простягає рука з хмар, тоді як поруч стоять ще три чаші. Сцена про апатію й труднощі з тим, щоб приймати."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where boredom or disappointment is closing you off. Withdrawal can protect you for a while, but it can also hide an invitation that is already within reach.",
+        "uk": "Ця карта запрошує помітити, де нудьга або розчарування закривають вас від світу. Відсторонення може на якийсь час захистити, але воно також може приховувати запрошення, яке вже поруч."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where apathy is beginning to lift. A new interest or a reopened conversation may ask for a small yes, and receiving it does not have to mean abandoning the reflection you still need.",
+        "uk": "Ця карта запрошує помітити, де апатія починає відступати. Новий інтерес або відновлена розмова можуть просити малого «так», і це не означає відмовитися від роздумів, які вам ще потрібні."
+      },
+      "keywords": {
+        "en": ["apathy", "withdrawal", "receptivity", "disappointment", "reflection"],
+        "uk": ["апатія", "відсторонення", "сприйнятливість", "розчарування", "роздуми"]
+      }
+    },
+    "five-of-cups": {
+      "description": {
+        "en": "A cloaked figure looks down at three fallen cups, while two upright cups stand behind them and a bridge leads away. The image concerns grief and the attention it takes.",
+        "uk": "Постать у плащі дивиться на три перекинуті чаші, тоді як за нею стоять дві цілі, а далі веде міст. Образ про горе й увагу, якої воно потребує."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are grieving without rushing yourself toward the bright side. Loss deserves its own time, and the cups still standing do not have to be picked up before you are ready.",
+        "uk": "Ця карта запрошує помітити, за чим ви сумуєте, не кваплячи себе до світлого боку. Втрата потребує свого часу, і чаші, що вціліли, не обов’язково піднімати раніше, ніж ви готові."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where grief has become the only story available. Honouring a loss can coexist with noticing what remains, and recovery often begins when both truths are allowed to stand together.",
+        "uk": "Ця карта запрошує помітити, де горе стало єдиною доступною історією. Повага до втрати може співіснувати з увагою до того, що лишилося, і зцілення часто починається, коли обидві правди дозволено стояти поруч."
+      },
+      "keywords": {
+        "en": ["grief", "loss", "disappointment", "acceptance", "hope"],
+        "uk": ["горе", "втрата", "розчарування", "прийняття", "надія"]
+      }
+    },
+    "six-of-cups": {
+      "description": {
+        "en": "A child offers a cup filled with flowers to another child in a garden of old houses. The card belongs to memory, innocence and the tenderness carried from the past.",
+        "uk": "Дитина простягає іншій дитині чашу з квітами в саду старих будинків. Карта належить пам’яті, невинності й ніжності, принесеній із минулого."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what from your past still feeds you. Fond memories can offer warmth and a sense of continuity, yet it is worth asking whether you are drawing strength from them or quietly living inside them.",
+        "uk": "Ця карта запрошує помітити, що з минулого досі живить вас. Теплі спогади можуть дати відчуття безперервності, але варто спитати, чи ви берете з них силу, а чи тихо живете всередині них."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where nostalgia has become a way of avoiding the present. The past can be a kind teacher without being a place to stay, and a small current pleasure may be worth meeting with fresh eyes.",
+        "uk": "Ця карта запрошує помітити, де ностальгія стала способом уникати теперішнього. Минуле може бути добрим учителем, не стаючи місцем для життя, і мала теперішня радість варта свіжого погляду."
+      },
+      "keywords": {
+        "en": ["nostalgia", "memory", "innocence", "tenderness", "childhood"],
+        "uk": ["ностальгія", "пам’ять", "невинність", "ніжність", "дитинство"]
+      }
+    },
+    "seven-of-cups": {
+      "description": {
+        "en": "A figure faces seven cups in the clouds, each holding a different vision, from treasure to a serpent. The scene concerns fantasy, options and the difficulty of choosing what is real.",
+        "uk": "Постать дивиться на сім чаш, що пливуть у хмарах, і в кожній — інше видіння: від скарбу до змії. Сцена про фантазію, варіанти й труднощі обрати те, що справжнє."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice how many possibilities are competing for your belief. Imagination is generous, but it can also blur what is solid, so test one appealing vision against what you can actually do this week.",
+        "uk": "Ця карта запрошує помітити, скільки можливостей змагаються за вашу віру. Уява щедра, але може розмивати те, що є міцним, тож перевірте одне привабливе видіння тим, що ви насправді можете зробити цього тижня."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where the fog of options is beginning to settle. Clarity can feel like a loss when fantasy was comfortable, but choosing one real path makes the others stop pulling at your attention.",
+        "uk": "Ця карта запрошує помітити, де туман варіантів починає розсіюватися. Ясність може відчуватися втратою, коли фантазія була зручною, але вибір одного реального шляху припиняє тягнути увагу іншими."
+      },
+      "keywords": {
+        "en": ["imagination", "options", "illusion", "desire", "choice"],
+        "uk": ["уява", "варіанти", "ілюзія", "бажання", "вибір"]
+      }
+    },
+    "eight-of-cups": {
+      "description": {
+        "en": "A figure walks away from a neat row of eight cups toward the mountains under a moon. The image concerns leaving something that is no longer nourishing.",
+        "uk": "Постать іде від рівного ряду з восьми чаш у гори під місяцем. Образ про відхід від того, що вже не живить."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where you have outgrown a situation that still looks fine from outside. Leaving is not always dramatic; sometimes it is a quiet decision to stop giving energy to what has stopped giving back.",
+        "uk": "Ця карта запрошує помітити, де ви переросли ситуацію, яка зовні ще виглядає добре. Відхід не завжди гучний; іноді це тихе рішення перестати віддавати енергію тому, що більше не повертає її."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where fear is keeping you in a place you have already left inside. Naming what you are reluctant to lose can make the next step less frightening without deciding it for you.",
+        "uk": "Ця карта запрошує помітити, де страх тримає вас у місці, з якого ви вже пішли всередині. Назвати те, що ви боїтеся втратити, може зробити наступний крок менш лячним, не вирішуючи його за вас."
+      },
+      "keywords": {
+        "en": ["departure", "transition", "self-respect", "searching", "release"],
+        "uk": ["відхід", "перехід", "самоповага", "пошук", "відпускання"]
+      }
+    },
+    "nine-of-cups": {
+      "description": {
+        "en": "A satisfied figure sits before nine cups arranged in an arc, arms folded, with a calm smile. The card concerns contentment and the private meaning of enough.",
+        "uk": "Задоволена постать сидить перед дев’ятьма чашами, розставленими дугою, схрестивши руки й спокійно усміхаючись. Карта про вдоволення й особисте значення слова «достатньо»."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what genuine satisfaction feels like for you. Pleasure is not a character flaw, and acknowledging what is already good can be more grounding than chasing a version of success someone else defined.",
+        "uk": "Ця карта запрошує помітити, як для вас відчувається справжнє задоволення. Приємність — не вада, і визнання того, що вже добре, може ґрунтуватися міцніше, ніж гонитва за успіхом, визначеним кимось іншим."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where satisfaction has become performance. A wish granted in a way that does not touch you may reveal what you actually wanted, and that clarity is worth more than the appearance of contentment.",
+        "uk": "Ця карта запрошує помітити, де задоволення стало виставою. Бажання, здійснене так, що не торкається вас, може відкрити, чого ви насправді хотіли, і ця ясність цінніша за вигляд вдоволення."
+      },
+      "keywords": {
+        "en": ["contentment", "satisfaction", "gratitude", "pleasure", "fulfillment"],
+        "uk": ["вдоволення", "задоволення", "вдячність", "приємність", "здійснення"]
+      }
+    },
+    "ten-of-cups": {
+      "description": {
+        "en": "A family stands with arms raised beneath a rainbow of ten cups, a home and river behind them. The scene concerns belonging and the warm ordinary shape of a shared life.",
+        "uk": "Родина стоїть із піднятими руками під веселкою з десяти чаш, а позаду — дім і річка. Сцена про приналежність і теплу звичайну форму спільного життя."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where you feel at home, with people or in a life that fits. Emotional security is built from small consistencies, and it is worth appreciating what holds you without pretending it has no cracks.",
+        "uk": "Ця карта запрошує помітити, де ви відчуваєте себе вдома — з людьми або в житті, що пасує. Емоційна безпека будується з малих послідовностей, і варто цінувати те, що вас тримає, не вдаючи, що в ньому немає тріщин."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where the picture of a happy home does not match your experience. Idealised images can make real belonging feel inadequate, and honesty about what you need may be the way back to it.",
+        "uk": "Ця карта запрошує помітити, де уявний образ щасливого дому не збігається з вашим досвідом. Ідеалізовані картини можуть змушувати справжню приналежність здаватися недостатньою, і чесність про ваші потреби може бути шляхом до неї."
+      },
+      "keywords": {
+        "en": ["belonging", "family", "security", "harmony", "home"],
+        "uk": ["приналежність", "родина", "безпека", "гармонія", "дім"]
+      }
+    },
+    "page-of-cups": {
+      "description": {
+        "en": "A young figure holds a cup from which a fish emerges, looking at it in wonder by the sea. The card concerns playful intuition and the arrival of an unexpected feeling.",
+        "uk": "Молода постать тримає чашу, з якої виглядає риба, і з подивом дивиться на неї біля моря. Карта про грайливу інтуїцію й прихід несподіваного почуття."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what surprises you emotionally. A sudden image, dream or soft impulse may carry more information than a careful argument, so treat it as an invitation to wonder rather than a verdict.",
+        "uk": "Ця карта запрошує помітити, що вас емоційно дивує. Раптовий образ, сон або тихий порив можуть нести більше інформації, ніж ретельний аргумент, тож поставтеся до них як до запрошення до подиву, а не як до вироку."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where sensitivity feels unsafe to show. A tender reaction that gets dismissed does not stop being real, and finding one trusted place to express it can keep the openness alive.",
+        "uk": "Ця карта запрошує помітити, де чутливість здається небезпечною для показу. Ніжна реакція, яку знехтували, не перестає бути справжньою, і одне довірене місце для її вираження може зберегти відкритість."
+      },
+      "keywords": {
+        "en": ["intuition", "wonder", "sensitivity", "curiosity", "openness"],
+        "uk": ["інтуїція", "подив", "чутливість", "цікавість", "відкритість"]
+      }
+    },
+    "knight-of-cups": {
+      "description": {
+        "en": "A knight rides slowly forward holding a cup out before them, across a quiet landscape. The image concerns romantic idealism and the offer of feeling.",
+        "uk": "Лицар повільно їде вперед, тримаючи перед собою чашу, тихим краєвидом. Образ про романтичний ідеалізм і пропозицію почуття."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice how you offer what you feel. Sincerity is a gift, but it lands best when it is attuned to the other person rather than delivered from a script, so ask what they are actually able to receive.",
+        "uk": "Ця карта запрошує помітити, як ви пропонуєте те, що відчуваєте. Щирість — дар, але вона найкраще лягає, коли налаштована на іншу людину, а не виголошена за сценарієм, тож спитайте, що вона справді здатна прийняти."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where an ideal is outrunning the relationship. Imagining who someone could be can crowd out who they are, and disappointment may be an invitation to meet reality more honestly.",
+        "uk": "Ця карта запрошує помітити, де ідеал випереджає стосунки. Уявлення про те, ким людина могла б бути, може заступати те, ким вона є, а розчарування може бути запрошенням чесніше зустріти реальність."
+      },
+      "keywords": {
+        "en": ["romance", "idealism", "sincerity", "offer", "imagination"],
+        "uk": ["романтика", "ідеалізм", "щирість", "пропозиція", "уява"]
+      }
+    },
+    "queen-of-cups": {
+      "description": {
+        "en": "A queen sits on a throne at the water's edge, holding a covered cup and gazing at it. The scene concerns emotional depth and the care that comes from knowing your own inner weather.",
+        "uk": "Королева сидить на троні край води, тримаючи закриту чашу й дивлячись на неї. Сцена про емоційну глибину й турботу, що народжується з розуміння власного внутрішнього стану."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where empathy and boundaries can coexist. Feeling deeply is a strength, and caring for others does not require abandoning your own inner life, so check what your cup can hold today.",
+        "uk": "Ця карта запрошує помітити, де співчуття й межі можуть співіснувати. Глибоко відчувати — це сила, і турбота про інших не вимагає зречення власного внутрішнього життя, тож перевірте, скільки сьогодні вміщає ваша чаша."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where emotional care has become self-neglect. Absorbing everyone else's weather can leave you unable to name your own, and a little distance may be the most generous thing you can offer.",
+        "uk": "Ця карта запрошує помітити, де емоційна турбота стала нехтуванням собою. Вбираючи чужий настрій, можна втратити здатність назвати власний, і трохи дистанції може бути найщедрішим, що ви можете дати."
+      },
+      "keywords": {
+        "en": ["empathy", "intuition", "emotional depth", "care", "boundaries"],
+        "uk": ["співчуття", "інтуїція", "емоційна глибина", "турбота", "межі"]
+      }
+    },
+    "king-of-cups": {
+      "description": {
+        "en": "A crowned figure sits on a throne floating on calm water, holding a cup, with a fish leaping nearby. The image concerns emotional maturity and steadiness in deep feeling.",
+        "uk": "Увінчана постать сидить на троні, що пливе спокійною водою, тримаючи чашу, а поруч вистрибує риба. Образ про емоційну зрілість і стійкість у глибокому почутті."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where calm can hold more than it looks like. Emotional maturity is not the absence of feeling but the ability to stay present with it, and others may feel safer when you can name your own weather without flooding them.",
+        "uk": "Ця карта запрошує помітити, де спокій уміщає більше, ніж здається. Емоційна зрілість — не відсутність почуттів, а здатність бути з ними присутнім, і іншим може ставати безпечніше, коли ви називаєте власний стан, не затоплюючи їх."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where restraint has become emotional distance. Keeping steady is useful until it turns into withholding, and letting one trusted person see what is actually moving in you can restore a sense of contact.",
+        "uk": "Ця карта запрошує помітити, де стриманість стала емоційною дистанцією. Триматися рівно корисно, доки це не перетворюється на закритість, і дозвіл одній довіреній людині побачити, що насправді в вас відбувається, може відновити контакт."
+      },
+      "keywords": {
+        "en": ["emotional maturity", "calm", "compassion", "steadiness", "depth"],
+        "uk": ["емоційна зрілість", "спокій", "співчуття", "стійкість", "глибина"]
+      }
+    },
+    "ace-of-swords": {
+      "description": {
+        "en": "A hand rises from a cloud holding a sword upright, crowned and wreathed, with clouds parting around it. The image belongs to clarity, truth and the sharpness of a new thought.",
+        "uk": "З хмари піднімається рука й тримає меч вістрям угору, увінчаний і обрамлений вінком, а хмари розступаються довкола. Образ належить ясності, правді й гостроті нової думки."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where a clear thought could cut through confusion. Honesty is powerful, but it works best when aimed with care, so consider what you are trying to clarify rather than simply what you want to say.",
+        "uk": "Ця карта запрошує помітити, де ясна думка могла б розітнути сум’яття. Чесність сильна, але найкраще діє, коли спрямована дбайливо, тож подумайте, що ви хочете прояснити, а не лише те, що хочете сказати."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where words are being used as weapons. Precision can wound when it forgets the person receiving it, and a truth delivered without care may close the conversation you hoped to open.",
+        "uk": "Ця карта запрошує помітити, де слова використовують як зброю. Точність може ранити, коли забуває про людину, яка її чує, і правда, сказана без турботи, може закрити розмову, яку ви сподівалися відкрити."
+      },
+      "keywords": {
+        "en": ["clarity", "truth", "insight", "decisiveness", "communication"],
+        "uk": ["ясність", "правда", "прозріння", "рішучість", "спілкування"]
+      }
+    },
+    "two-of-swords": {
+      "description": {
+        "en": "A blindfolded figure sits with two crossed swords before a moonlit sea and rocky shore. The card concerns a difficult choice and the temporary shelter of not deciding.",
+        "uk": "Постать із зав’язаними очима сидить перед двома схрещеними мечами, місячним морем і скелястим берегом. Карта про складний вибір і тимчасовий прихисток нерішучості."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what information you are avoiding. A pause can be wise, yet staying suspended too long becomes its own decision, and the blindfold is easier to remove than it first appears.",
+        "uk": "Ця карта запрошує помітити, яку інформацію ви уникаєте. Пауза може бути мудрою, але занадто довге зависання стає власним рішенням, і пов’язку знімати легше, ніж здається спершу."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where the tie is loosening. New information or a shift in feeling may make one option clearer, and you do not need perfect certainty to take a step and learn from it.",
+        "uk": "Ця карта запрошує помітити, де напруга слабшає. Нова інформація або зміна почуттів можуть зробити один варіант яснішим, і для кроку не потрібна цілковита певність, щоб потім учитися з нього."
+      },
+      "keywords": {
+        "en": ["indecision", "stalemate", "avoidance", "choice", "truce"],
+        "uk": ["нерішучість", "глухий кут", "уникнення", "вибір", "перемир’я"]
+      }
+    },
+    "three-of-swords": {
+      "description": {
+        "en": "A heart is pierced by three swords beneath heavy clouds and rain. The image concerns heartbreak, honest pain and the clarity that sometimes arrives with it.",
+        "uk": "Серце пронизують три мечі під важкими хмарами й дощем. Образ про розбите серце, чесний біль і ясність, що іноді приходить разом із ним."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice a hurt that deserves to be acknowledged rather than explained away. Pain often carries information about what mattered, and letting yourself feel it plainly can be the beginning of repair.",
+        "uk": "Ця карта запрошує помітити біль, який варто визнати, а не пояснювати геть. Біль часто несе інформацію про те, що було важливим, і дозвіл відчути його прямо може стати початком зцілення."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where healing is beginning, even if it is not complete. Forgiveness is not required for recovery, and releasing a story that keeps reopening the wound is a choice you can make at your own pace.",
+        "uk": "Ця карта запрошує помітити, де починається зцілення, навіть якщо воно не завершене. Прощення не є умовою відновлення, і відпустити історію, яка знову відкриває рану, можна у власному темпі."
+      },
+      "keywords": {
+        "en": ["heartbreak", "grief", "truth", "pain", "release"],
+        "uk": ["розбите серце", "горе", "правда", "біль", "відпускання"]
+      }
+    },
+    "four-of-swords": {
+      "description": {
+        "en": "A knight lies in quiet repose on a tomb, hands folded, three swords on the wall and one beneath the bed. The scene concerns rest, recovery and the value of a deliberate pause.",
+        "uk": "Лицар лежить у тихому спокої на гробниці, склавши руки; три мечі на стіні й один під ложем. Сцена про відпочинок, відновлення й цінність свідомої паузи."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where rest is not a reward but a requirement. Stepping back can protect your judgment, and a quiet interval may restore the clarity that pushing through would only blur.",
+        "uk": "Ця карта запрошує помітити, де відпочинок — не нагорода, а потреба. Відступ може захистити ваше судження, і тиха перерва відновлює ясність, яку подальший тиск лише затьмарив би."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where stillness has become stuckness. Rest that never ends can turn into avoidance, and a gentle return to one small activity may be the way back into your own life.",
+        "uk": "Ця карта запрошує помітити, де тиша стала застоєм. Відпочинок, що не закінчується, може обернутися уникненням, і лагідне повернення до однієї малої справи може бути шляхом назад у власне життя."
+      },
+      "keywords": {
+        "en": ["rest", "recovery", "pause", "restoration", "withdrawal"],
+        "uk": ["відпочинок", "відновлення", "пауза", "тиша", "відсторонення"]
+      }
+    },
+    "five-of-swords": {
+      "description": {
+        "en": "A figure gathers swords while others walk away, their postures defeated, under a turbulent sky. The image concerns conflict won at a cost and the aftermath of proving a point.",
+        "uk": "Постать збирає мечі, тоді як інші відходять із переможеними поставами під неспокійним небом. Образ про конфлікт, виграний ціною, і наслідки доведення своєї правоти."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what a victory is costing you. Being right and being connected are not always the same, and it is worth asking whether winning this argument serves the relationship you actually want.",
+        "uk": "Ця карта запрошує помітити, чого вам коштує перемога. Бути правим і бути в контакті — не завжди те саме, і варто спитати, чи перемога в цій суперечці служить стосункам, яких ви насправді хочете."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where the fight is ending or the cost is becoming visible. Repair often begins with a plain apology and a willingness to listen, not with another argument that settles who was right.",
+        "uk": "Ця карта запрошує помітити, де боротьба завершується або ціна стає видимою. Відновлення часто починається з простого вибачення й готовності слухати, а не з нової суперечки про те, хто мав рацію."
+      },
+      "keywords": {
+        "en": ["conflict", "defeat", "cost", "pride", "repair"],
+        "uk": ["конфлікт", "поразка", "ціна", "гордість", "відновлення"]
+      }
+    },
+    "six-of-swords": {
+      "description": {
+        "en": "A ferryman carries a cloaked figure and a child across still water toward a far shore, six swords standing in the boat. The image concerns transition and the quiet crossing away from trouble.",
+        "uk": "Перевізник веде постать у плащі й дитину спокійною водою до далекого берега, а в човні стоять шість мечів. Образ про перехід і тихе переправлення геть від негараздів."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are moving away from and what you are carrying with you. A change of place can ease a burden, but the swords in the boat suggest that some of the past travels along.",
+        "uk": "Ця карта запрошує помітити, від чого ви відходите і що берете із собою. Зміна місця може полегшити тягар, але мечі в човні нагадують, що частина минулого подорожує разом із вами."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where a departure keeps being delayed. Leaving can be hard when loyalty or fear pulls you back, yet staying stuck between shores drains more than a difficult crossing would.",
+        "uk": "Ця карта запрошує помітити, де відхід постійно відкладають. Іти буває важко, коли повертають вірність або страх, але застрягання між берегами виснажує більше, ніж складний перехід."
+      },
+      "keywords": {
+        "en": ["transition", "passage", "release", "moving on", "calm"],
+        "uk": ["перехід", "переправа", "відпускання", "рух далі", "спокій"]
+      }
+    },
+    "seven-of-swords": {
+      "description": {
+        "en": "A figure tiptoes away from a camp carrying five swords, leaving two behind, their face turned back. The scene concerns secrecy, cleverness and the quiet cost of taking a shortcut.",
+        "uk": "Постать навшпиньки відходить від табору, несучи п’ять мечів і залишаючи два, обертаючись назад. Сцена про таємність, кмітливість і тиху ціну коротшого шляху."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where a strategy relies on what others do not know. Cleverness can protect you, but secrecy has a way of demanding more of it, so ask whether the shortcut is worth the isolation it creates.",
+        "uk": "Ця карта запрошує помітити, де стратегія тримається на тому, чого інші не знають. Кмітливість може захистити, але таємність має властивість вимагати ще більше таємниці, тож спитайте, чи вартий коротший шлях тієї ізоляції, яку він створює."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where a secret is becoming heavy. Concealment can be a survival skill and still be exhausting, and choosing one trusted person to tell the truth to may lighten what you have been carrying alone.",
+        "uk": "Ця карта запрошує помітити, де таємниця стає важкою. Приховування може бути навичкою виживання і все одно виснажувати, і одна довірена людина, якій ви скажете правду, може полегшити те, що ви несли самі."
+      },
+      "keywords": {
+        "en": ["secrecy", "strategy", "deception", "cleverness", "avoidance"],
+        "uk": ["таємність", "стратегія", "обман", "кмітливість", "уникнення"]
+      }
+    },
+    "eight-of-swords": {
+      "description": {
+        "en": "A bound and blindfolded figure stands among eight swords planted in the ground, with a castle on a hill behind. The image concerns feeling trapped and the limits of a cage that may not be locked.",
+        "uk": "Зв’язана постать із зав’язаними очима стоїть серед восьми мечів, встромлених у землю, а позаду на пагорбі стоїть замок. Образ про відчуття пастки й межі клітки, яка може бути не замкнена."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice the story that makes your situation feel impossible. Constraints are real, yet some are maintained by fear rather than fact, and naming one assumption may reveal a movement you had not considered.",
+        "uk": "Ця карта запрошує помітити історію, через яку ваша ситуація здається безвихідною. Обмеження реальні, але деякі тримаються страхом, а не фактами, і назвати одне припущення може відкрити рух, про який ви не думали."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where the bindings are loosening. Seeing a limitation clearly is the first freedom, and you do not have to escape everything at once to begin moving with more choice.",
+        "uk": "Ця карта запрошує помітити, де пута слабшають. Побачити обмеження ясно — перша свобода, і не потрібно тікати від усього одразу, щоб почати рухатися з більшим вибором."
+      },
+      "keywords": {
+        "en": ["restriction", "fear", "trapped", "assumptions", "perspective"],
+        "uk": ["обмеження", "страх", "пастка", "припущення", "перспектива"]
+      }
+    },
+    "nine-of-swords": {
+      "description": {
+        "en": "A figure sits up in bed with their face in their hands, nine swords hanging on the dark wall behind. The scene concerns night-time worry and the mind that will not release a fear.",
+        "uk": "Постать сидить у ліжку, закривши обличчя руками, а на темній стіні позаду висять дев’ять мечів. Сцена про нічну тривогу й розум, який не відпускає страх."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice how much of your fear is happening in rehearsal. Worry can feel like preparation, yet it often repeats a scene that has not occurred, and naming the fear may shrink it to a size you can hold.",
+        "uk": "Ця карта запрошує помітити, скільки вашого страху відбувається в репетиції. Тривога може здаватися підготовкою, але часто повторює сцену, яка не сталася, і назвати страх може зменшити його до розміру, який ви втримаєте."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where a worry is beginning to lose its grip. Relief can arrive through a conversation, daylight or a small honest step, so let support in rather than waiting to feel brave alone.",
+        "uk": "Ця карта запрошує помітити, де тривога починає відпускати. Полегшення може прийти через розмову, денне світло або малий чесний крок, тож дозвольте підтримці увійти, не чекаючи, що будете сміливими наодинці."
+      },
+      "keywords": {
+        "en": ["anxiety", "worry", "insomnia", "fear", "overthinking"],
+        "uk": ["тривога", "хвилювання", "безсоння", "страх", "переобмірковування"]
+      }
+    },
+    "ten-of-swords": {
+      "description": {
+        "en": "A figure lies face down with ten swords in their back, while a new day breaks on the horizon. The image concerns an ending that has gone as far as it can and the first light after it.",
+        "uk": "Постать лежить обличчям униз із десятьма мечами в спині, а на обрії розгорається новий день. Образ про завершення, що сягнуло межі, і перше світло після нього."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice that a difficult chapter may have reached its lowest point. When there is no further to fall, the ground itself can become a beginning, and recovery starts with accepting what happened.",
+        "uk": "Ця карта запрошує помітити, що складний розділ, можливо, сягнув найнижчої точки. Коли падати далі нікуди, сам ґрунт може стати початком, і відновлення починається з прийняття того, що сталося."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where you are beginning to get up. The story of the worst moment does not have to define the rest, and a small return to ordinary care can be more healing than a dramatic reset.",
+        "uk": "Ця карта запрошує помітити, де ви починаєте підводитися. Історія найгіршої миті не обов’язково визначає решту, і мале повернення до звичайної турботи може зцілювати більше, ніж різке перезавантаження."
+      },
+      "keywords": {
+        "en": ["endings", "rock bottom", "release", "recovery", "dawn"],
+        "uk": ["завершення", "дно", "відпускання", "відновлення", "світанок"]
+      }
+    },
+    "page-of-swords": {
+      "description": {
+        "en": "A young figure stands on rough ground holding a sword upright, looking back over their shoulder, with wind-blown clouds above. The card concerns curiosity, vigilance and the first questions of a searching mind.",
+        "uk": "Молода постать стоїть на нерівній землі, тримаючи меч вістрям угору, і озирається через плече; над нею вітер жене хмари. Карта про цікавість, пильність і перші питання допитливого розуму."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are trying to understand. A questioning mind is a gift when it stays curious rather than certain, so gather information before drawing conclusions and let the first answer be provisional.",
+        "uk": "Ця карта запрошує помітити, що ви намагаєтеся зрозуміти. Допитливий розум — дар, коли він залишається цікавим, а не самовпевненим, тож збирайте інформацію перед висновками й дозвольте першій відповіді бути проміжною."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where vigilance has become suspicion. Watching for danger is useful until everything starts to look like a threat, and checking one fear against evidence can bring you back to proportion.",
+        "uk": "Ця карта запрошує помітити, де пильність стала підозрілістю. Стежити за небезпекою корисно, доки все не починає виглядати загрозою, і перевірка одного страху фактами може повернути відчуття міри."
+      },
+      "keywords": {
+        "en": ["curiosity", "vigilance", "questions", "observation", "suspicion"],
+        "uk": ["цікавість", "пильність", "питання", "спостережливість", "підозра"]
+      }
+    },
+    "knight-of-swords": {
+      "description": {
+        "en": "An armoured rider charges forward on a rearing horse, sword raised, with trees bent by the wind. The image concerns swift conviction and the force of an idea in motion.",
+        "uk": "Вершник у броні мчить уперед на коні, що звівся на диби, піднявши меча, а дерева гнуться від вітру. Образ про швидку переконаність і силу ідеї в русі."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where conviction is driving you forward. Decisive action has value, but a fast mind can outrun its own listening, so make sure the charge serves a question you have actually understood.",
+        "uk": "Ця карта запрошує помітити, де переконаність веде вас уперед. Рішуча дія має цінність, але швидкий розум може обігнати власне вміння слухати, тож переконайтеся, що ривок служить питанню, яке ви справді зрозуміли."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where haste is producing needless conflict. Being forceful is not the same as being clear, and slowing down long enough to check your facts may prevent a collision you would rather avoid.",
+        "uk": "Ця карта запрошує помітити, де поспіх породжує зайвий конфлікт. Бути наполегливим не те саме, що бути ясним, і сповільнення настільки, щоб перевірити факти, може запобігти зіткненню, якого ви воліли б уникнути."
+      },
+      "keywords": {
+        "en": ["haste", "conviction", "directness", "ambition", "conflict"],
+        "uk": ["поспіх", "переконаність", "прямота", "амбіція", "конфлікт"]
+      }
+    },
+    "queen-of-swords": {
+      "description": {
+        "en": "A queen sits on a throne above the clouds, holding a sword upright and extending one hand, a crescent moon beside her. The scene concerns discernment and the clarity that comes from experience.",
+        "uk": "Королева сидить на троні над хмарами, тримаючи меч вістрям угору й простягаючи руку; поруч із нею півмісяць. Сцена про розрізнення й ясність, що приходить із досвідом."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where honest boundaries would serve everyone. Clear speech can be compassionate when it is not cruel, and this card asks you to trust your discernment without using it as a wall.",
+        "uk": "Ця карта запрошує помітити, де чесні межі послужили б усім. Ясна мова може бути співчутливою, коли не є жорстокою, і ця карта просить довіряти своєму розрізненню, не обертаючи його в стіну."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where sharpness has become coldness. A mind that cuts everything to size can leave little room for tenderness, and warmth is not a failure of clarity but part of mature judgment.",
+        "uk": "Ця карта запрошує помітити, де гострота стала холодністю. Розум, що все підрізає під мірку, може лишити мало місця для ніжності, а тепло — не поразка ясності, а частина зрілого судження."
+      },
+      "keywords": {
+        "en": ["discernment", "boundaries", "honesty", "independence", "clarity"],
+        "uk": ["розрізнення", "межі", "чесність", "самостійність", "ясність"]
+      }
+    },
+    "king-of-swords": {
+      "description": {
+        "en": "A crowned figure sits on a stone throne holding a sword upright, its blade catching the light, with clouds and birds behind. The image concerns principle, authority of thought and fair judgment.",
+        "uk": "Увінчана постать сидить на кам’яному троні й тримає меч вістрям угору, його клинок ловить світло; позаду хмари й птахи. Образ про принцип, владу думки й справедливе судження."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where a principled decision is needed. Clear thinking is a form of care when it considers consequences and people, so let logic guide you without forgetting the human cost of the rule.",
+        "uk": "Ця карта запрошує помітити, де потрібне принципове рішення. Ясне мислення є формою турботи, коли зважає на наслідки й людей, тож дозвольте логіці вести вас, не забуваючи людської ціни правила."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where authority has become rigid or detached. A rule applied without context can harm the very people it was meant to protect, and good judgment includes knowing when to reconsider.",
+        "uk": "Ця карта запрошує помітити, де влада стала жорсткою або відстороненою. Правило, застосоване без контексту, може зашкодити саме тим, кого мало захищати, а добре судження включає вміння переглянути його."
+      },
+      "keywords": {
+        "en": ["principle", "authority", "judgment", "ethics", "reason"],
+        "uk": ["принцип", "влада", "судження", "етика", "розум"]
+      }
+    },
+    "ace-of-pentacles": {
+      "description": {
+        "en": "A hand emerges from a cloud holding a large pentacle above a garden gate and a path into green hills. The image belongs to material opportunity and the offer of something that can be built.",
+        "uk": "З хмари виходить рука й тримає великий пентакль над садовою брамою та стежкою в зелені пагорби. Образ належить матеріальній можливості й пропозиції того, що можна збудувати."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice a concrete opportunity that is being offered. Resources, time and attention are forms of seed, and the useful question is what you are willing to tend so that the offer becomes something lasting.",
+        "uk": "Ця карта запрошує помітити конкретну можливість, яку вам пропонують. Ресурси, час і увага — це форми насіння, і корисне питання в тому, що ви готові плекати, щоб пропозиція стала чимось тривалим."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where an opportunity is being missed or held too tightly. Scarcity thinking can turn a chance into a threat, and a measured first step may be safer than waiting for perfect conditions.",
+        "uk": "Ця карта запрошує помітити, де можливість втрачають або тримають надто міцно. Мислення нестачі може обернути шанс на загрозу, і виважений перший крок може бути безпечнішим, ніж очікування ідеальних умов."
+      },
+      "keywords": {
+        "en": ["opportunity", "resources", "practicality", "prosperity", "seed"],
+        "uk": ["можливість", "ресурси", "практичність", "достаток", "насіння"]
+      }
+    },
+    "two-of-pentacles": {
+      "description": {
+        "en": "A figure juggles two pentacles linked by a loop, one foot lifted, ships rising and falling on waves behind. The card concerns balance under changing conditions and the art of keeping several things moving.",
+        "uk": "Постать жонглює двома пентаклями, з’єднаними стрічкою, одна нога піднята, а позаду кораблі гойдаються на хвилях. Карта про баланс у мінливих умовах і вміння тримати в русі кілька справ."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are juggling and whether the rhythm still works. Flexibility is valuable when priorities shift, but constant adjustment has a cost, so check which commitments truly need to stay in the air.",
+        "uk": "Ця карта запрошує помітити, чим ви жонглюєте і чи ритм ще працює. Гнучкість цінна, коли пріоритети змінюються, але постійне налагодження має ціну, тож перевірте, які зобов’язання справді мають лишатися в повітрі."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where the juggling has become unsustainable. Dropping one ball on purpose is different from watching everything fall, and choosing what to set down can restore a sense of control.",
+        "uk": "Ця карта запрошує помітити, де жонглювання стало нестійким. Упустити одну кульку навмисно — не те саме, що дивитися, як падає все, і вибір, що відкласти, може повернути відчуття контролю."
+      },
+      "keywords": {
+        "en": ["balance", "flexibility", "juggling", "adaptation", "priorities"],
+        "uk": ["баланс", "гнучкість", "жонглювання", "адаптація", "пріоритети"]
+      }
+    },
+    "three-of-pentacles": {
+      "description": {
+        "en": "Three figures confer inside a stone church, one standing on a bench with plans while the others work. The scene concerns collaboration, craft and the recognition of skill.",
+        "uk": "Три постаті радяться в кам’яній церкві: одна стоїть на лаві з кресленнями, інші працюють. Сцена про співпрацю, майстерність і визнання вміння."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where good work becomes better through shared expertise. Asking for another perspective is not a sign of incompetence, and a clear division of skill can turn a difficult project into something solid.",
+        "uk": "Ця карта запрошує помітити, де добра робота стає кращою завдяки спільній майстерності. Просити про інший погляд — не ознака некомпетентності, і ясний розподіл умінь може перетворити складний проєкт на щось міцне."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where collaboration has broken down. Unclear roles or unspoken resentment can make a shared project feel like separate jobs, and one honest conversation about expectations may repair more than another meeting.",
+        "uk": "Ця карта запрошує помітити, де співпраця розладналася. Нечіткі ролі або невисловлені образи можуть зробити спільний проєкт схожим на окремі роботи, і одна чесна розмова про очікування може виправити більше, ніж ще одна нарада."
+      },
+      "keywords": {
+        "en": ["collaboration", "craft", "skill", "teamwork", "recognition"],
+        "uk": ["співпраця", "майстерність", "уміння", "командна робота", "визнання"]
+      }
+    },
+    "four-of-pentacles": {
+      "description": {
+        "en": "A seated figure clutches one pentacle to their chest, one on their crown, and two beneath their feet. The image concerns security held so tightly that it limits movement.",
+        "uk": "Постать сидить, притискаючи один пентакль до грудей, другий — на голові, а ще два — під ногами. Образ про безпеку, яку тримають так міцно, що вона обмежує рух."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are protecting and what that protection is costing. Savings, routines and boundaries can be wise, yet holding on without flexibility may turn security into a small, closed room.",
+        "uk": "Ця карта запрошує помітити, що ви захищаєте і чого це захищення коштує. Заощадження, звички й межі можуть бути мудрими, але тримання без гнучкості може перетворити безпеку на маленьку зачинену кімнату."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where grip is loosening or generosity is returning. Letting resources move can feel risky after scarcity, but circulation is often what keeps a household, a budget or a relationship alive.",
+        "uk": "Ця карта запрошує помітити, де хватка слабшає або повертається щедрість. Після нестачі дозволити ресурсам рухатися може здаватися ризикованим, але обіг часто й тримає живим дім, бюджет чи стосунки."
+      },
+      "keywords": {
+        "en": ["security", "possessiveness", "control", "savings", "letting go"],
+        "uk": ["безпека", "власництво", "контроль", "заощадження", "відпускання"]
+      }
+    },
+    "five-of-pentacles": {
+      "description": {
+        "en": "Two figures walk through falling snow past a lit church window, one leaning on crutches, both looking down. The scene concerns hardship and the help that can be hard to see.",
+        "uk": "Дві постаті йдуть крізь сніг повз освітлене вікно церкви: одна спирається на милиці, обидві дивляться вниз. Сцена про труднощі й допомогу, яку буває важко побачити."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what support is available even when it does not feel available. Hardship can narrow attention to the cold, and asking for help is not a failure but a way of stepping out of the snow.",
+        "uk": "Ця карта запрошує помітити, яка підтримка доступна, навіть коли вона не відчувається доступною. Труднощі звужують увагу до холоду, і просити про допомогу — не поразка, а спосіб вийти зі снігу."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where a difficult season is beginning to ease. Recovery can be slow and uneven, and accepting small help without shame may be the most practical step available today.",
+        "uk": "Ця карта запрошує помітити, де складний період починає полегшуватися. Відновлення може бути повільним і нерівним, і прийняти малу допомогу без сорому може бути найпрактичнішим кроком на сьогодні."
+      },
+      "keywords": {
+        "en": ["hardship", "isolation", "help", "scarcity", "recovery"],
+        "uk": ["труднощі", "ізоляція", "допомога", "нестача", "відновлення"]
+      }
+    },
+    "six-of-pentacles": {
+      "description": {
+        "en": "A figure holds scales in one hand and gives coins to two kneeling people with the other. The image concerns giving, receiving and the power hidden inside generosity.",
+        "uk": "Постать тримає терези в одній руці, а іншою подає монети двом людям, що схилилися. Образ про давання, приймання й владу, приховану в щедрості."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice the balance between giving and receiving in your life. Support offered with respect strengthens both sides, and it is worth checking whether generosity is being shared or used to keep someone dependent.",
+        "uk": "Ця карта запрошує помітити рівновагу між даванням і прийманням у вашому житті. Підтримка, запропонована з повагою, зміцнює обидві сторони, і варто перевірити, чи щедрість ділять, а чи нею тримають когось залежним."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where a helping relationship has become unequal. Strings attached to a gift, or pride that refuses all help, can both keep support from doing what it is meant to do.",
+        "uk": "Ця карта запрошує помітити, де стосунки допомоги стали нерівними. Умови, прив’язані до дарунка, або гордість, що відкидає будь-яку допомогу, можуть заважати підтримці робити своє."
+      },
+      "keywords": {
+        "en": ["generosity", "charity", "balance", "power", "support"],
+        "uk": ["щедрість", "доброчинність", "баланс", "влада", "підтримка"]
+      }
+    },
+    "seven-of-pentacles": {
+      "description": {
+        "en": "A figure leans on a hoe and looks at a climbing vine heavy with pentacles, waiting for the harvest. The card concerns patience, assessment and the slow work of tending what has been planted.",
+        "uk": "Постать спирається на мотику й дивиться на лозу, що в’ється вгору й рясніє пентаклями, чекаючи на врожай. Карта про терпіння, оцінку й повільну працю плекання посадженого."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice whether what you are growing matches what you wanted. A pause to assess is not idleness, and adjusting how you tend something now may matter more than pushing for faster results.",
+        "uk": "Ця карта запрошує помітити, чи те, що ви вирощуєте, відповідає бажаному. Пауза для оцінки — не бездіяльність, і змінити те, як ви плекаєте щось зараз, може бути важливіше, ніж тиснути на швидший результат."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where impatience is making you abandon a crop too early. Some results need seasons, and frustration with slow progress may be a signal to change the method rather than the goal.",
+        "uk": "Ця карта запрошує помітити, де нетерпіння змушує залишити врожай надто рано. Деякі результати потребують сезонів, і роздратування через повільний поступ може бути сигналом змінити метод, а не мету."
+      },
+      "keywords": {
+        "en": ["patience", "assessment", "harvest", "investment", "perseverance"],
+        "uk": ["терпіння", "оцінка", "врожай", "інвестиція", "наполегливість"]
+      }
+    },
+    "eight-of-pentacles": {
+      "description": {
+        "en": "A figure sits at a workbench carving a pentacle after pentacle, a finished row already nailed to a post. The scene concerns apprenticeship, repetition and the quiet pride of doing a thing well.",
+        "uk": "Постать сидить за верстаком і вирізає пентакль за пентаклем, а готовий ряд уже прибитий до стовпа. Сцена про учнівство, повторення й тиху гордість із добре зробленої справи."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where steady practice is building something real. Mastery rarely arrives in a single leap, and the ordinary discipline of showing up can be more transformative than waiting for inspiration.",
+        "uk": "Ця карта запрошує помітити, де стала практика будує щось справжнє. Майстерність рідко приходить одним стрибком, і звичайна дисципліна приходити може змінювати більше, ніж очікування натхнення."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where repetition has become joyless or perfectionism has stalled the work. Craft matters, but a standard that forbids finishing can keep a good thing from ever reaching anyone else.",
+        "uk": "Ця карта запрошує помітити, де повторення стало безрадісним або перфекціонізм зупинив роботу. Майстерність важлива, але мірило, яке забороняє завершувати, може не дати добрій справі дійти до інших."
+      },
+      "keywords": {
+        "en": ["craft", "practice", "discipline", "dedication", "mastery"],
+        "uk": ["майстерність", "практика", "дисципліна", "відданість", "вправність"]
+      }
+    },
+    "nine-of-pentacles": {
+      "description": {
+        "en": "A woman stands in a lush garden with a falcon on her gloved hand, nine pentacles among the vines behind her. The image concerns self-sufficiency and the enjoyment of what you have built.",
+        "uk": "Жінка стоїть у розкішному саду із соколом на рукавичці, а позаду серед лози дев’ять пентаклів. Образ про самодостатність і втіху від того, що ви збудували."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you have earned and whether you allow yourself to enjoy it. Independence is not only financial; it is also the confidence to choose your own company and pace without apology.",
+        "uk": "Ця карта запрошує помітити, що ви заробили і чи дозволяєте собі цим втішатися. Незалежність не лише фінансова; це й упевненість обирати власне товариство й темп без вибачень."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where self-sufficiency has become isolation. Enjoying your own life is healthy, but a garden with no gate can turn independence into protection from the very connections that nourish it.",
+        "uk": "Ця карта запрошує помітити, де самодостатність стала ізоляцією. Втішатися власним життям здорово, але сад без брами може перетворити незалежність на захист від тих зв’язків, що його живлять."
+      },
+      "keywords": {
+        "en": ["independence", "self-sufficiency", "enjoyment", "discipline", "solitude"],
+        "uk": ["незалежність", "самодостатність", "втіха", "дисципліна", "самотність"]
+      }
+    },
+    "ten-of-pentacles": {
+      "description": {
+        "en": "An elder sits at a gateway with dogs at their feet while a family gathers in the courtyard beyond, ten pentacles arranged above. The scene concerns legacy, inheritance and what outlasts a single lifetime.",
+        "uk": "Старійшина сидить біля брами, біля ніг собаки, а далі у дворі збирається родина; над усім розташовані десять пентаклів. Сцена про спадок, успадкування й те, що переживає одне життя."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what you are building beyond yourself. Stability can be shared across generations, and it is worth asking whether the structures you leave behind give others room to grow or only room to obey.",
+        "uk": "Ця карта запрошує помітити, що ви будуєте поза собою. Стабільність може ділитися між поколіннями, і варто спитати, чи структури, які ви залишаєте, дають іншим місце рости, а не лише коритися."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where an inheritance feels like a burden or a debt. Family patterns can be honoured without being repeated, and naming what you choose to carry is part of becoming your own person.",
+        "uk": "Ця карта запрошує помітити, де спадок відчувається тягарем або боргом. Родинні патерни можна шанувати, не повторюючи їх, і назвати те, що ви обираєте нести, — частина становлення собою."
+      },
+      "keywords": {
+        "en": ["legacy", "family", "stability", "inheritance", "tradition"],
+        "uk": ["спадок", "родина", "стабільність", "успадкування", "традиція"]
+      }
+    },
+    "page-of-pentacles": {
+      "description": {
+        "en": "A young figure stands in a green field holding a pentacle up to study it, with freshly ploughed furrows behind. The card concerns study, practical curiosity and the willingness to learn from the ground up.",
+        "uk": "Молода постать стоїть у зеленому полі й роздивляється пентакль, який тримає, а позаду свіжозорані борозни. Карта про навчання, практичну цікавість і готовність почати з основ."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice what practical skill you are ready to study. Progress in the material world tends to be incremental, and a humble willingness to learn the basics can open doors that enthusiasm alone cannot.",
+        "uk": "Ця карта запрошує помітити, яку практичну навичку ви готові вивчати. Поступ у матеріальному світі зазвичай поступовий, і скромна готовність вивчити основи може відкрити двері, яких не відкриє сам ентузіазм."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where a plan has stayed theoretical. Studying is useful, yet knowledge that never meets the work remains unfinished, and one small applied experiment may teach more than another book.",
+        "uk": "Ця карта запрошує помітити, де план лишився теоретичним. Навчання корисне, але знання, яке не зустрілося з роботою, лишається незавершеним, і один малий практичний досвід може навчити більше, ніж ще одна книга."
+      },
+      "keywords": {
+        "en": ["learning", "study", "practicality", "ambition", "beginnings"],
+        "uk": ["навчання", "учіння", "практичність", "амбіція", "початок"]
+      }
+    },
+    "knight-of-pentacles": {
+      "description": {
+        "en": "An armoured rider sits on a heavy stationary horse, holding a pentacle and gazing at the field ahead. The image concerns patience, reliability and the slow, unglamorous work of showing up.",
+        "uk": "Вершник у броні сидить на важкому нерухомому коні, тримаючи пентакль і дивлячись на поле попереду. Образ про терпіння, надійність і повільну, негучну працю приходити знову й знову."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where consistency matters more than speed. Reliable effort can feel dull next to inspiration, yet it is often what turns a good intention into a structure that holds.",
+        "uk": "Ця карта запрошує помітити, де послідовність важливіша за швидкість. Надійне зусилля може здаватися нудним порівняно з натхненням, але саме воно часто перетворює добрий намір на структуру, що тримається."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where routine has become rigid or work has swallowed everything else. Dependability is a virtue until it leaves no room for rest, and a small deliberate pause can protect the very reliability you value.",
+        "uk": "Ця карта запрошує помітити, де рутина стала жорсткою або робота поглинула все інше. Надійність — чеснота, доки не лишає місця для відпочинку, і мала свідома пауза може захистити саму ту надійність, яку ви цінуєте."
+      },
+      "keywords": {
+        "en": ["reliability", "patience", "routine", "diligence", "steadiness"],
+        "uk": ["надійність", "терпіння", "рутина", "старанність", "стійкість"]
+      }
+    },
+    "queen-of-pentacles": {
+      "description": {
+        "en": "A queen sits on a throne carved with fruit and animals, holding a pentacle, a rabbit at her feet and a garden around her. The scene concerns nurture, resourcefulness and comfort that is shared.",
+        "uk": "Королева сидить на троні, висіченому з плодами й тваринами, тримаючи пентакль; біля її ніг кролик, а довкола сад. Сцена про турботу, винахідливість і тепло, яким діляться."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where practical care creates a sense of home. Looking after the body, the budget and the people around you is meaningful work, and doing it well includes leaving room for your own needs.",
+        "uk": "Ця карта запрошує помітити, де практична турбота створює відчуття дому. Піклуватися про тіло, бюджет і близьких — значуща праця, і добре її робити означає лишати місце й для власних потреб."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where care has become overfunctioning. Carrying the household, the plans and everyone's feelings can look like love while quietly teaching others not to bother, and some of that load can be returned.",
+        "uk": "Ця карта запрошує помітити, де турбота стала надмірним навантаженням. Тягнути дім, плани й почуття всіх може виглядати як любов, тихо привчаючи інших не турбуватися, і частину цього тягаря можна повернути."
+      },
+      "keywords": {
+        "en": ["nurture", "resourcefulness", "comfort", "home", "practicality"],
+        "uk": ["турбота", "винахідливість", "затишок", "дім", "практичність"]
+      }
+    },
+    "king-of-pentacles": {
+      "description": {
+        "en": "A crowned figure sits on a throne decorated with vines and bulls, holding a sceptre and a pentacle, a castle behind. The image concerns prosperity, stewardship and the responsible use of resources.",
+        "uk": "Увінчана постать сидить на троні, прикрашеному лозою й биками, тримаючи скіпетр і пентакль; позаду замок. Образ про достаток, господарність і відповідальне використання ресурсів."
+      },
+      "upright_meaning": {
+        "en": "This card invites you to notice where experience could be turned into stable ground. Prosperity is not only accumulation; it is knowing what to build, what to protect and what to share, so consider the kind of steward you want to be.",
+        "uk": "Ця карта запрошує помітити, де досвід можна перетворити на міцний ґрунт. Достаток — не лише накопичення; це знання, що будувати, що берегти і чим ділитися, тож подумайте, яким господарем ви хочете бути."
+      },
+      "reversed_meaning": {
+        "en": "This card invites you to notice where success has become rigid or disconnected from people. Wealth and status can protect, but when they stop serving anyone beyond themselves, the foundation they promised begins to feel hollow.",
+        "uk": "Ця карта запрошує помітити, де успіх став жорстким або відірваним від людей. Багатство й статус можуть захищати, але коли вони перестають служити комусь, крім себе, обіцяна ними основа починає відчуватися порожньою."
+      },
+      "keywords": {
+        "en": ["prosperity", "stewardship", "security", "abundance", "authority"],
+        "uk": ["достаток", "господарність", "безпека", "багатство", "влада"]
+      }
+    }
+  }
+}
