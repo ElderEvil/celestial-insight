@@ -70,7 +70,7 @@ class Reading(models.Model):
         FAILED = "failed", _("Failed")
 
     reading_type = models.CharField(
-        _("Reading Type"), max_length=20, choices=READING_TYPE_CHOICES, default="single_card"
+        _("Reading Type"), max_length=32, choices=READING_TYPE_CHOICES, default="single_card"
     )
     date = models.DateTimeField(_("Date"), auto_now_add=True)
     question = models.TextField(_("Question"), blank=True)
