@@ -18,4 +18,9 @@ READING_TYPE_CHOICES = [
     ("career_path_spread", _("Career Path Spread")),
     ("relationship_spread", _("Relationship Spread")),
     ("horseshoe_spread", _("Horseshoe Spread")),
+    ("oracle_of_destiny", _("Oracle of Destiny")),
+    ("path_cross", _("Path Cross")),
+    ("spiritual_development", _("Spiritual Development")),
+    ("dream_cards", _("Dream Cards")),
+    ("secret_reveal", _("Secret Reveal")),
 ]

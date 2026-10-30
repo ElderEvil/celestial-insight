@@ -9,3 +9,8 @@ class ReadingTypeEnum(StrEnum):
     CAREER_PATH_SPREAD = "career_path_spread"
     RELATIONSHIP_SPREAD = "relationship_spread"
     HORSESHOE_SPREAD = "horseshoe_spread"
+    ORACLE_OF_DESTINY = "oracle_of_destiny"
+    PATH_CROSS = "path_cross"
+    SPIRITUAL_DEVELOPMENT = "spiritual_development"
+    DREAM_CARDS = "dream_cards"
+    SECRET_REVEAL = "secret_reveal"  # noqa: S105

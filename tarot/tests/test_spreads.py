@@ -7,6 +7,10 @@ import tarot.spreads as spreads_module
 from tarot.enums import ReadingTypeEnum
 from tarot.spreads import SPREADS, get_active_spread, get_spread
 
+EXPECTED_SPREAD_COUNT = 10
+EXPECTED_ACTIVE_SPREAD_COUNT = 5
+READING_TYPE_FIELD_MAX_LENGTH = 32
+
 
 @pytest.fixture
 def inactive_single_card(monkeypatch):
@@ -60,3 +64,21 @@ def test_form_excludes_inactive_spreads(inactive_single_card):
     form = forms_module.ReadingJourneyForm()
 
     assert "single_card" not in dict(form.fields["reading_type"].choices)
+
+
+def test_catalogue_has_ten_spreads_with_five_active():
+    assert len(SPREADS) == EXPECTED_SPREAD_COUNT
+    assert sum(1 for spread in SPREADS.values() if spread.is_active) == EXPECTED_ACTIVE_SPREAD_COUNT
+
+
+def test_every_reading_type_key_fits_reading_type_field():
+    for member in ReadingTypeEnum:
+        if member in SPREADS:
+            assert len(member.value) <= READING_TYPE_FIELD_MAX_LENGTH
+
+
+def test_every_spread_has_unique_nonempty_roles():
+    for spread in SPREADS.values():
+        roles = [position.role for position in spread.positions]
+        assert len(roles) == len(set(roles))
+        assert all(position.role and position.description for position in spread.positions)
