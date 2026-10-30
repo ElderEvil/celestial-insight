@@ -178,3 +178,6 @@ cython_debug/
 /staticfiles/
 .omo/
 .agents/
+
+# Compiled translation catalogues are shipped with the app
+!locale/**/*.mo
