@@ -10,10 +10,14 @@ from tarot.enums import ReadingTypeEnum
 from tarot.models import Reading, ReadingCard
 from tarot.services.draw_service import persist_draw
 from tarot.services.interpretation_service import (
+    build_interpretation_prompt,
     generate_interpretation,
     retry_interpretation,
     validate_interpretation,
 )
+
+CELTIC_CROSS_CARD_COUNT = 10
+PROMPT_SIZE_LIMIT = 12_000
 
 
 class FakeInterpreter:
@@ -118,3 +122,77 @@ def test_unknown_model_card_id_fails_without_remapping_draw(reading_with_draw):
 
     assert result.interpretation_status == Reading.InterpretationStatus.FAILED
     assert list(reading_with_draw.cards.order_by("position").values_list("card_id", flat=True)) == initial_card_ids
+
+
+def reading_card_for(reading, *, orientation, name="The Sun", position=1, **card_fields):
+    defaults = {
+        "upright_meaning": "UP",
+        "reversed_meaning": "DOWN",
+        "upright_meaning_uk": "ВГОРУ",
+        "reversed_meaning_uk": "ВНИЗ",
+        "keywords": "joy, hope",
+        "keywords_uk": "радість, надія",
+    }
+    defaults.update(card_fields)
+    card = baker.make("tarot.Card", name=name, **defaults)
+    return baker.make(
+        ReadingCard,
+        reading=reading,
+        card=card,
+        position=position,
+        orientation=orientation,
+        role="Focus",
+    )
+
+
+@pytest.mark.django_db
+def test_prompt_uses_the_meaning_matching_the_persisted_orientation():
+    reading = baker.make("tarot.Reading", locale="en", mentor=None, question="What now?")
+    upright = reading_card_for(reading, orientation="upright", position=1)
+    reversed_card = reading_card_for(reading, orientation="reversed", name="The Moon", position=2)
+
+    prompt = build_interpretation_prompt(reading, [upright, reversed_card])
+
+    assert "card=The Sun; orientation=upright; keywords=joy, hope; meaning=UP" in prompt
+    assert "card=The Moon; orientation=reversed; keywords=joy, hope; meaning=DOWN" in prompt
+
+
+@pytest.mark.django_db
+def test_prompt_uses_the_stored_locale_with_english_fallback():
+    ukrainian = baker.make("tarot.Reading", locale="uk", mentor=None, question="Що далі?")
+    uk_card = reading_card_for(ukrainian, orientation="upright")
+
+    uk_prompt = build_interpretation_prompt(ukrainian, [uk_card])
+    assert "keywords=радість, надія; meaning=ВГОРУ" in uk_prompt
+
+    english = baker.make("tarot.Reading", locale="en", mentor=None, question="What now?")
+    fallback_card = reading_card_for(english, orientation="reversed", upright_meaning_uk="", reversed_meaning_uk="")
+    fallback_prompt = build_interpretation_prompt(english, [fallback_card])
+    assert "meaning=DOWN" in fallback_prompt
+
+
+@pytest.mark.django_db
+def test_prompt_stays_bounded_for_a_full_celtic_cross():
+    reading = baker.make("tarot.Reading", locale="en", mentor=None, reading_type=ReadingTypeEnum.CELTIC_CROSS_SPREAD)
+    long_meaning = " ".join(["reflection"] * 55)
+    cards = [
+        baker.make(
+            ReadingCard,
+            reading=reading,
+            card=baker.make(
+                "tarot.Card",
+                name=f"Card {position}",
+                upright_meaning=long_meaning,
+                reversed_meaning=long_meaning,
+            ),
+            position=position,
+            orientation="upright",
+            role=f"Role {position}",
+        )
+        for position in range(1, 11)
+    ]
+
+    prompt = build_interpretation_prompt(reading, cards)
+
+    assert len(prompt) < PROMPT_SIZE_LIMIT
+    assert prompt.count("reading_card_id=") == CELTIC_CROSS_CARD_COUNT

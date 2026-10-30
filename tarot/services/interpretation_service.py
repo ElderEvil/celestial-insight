@@ -7,19 +7,22 @@ from tarot.models import Reading, ReadingCard
 from tarot.safety import safety_prompt_context, validate_reflective_response
 
 
+def _card_line(item: ReadingCard, locale: str) -> str:
+    return (
+        f"reading_card_id={item.id}; position={item.position}; role={item.role}; "
+        f"card={item.card.name}; orientation={item.orientation}; "
+        f"keywords={item.card.localized_keywords(locale)}; "
+        f"meaning={item.card.localized_meaning(item.orientation, locale)}"
+    )
+
+
 def build_interpretation_prompt(reading: Reading, cards: list[ReadingCard]) -> str:
     mentor_style = (
         reading.mentor.style_instruction or reading.mentor.specialization
         if reading.mentor
         else "calm and thoughtful"
     )
-    card_lines = [
-        (
-            f"reading_card_id={item.id}; position={item.position}; role={item.role}; "
-            f"card={item.card.name}; orientation={item.orientation}"
-        )
-        for item in cards
-    ]
+    card_lines = [_card_line(item, reading.locale) for item in cards]
     return "\n".join(
         [
             f"Question: {reading.question}",
