@@ -25,9 +25,7 @@ def test_launch_fixture_has_complete_bilingual_product_owned_content():
         assert fields["content_source"].startswith("celestial-neutral/")
         assert fields["avatar_url"] == ""
 
-    active_fixture_slugs = {
-        item["fields"]["slug"] for item in fixture if item["fields"]["is_active"]
-    }
+    active_fixture_slugs = {item["fields"]["slug"] for item in fixture if item["fields"]["is_active"]}
     assert active_fixture_slugs == {"neutral-reader", "milo-starwhisk", "lolly-kiddie"}
     assert len([row for row in fixture if row["fields"]["is_active"]]) == 3  # noqa: PLR2004
 
@@ -35,15 +33,11 @@ def test_launch_fixture_has_complete_bilingual_product_owned_content():
 @pytest.mark.django_db
 def test_seed_demo_activation_matches_fixture():
     fixture = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
-    fixture_active_slugs = {
-        item["fields"]["slug"] for item in fixture if item["fields"]["is_active"]
-    }
+    fixture_active_slugs = {item["fields"]["slug"] for item in fixture if item["fields"]["is_active"]}
 
     call_command("seed_demo", verbosity=0)
 
-    seeded_active_slugs = set(
-        Mentor.objects.filter(is_active=True).values_list("slug", flat=True)
-    )
+    seeded_active_slugs = set(Mentor.objects.filter(is_active=True).values_list("slug", flat=True))
     assert seeded_active_slugs == fixture_active_slugs
 
 

@@ -1,11 +1,16 @@
 {% load static i18n %}
+
 <div id="journey-region">
   <header class="intro">
     <h1>{% translate "Begin a reflective tarot reading" %}</h1>
     <p class="lede">{% translate "Choose a guide and a spread. Your cards are saved before interpretation begins." %}</p>
   </header>
-
-  <form method="post" action="{% url 'tarot:journey' %}" class="journey-form" hx-post="{% url 'tarot:journey' %}" hx-target="#journey-region" hx-swap="outerHTML">
+  <form method="post"
+        action="{% url 'tarot:journey' %}"
+        class="journey-form"
+        hx-post="{% url 'tarot:journey' %}"
+        hx-target="#journey-region"
+        hx-swap="outerHTML">
     {% csrf_token %}
     <div class="layout">
       <section class="guides" aria-labelledby="guides-heading">
@@ -13,9 +18,16 @@
         <div class="mentor-list">
           {% for mentor in mentors %}
             <label class="mentor-card">
-              <input class="mentor-radio" type="radio" name="mentor" value="{{ mentor.pk }}"{% if form.mentor.value|stringformat:"s" == mentor.pk|stringformat:"s" %} checked{% elif not form.mentor.value and forloop.first %} checked{% endif %}>
+              <input class="mentor-radio"
+                     type="radio"
+                     name="mentor"
+                     value="{{ mentor.pk }}"
+                     {% if form.mentor.value|stringformat:"s" == mentor.pk|stringformat:"s" %} checked{% elif not form.mentor.value and forloop.first %} checked{% endif %} />
               {% if mentor.managed_image_path %}
-                <img src="{% static mentor.managed_image_path %}" alt="" width="56" height="56">
+                <img src="{% static mentor.managed_image_path %}"
+                     alt=""
+                     width="56"
+                     height="56" />
               {% endif %}
               <span class="mentor-body">
                 <strong class="mentor-name">{{ mentor.localized_display_name }}</strong>
@@ -26,7 +38,6 @@
         </div>
         {{ form.mentor.errors }}
       </section>
-
       <section class="details" aria-label="{% translate 'Reading details' %}">
         <div class="field">
           <label for="{{ form.question.id_for_label }}">{% translate "Your question" %}</label>
