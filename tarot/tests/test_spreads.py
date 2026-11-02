@@ -15,9 +15,7 @@ READING_TYPE_FIELD_MAX_LENGTH = 32
 @pytest.fixture
 def inactive_single_card(monkeypatch):
     patched = dict(spreads_module.SPREADS)
-    patched[ReadingTypeEnum.SINGLE_CARD] = dataclasses.replace(
-        patched[ReadingTypeEnum.SINGLE_CARD], is_active=False
-    )
+    patched[ReadingTypeEnum.SINGLE_CARD] = dataclasses.replace(patched[ReadingTypeEnum.SINGLE_CARD], is_active=False)
     monkeypatch.setattr(spreads_module, "SPREADS", patched)
     monkeypatch.setattr(forms_module, "SPREADS", patched)
     return patched

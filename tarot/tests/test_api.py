@@ -74,9 +74,7 @@ def test_reading_api_returns_persisted_card_ids_and_roles(client, django_user_mo
     "reading_type",
     ["horseshoe_spread", "relationship_spread", "secret_reveal"],
 )
-def test_readings_api_rejects_unsupported_or_inactive_spread(
-    client, django_user_model, monkeypatch, reading_type
-):
+def test_readings_api_rejects_unsupported_or_inactive_spread(client, django_user_model, monkeypatch, reading_type):
     client.raise_request_exception = False
     _login_with_profile(client, django_user_model)
     mentor = baker.make("mentors.Mentor")
@@ -145,6 +143,3 @@ def test_pick_mentor_rejects_inactive_mentor(client, django_user_model):
     assert response.status_code == HTTPStatus.NOT_FOUND
     profile.refresh_from_db()
     assert profile.preferred_mentor is None
-
-
-

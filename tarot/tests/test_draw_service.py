@@ -55,15 +55,11 @@ def test_persist_draw_is_idempotent(card_catalogue):
 
     async_to_sync(persist_draw)(reading)
     first_draw = list(
-        Reading.objects.get(id=reading.id)
-        .cards.order_by("position")
-        .values_list("card_id", "orientation", "role")
+        Reading.objects.get(id=reading.id).cards.order_by("position").values_list("card_id", "orientation", "role")
     )
     async_to_sync(persist_draw)(reading)
     second_draw = list(
-        Reading.objects.get(id=reading.id)
-        .cards.order_by("position")
-        .values_list("card_id", "orientation", "role")
+        Reading.objects.get(id=reading.id).cards.order_by("position").values_list("card_id", "orientation", "role")
     )
 
     assert second_draw == first_draw

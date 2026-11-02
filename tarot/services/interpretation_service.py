@@ -18,9 +18,7 @@ def _card_line(item: ReadingCard, locale: str) -> str:
 
 def build_interpretation_prompt(reading: Reading, cards: list[ReadingCard]) -> str:
     mentor_style = (
-        reading.mentor.style_instruction or reading.mentor.specialization
-        if reading.mentor
-        else "calm and thoughtful"
+        reading.mentor.style_instruction or reading.mentor.specialization if reading.mentor else "calm and thoughtful"
     )
     card_lines = [_card_line(item, reading.locale) for item in cards]
     return "\n".join(

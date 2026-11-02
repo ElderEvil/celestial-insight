@@ -106,9 +106,7 @@ def test_ukrainian_saved_reading_uses_localized_reflection_notice(client, journe
 
 
 @pytest.mark.django_db
-def test_saved_reading_renders_in_stored_locale_regardless_of_accept_language(
-    client, journey_catalogue
-):
+def test_saved_reading_renders_in_stored_locale_regardless_of_accept_language(client, journey_catalogue):
     client.post("/", journey_payload(journey_catalogue, locale="uk"))
     reading = Reading.objects.get()
 

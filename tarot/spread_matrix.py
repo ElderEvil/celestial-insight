@@ -51,9 +51,7 @@ TAROT_SPREADS: dict[tuple[ValidIntentOptions, ThemeOptions], tuple[ReadingTypeEn
         ReadingTypeEnum.SINGLE_CARD,
         ReadingTypeEnum.CELTIC_CROSS_SPREAD,
     ),
-    (ValidIntentOptions.PREDICTION, ThemeOptions.SPIRITUALITY): (
-        ReadingTypeEnum.THREE_CARD_SPREAD,
-    ),
+    (ValidIntentOptions.PREDICTION, ThemeOptions.SPIRITUALITY): (ReadingTypeEnum.THREE_CARD_SPREAD,),
     (ValidIntentOptions.PREDICTION, ThemeOptions.DECISION_MAKING): (
         ReadingTypeEnum.THREE_CARD_SPREAD,
         ReadingTypeEnum.LOVE_SPREAD,
@@ -90,12 +88,8 @@ TAROT_SPREADS: dict[tuple[ValidIntentOptions, ThemeOptions], tuple[ReadingTypeEn
         ReadingTypeEnum.THREE_CARD_SPREAD,
         ReadingTypeEnum.LOVE_SPREAD,
     ),
-    (ValidIntentOptions.SELF_REFLECTION, ThemeOptions.HEALTH): (
-        ReadingTypeEnum.THREE_CARD_SPREAD,
-    ),
-    (ValidIntentOptions.SELF_REFLECTION, ThemeOptions.SPIRITUALITY): (
-        ReadingTypeEnum.THREE_CARD_SPREAD,
-    ),
+    (ValidIntentOptions.SELF_REFLECTION, ThemeOptions.HEALTH): (ReadingTypeEnum.THREE_CARD_SPREAD,),
+    (ValidIntentOptions.SELF_REFLECTION, ThemeOptions.SPIRITUALITY): (ReadingTypeEnum.THREE_CARD_SPREAD,),
     (ValidIntentOptions.SELF_REFLECTION, ThemeOptions.DECISION_MAKING): (
         ReadingTypeEnum.THREE_CARD_SPREAD,
         ReadingTypeEnum.CELTIC_CROSS_SPREAD,
@@ -107,9 +101,7 @@ TAROT_SPREADS: dict[tuple[ValidIntentOptions, ThemeOptions], tuple[ReadingTypeEn
     (ValidIntentOptions.SELF_REFLECTION, ThemeOptions.PAST_LIFE): DEFAULT_SPREADS,
     (ValidIntentOptions.SELF_REFLECTION, ThemeOptions.ESOTERIC): DEFAULT_SPREADS,
     (ValidIntentOptions.SELF_REFLECTION, ThemeOptions.DREAMS): DEFAULT_SPREADS,
-    (ValidIntentOptions.SELF_REFLECTION, ThemeOptions.HIDDEN_TRUTHS): (
-        ReadingTypeEnum.CELTIC_CROSS_SPREAD,
-    ),
+    (ValidIntentOptions.SELF_REFLECTION, ThemeOptions.HIDDEN_TRUTHS): (ReadingTypeEnum.CELTIC_CROSS_SPREAD,),
     (ValidIntentOptions.GUIDANCE, ThemeOptions.GENERAL_GUIDANCE): (
         ReadingTypeEnum.SINGLE_CARD,
         ReadingTypeEnum.THREE_CARD_SPREAD,
@@ -139,16 +131,12 @@ TAROT_SPREADS: dict[tuple[ValidIntentOptions, ThemeOptions], tuple[ReadingTypeEn
         ReadingTypeEnum.CELTIC_CROSS_SPREAD,
         ReadingTypeEnum.SINGLE_CARD,
     ),
-    (ValidIntentOptions.GUIDANCE, ThemeOptions.SPIRITUALITY): (
-        ReadingTypeEnum.THREE_CARD_SPREAD,
-    ),
+    (ValidIntentOptions.GUIDANCE, ThemeOptions.SPIRITUALITY): (ReadingTypeEnum.THREE_CARD_SPREAD,),
     (ValidIntentOptions.GUIDANCE, ThemeOptions.DECISION_MAKING): (
         ReadingTypeEnum.THREE_CARD_SPREAD,
         ReadingTypeEnum.CELTIC_CROSS_SPREAD,
     ),
-    (ValidIntentOptions.GUIDANCE, ThemeOptions.COMMUNICATION): (
-        ReadingTypeEnum.THREE_CARD_SPREAD,
-    ),
+    (ValidIntentOptions.GUIDANCE, ThemeOptions.COMMUNICATION): (ReadingTypeEnum.THREE_CARD_SPREAD,),
     (ValidIntentOptions.GUIDANCE, ThemeOptions.PAST_LIFE): DEFAULT_SPREADS,
     (ValidIntentOptions.GUIDANCE, ThemeOptions.ESOTERIC): DEFAULT_SPREADS,
     (ValidIntentOptions.GUIDANCE, ThemeOptions.DREAMS): DEFAULT_SPREADS,
@@ -157,9 +145,7 @@ TAROT_SPREADS: dict[tuple[ValidIntentOptions, ThemeOptions], tuple[ReadingTypeEn
         ReadingTypeEnum.CELTIC_CROSS_SPREAD,
     ),
     (ValidIntentOptions.WARNING, ThemeOptions.GENERAL_GUIDANCE): DEFAULT_SPREADS,
-    (ValidIntentOptions.WARNING, ThemeOptions.HIDDEN_TRUTHS): (
-        ReadingTypeEnum.CELTIC_CROSS_SPREAD,
-    ),
+    (ValidIntentOptions.WARNING, ThemeOptions.HIDDEN_TRUTHS): (ReadingTypeEnum.CELTIC_CROSS_SPREAD,),
     (ValidIntentOptions.WARNING, ThemeOptions.ESOTERIC): DEFAULT_SPREADS,
     (ValidIntentOptions.WARNING, ThemeOptions.WARNING): DEFAULT_SPREADS,
     (ValidIntentOptions.WARNING, ThemeOptions.LOVE): DEFAULT_SPREADS,
