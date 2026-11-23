@@ -1,12 +1,17 @@
 {% load static i18n %}
+
 {% get_current_language as LANGUAGE_CODE %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'en' }}">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% translate "Celestial Insight" %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'tarot/journey.css' %}">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      {% block title %}
+        {% translate "Celestial Insight" %}
+      {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'tarot/journey.css' %}" />
     <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
   </head>
   <body>
