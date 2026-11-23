@@ -1,11 +1,11 @@
 {% load i18n %}
+
 <article id="journey-region" class="reading" aria-live="polite">
   <header class="reading-header">
     <p class="eyebrow">{% translate "Your reading" %}</p>
     <h1>{{ reading.question }}</h1>
     <p class="notice">{% translate "Tarot offers space for reflection, not certain predictions or professional advice." %}</p>
   </header>
-
   <ol class="cards">
     {% for reading_card in reading.cards.all %}
       <li class="card-tile">
@@ -16,25 +16,32 @@
       </li>
     {% endfor %}
   </ol>
-
   <div class="reading-status">
     {% if reading.interpretation_status == "completed" %}
       <p class="insight">{{ reading.celestial_insight }}</p>
     {% elif reading.interpretation_status == "failed" %}
       <p>{% translate "Interpretation could not be completed. Your original draw is still saved." %}</p>
-      <form method="post" action="{% url 'tarot:reading-retry' reading.id %}" hx-post="{% url 'tarot:reading-retry' reading.id %}" hx-target="#journey-region" hx-swap="outerHTML">
+      <form method="post"
+            action="{% url 'tarot:reading-retry' reading.id %}"
+            hx-post="{% url 'tarot:reading-retry' reading.id %}"
+            hx-target="#journey-region"
+            hx-swap="outerHTML">
         {% csrf_token %}
         <button type="submit">{% translate "Retry interpretation" %}</button>
       </form>
     {% else %}
       <p>{% translate "Your cards are saved. Interpretation is pending." %}</p>
-      <form method="post" action="{% url 'tarot:reading-interpret' reading.id %}" hx-post="{% url 'tarot:reading-interpret' reading.id %}" hx-trigger="load" hx-target="#journey-region" hx-swap="outerHTML">
+      <form method="post"
+            action="{% url 'tarot:reading-interpret' reading.id %}"
+            hx-post="{% url 'tarot:reading-interpret' reading.id %}"
+            hx-trigger="load"
+            hx-target="#journey-region"
+            hx-swap="outerHTML">
         {% csrf_token %}
         <button type="submit">{% translate "Generate interpretation" %}</button>
       </form>
     {% endif %}
   </div>
-
   {% if not request.user.is_authenticated %}
     <p class="account-seam">{% translate "This reading belongs to this browser session. You can attach it after signing in later." %}</p>
   {% endif %}

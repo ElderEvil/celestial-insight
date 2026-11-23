@@ -32,9 +32,7 @@ def _persist_draw(reading_id: int) -> Reading:
         reading.spread_version = spread.version
         reading.interpretation_status = Reading.InterpretationStatus.PENDING
         reading.interpretation_error = ""
-        reading.save(
-            update_fields=["draw_seed", "spread_version", "interpretation_status", "interpretation_error"]
-        )
+        reading.save(update_fields=["draw_seed", "spread_version", "interpretation_status", "interpretation_error"])
 
         ReadingCard.objects.bulk_create(
             [
